@@ -3,20 +3,25 @@ package templates
 import (
 	"fmt"
 	"github.com/dmitkov28/dietapp/data"
+	"strconv"
 )
 
-templ Plan() {
+templ Plan(currentWeight int) {
 	@Base("GeneratePlanForm") {
 		<div class="w-full p-8">
 			<h1 class="font-bold text-2xl text-center">Generate Plan</h1>
 			<form hx-boost="true" method="POST" action="/generate-plan" class="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
 				<div>
 					<label>Current Weight</label>
-					<input name="current_weight" class="w-full border border-slate-300 shadow-md px-3 py-1 rounded-md" type="number" placeholder="Current weight in kg"/>
+					if currentWeight != 0 {
+						<input value={strconv.Itoa(currentWeight)} name="current_weight" step="0.1" class="w-full border border-slate-300 shadow-md px-3 py-1 rounded-md" type="number" placeholder="Current weight in kg"/>
+					} else {
+						<input name="current_weight" step="0.1" class="w-full border border-slate-300 shadow-md px-3 py-1 rounded-md" type="number" placeholder="Current weight in kg"/>
+					}
 				</div>
 				<div>
 					<label>Target Weight</label>
-					<input name="target_weight" class="w-full border border-slate-300 shadow-md px-3 py-1 rounded-md" type="number" placeholder="Target weight in kg"/>
+					<input name="target_weight" step="0.1" class="w-full border border-slate-300 shadow-md px-3 py-1 rounded-md" type="number" placeholder="Target weight in kg"/>
 				</div>
 				<div>
 					<label>Time Period</label>
