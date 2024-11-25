@@ -4,10 +4,11 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"strconv"
+	"net/http"
 	"time"
 
 	"github.com/a-h/templ"
+	"github.com/dmitkov28/dietapp/auth"
 	"github.com/dmitkov28/dietapp/data"
 	"github.com/dmitkov28/dietapp/templates"
 	"github.com/labstack/echo/v4"
@@ -23,48 +24,46 @@ func main() {
 		log.Fatal(err)
 	}
 
-	settingsRepo := data.NewSettingsRepository(db)
+	usersRepo := data.NewUsersRepository(db)
+	sessionsRepo := data.NewSessionsRepository(db)
 
 	e := echo.New()
 	e.Static("/static", "static")
-	e.GET("/", func(c echo.Context) error {
+
+	e.GET("/dashboard", func(c echo.Context) error {
 		today := time.Now().Format("Jan 2, 2006")
+		fmt.Println(c.Get("user_id"))
 		return render(c, templates.HomePage(today))
+	}, authMiddleware(sessionsRepo))
+
+	e.GET("/login", func(c echo.Context) error {
+		if auth.IsAuthenticated(c) {
+			return c.Redirect(http.StatusSeeOther, "/dashboard")
+		}
+		return render(c, templates.LoginPage())
 	})
-	e.GET("/generate-plan", func(c echo.Context) error {
-		return render(c, templates.Plan())
-	})
 
-	e.GET("/settings", func(c echo.Context) error {
-		data := settingsRepo.ListSettings()
-		return c.JSON(200, data)
-	})
+	e.POST("/login", func(c echo.Context) error {
+		email := c.FormValue("email")
+		password := c.FormValue("password")
 
-	e.POST("/generate-plan", func(c echo.Context) error {
+		session, err := auth.SignInUser(*usersRepo, *sessionsRepo, email, password)
 
-		var settings data.Settings
-		var err error
-
-		// Parse current weight
-		currentWeight := c.FormValue("current_weight")
-		settings.Current_weight, err = strconv.ParseFloat(currentWeight, 64)
 		if err != nil {
-			return fmt.Errorf("invalid current weight: %v", err)
+			return render(c, templates.Login(true))
 		}
 
-		// Parse target weight
-		targetWeight := c.FormValue("target_weight")
-		settings.Target_weight, err = strconv.ParseFloat(targetWeight, 64)
-		if err != nil {
-			return fmt.Errorf("invalid target weight: %v", err)
-		}
+		c.SetCookie(&http.Cookie{
+			Name:     "session_token",
+			Value:    session.Token,
+			Expires:  session.Expires_At,
+			HttpOnly: true,
+			Secure:   true,
+			SameSite: http.SameSiteStrictMode,
+		})
 
-		err = settingsRepo.CreateSettings(settings)
-		if err != nil {
-			return c.JSON(400, err)
-		}
-
-		return render(c, templates.PlanGenerated(settings))
+		c.Response().Header().Set("HX-Redirect", "/dashboard")
+		return c.String(http.StatusOK, "")
 	})
 
 	e.Logger.Fatal(e.Start(":1323"))
