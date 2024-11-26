@@ -4,10 +4,10 @@ import (
 	"crypto/rand"
 	"encoding/base64"
 	"fmt"
-	"time"
-
 	"github.com/dmitkov28/dietapp/data"
 	"github.com/labstack/echo/v4"
+	"golang.org/x/crypto/bcrypt"
+	"time"
 )
 
 func GenerateSecureToken() (string, error) {
@@ -19,10 +19,15 @@ func GenerateSecureToken() (string, error) {
 	return base64.RawURLEncoding.EncodeToString(randomBytes), nil
 }
 
+func CheckPasswordHash(password, hash string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
+	return err == nil
+}
+
 func SignInUser(usersRepo data.UsersRepository, sessionsRepo data.SessionsRepository, email string, password string) (data.Session, error) {
 	user, err := usersRepo.GetUserByEmail(email)
 
-	if err != nil || password != user.Password {
+	if err != nil || CheckPasswordHash(password, user.Password) {
 		return data.Session{}, fmt.Errorf("invalid credentials")
 	}
 
