@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS settings (
     current_weight REAL NOT NULL,
     target_weight REAL NOT NULL,
     goal_deadline DATE NOT NULL,
-    user_id INT NOT NULL,
+    user_id INT NOT NULL UNIQUE,
     FOREIGN KEY(user_id) REFERENCES users(id)
 );
 
