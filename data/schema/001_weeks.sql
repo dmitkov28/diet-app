@@ -4,7 +4,9 @@ CREATE TABLE IF NOT EXISTS measurements (
     week_start DATE NOT NULL,
     week_end DATE NOT NULL,
     calories REAL,
-    weight REAL
+    weight REAL,
+    user_id INT NOT NULL,
+    FOREIGN KEY(user_id) REFERENCES users(id)
 );
 
 -- +goose Down

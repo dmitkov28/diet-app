@@ -3,7 +3,9 @@ CREATE TABLE IF NOT EXISTS settings (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     current_weight REAL NOT NULL,
     target_weight REAL NOT NULL,
-    goal_deadline DATE NOT NULL
+    goal_deadline DATE NOT NULL,
+    user_id INT NOT NULL,
+    FOREIGN KEY(user_id) REFERENCES users(id)
 );
 
 -- +goose Down
