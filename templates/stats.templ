@@ -1,9 +1,11 @@
 package templates
 
-templ Stats(currentWeight int) {
-	<div class="flex gap-2 items-center">
-		<h2 class="font-bold text-xl">Current Weight:  88 kg</h2>
-		<img class="h-10" src="/static/img/arrow-down.svg"/>
-        <span class="text-green-600">-11%</span>
-	</div>
+templ StatsPage(currentWeight int) {
+	@Base("StatsPage") {
+		<div class="flex gap-2 items-center">
+			<h2 class="font-bold text-xl">Current Weight:  88 kg</h2>
+			<img class="h-10" src="/static/img/arrow-down.svg"/>
+			<span class="text-green-600">-11%</span>
+		</div>
+	}
 }
