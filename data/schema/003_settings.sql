@@ -4,8 +4,13 @@ CREATE TABLE IF NOT EXISTS settings (
     current_weight REAL NOT NULL,
     target_weight REAL NOT NULL,
     target_weight_loss_rate REAL NOT NULL,
+    height INT NOT NULL,
+    AGE INT NOT NULL,
+    SEX TEXT NOT NULL,
     user_id INT NOT NULL UNIQUE,
     FOREIGN KEY(user_id) REFERENCES users(id)
+    ON DELETE CASCADE
+
 );
 
 -- +goose Down

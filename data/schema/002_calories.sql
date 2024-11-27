@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS calories (
     calories REAL,
     user_id INT NOT NULL,
     FOREIGN KEY(user_id) REFERENCES users(id)
+    ON DELETE CASCADE
 );
 
 -- +goose Down

@@ -5,7 +5,8 @@ CREATE TABLE IF NOT EXISTS weight (
     weight REAL,
     user_id INT NOT NULL,
     FOREIGN KEY(user_id) REFERENCES users(id)
+    ON DELETE CASCADE
 );
 
 -- +goose Down
-DROP TABLE calories;
+DROP TABLE weight;
