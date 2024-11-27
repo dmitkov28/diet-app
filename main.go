@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"net/http"
 
 	"github.com/dmitkov28/dietapp/data"
 	"github.com/dmitkov28/dietapp/handlers"
@@ -16,11 +17,28 @@ func main() {
 
 	usersRepo := data.NewUsersRepository(db)
 	sessionsRepo := data.NewSessionsRepository(db)
+	settingsRepo := data.NewSettingsRepository(db)
+	measurementsRepo := data.NewMeasurementsRepository(db)
 
 	e := echo.New()
 	e.Static("/static", "static")
 
+	e.GET("/", func(c echo.Context) error {
+		return c.Redirect(http.StatusSeeOther, "/dashboard")
+	}, authMiddleware(sessionsRepo))
+
 	e.GET("/dashboard", handlers.DashboardGETHandler(), authMiddleware(sessionsRepo))
+
+	e.GET("/settings", handlers.SettingsGETHandler(settingsRepo), authMiddleware(sessionsRepo))
+	e.POST("/settings", handlers.SettingsPOSTHandler(settingsRepo), authMiddleware(sessionsRepo))
+
+	e.GET("/weight", handlers.WeightGETHandler(measurementsRepo), authMiddleware(sessionsRepo))
+	e.POST("/weight", handlers.WeightPOSTHandler(measurementsRepo), authMiddleware(sessionsRepo))
+
+	e.GET("/stats", handlers.StatsGETHandler(), authMiddleware(sessionsRepo))
+
+	e.GET("/calories", handlers.CaloriesGETHandler(measurementsRepo), authMiddleware(sessionsRepo))
+	e.POST("/calories", handlers.CaloriesPOSTHandler(measurementsRepo), authMiddleware(sessionsRepo))
 
 	e.GET("/login", handlers.LoginGETHandler())
 
