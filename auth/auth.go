@@ -26,8 +26,7 @@ func CheckPasswordHash(password, hash string) bool {
 
 func SignInUser(usersRepo data.UsersRepository, sessionsRepo data.SessionsRepository, email string, password string) (data.Session, error) {
 	user, err := usersRepo.GetUserByEmail(email)
-
-	if err != nil || CheckPasswordHash(password, user.Password) {
+	if err != nil || !CheckPasswordHash(password, user.Password) {
 		return data.Session{}, fmt.Errorf("invalid credentials")
 	}
 
