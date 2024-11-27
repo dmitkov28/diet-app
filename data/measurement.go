@@ -1,13 +1,17 @@
 package data
 
-import "log"
+type Weight struct {
+	ID      int
+	User_id int
+	Weight  float64
+	Date    string
+}
 
-type Measurement struct {
-	ID        int
-	WeekStart string
-	WeekEnd   string
-	Weight    float32
-	Calories  float32
+type Calories struct {
+	ID       int
+	User_id  int
+	Calories int
+	Date     string
 }
 
 type MeasurementRepository struct {
@@ -18,21 +22,120 @@ func NewMeasurementsRepository(db *DB) *MeasurementRepository {
 	return &MeasurementRepository{db: db}
 }
 
-func (repo *MeasurementRepository) ListMeasurements() []Measurement {
-	rows, err := repo.db.db.Query("SELECT id, week_start, week_end, calories, weight FROM measurements")
+func (repo *MeasurementRepository) GetWeightByUserId(userId int) ([]Weight, error) {
+	rows, err := repo.db.db.Query("SELECT weight, date FROM weight WHERE user_id = ?", userId)
 	if err != nil {
-		log.Fatalf("Failed to query the table: %v", err)
+		return []Weight{}, err
 	}
 	defer rows.Close()
-	var data []Measurement
-	var m Measurement
+	var result []Weight
 	for rows.Next() {
-
-		err := rows.Scan(&m.ID, &m.WeekStart, &m.WeekEnd, &m.Calories, &m.Weight)
+		var row Weight
+		err := rows.Scan(&row.Weight, &row.Date)
 		if err != nil {
-			log.Fatalf("Failed to scan row: %v", err)
+			return []Weight{}, err
 		}
+		result = append(result, row)
 	}
-	return data
+	return result, nil
+
+}
+
+func (repo *MeasurementRepository) GetWeightsBetweenDates(userId int, startDate, endDate string) ([]Weight, error) {
+	rows, err := repo.db.db.Query("SELECT weight, date FROM weight WHERE user_id = ? AND date BETWEEN ? AND ?", userId, startDate, endDate)
+	if err != nil {
+		return []Weight{}, err
+	}
+	defer rows.Close()
+	var result []Weight
+	for rows.Next() {
+		var row Weight
+		err := rows.Scan(&row.Weight, &row.Date)
+		if err != nil {
+			return []Weight{}, err
+		}
+		result = append(result, row)
+	}
+	return result, nil
+
+}
+
+func (repo *MeasurementRepository) CreateWeight(weight Weight) (Weight, error) {
+	res, err := repo.db.db.Exec("INSERT INTO weight(user_id, weight, date) VALUES(?, ?, ?)", weight.User_id, weight.Weight, weight.Date)
+	if err != nil {
+		return Weight{}, err
+	}
+	lastId, err := res.LastInsertId()
+	if err != nil {
+		return Weight{}, err
+	}
+
+	var newWeight Weight
+
+	row := repo.db.db.QueryRow("SELECT id, weight, date FROM weight WHERE id = ?", lastId)
+	err = row.Scan(&newWeight.ID, &newWeight.Weight, &newWeight.Date)
+	if err != nil {
+		return Weight{}, err
+	}
+	return newWeight, nil
+
+}
+
+func (repo *MeasurementRepository) GetCaloriesByUserId(userId int) ([]Calories, error) {
+	rows, err := repo.db.db.Query("SELECT calories, date FROM calories WHERE user_id = ?", userId)
+	if err != nil {
+		return []Calories{}, err
+	}
+	defer rows.Close()
+	var result []Calories
+	for rows.Next() {
+		var row Calories
+		err := rows.Scan(&row.Calories, &row.Date)
+		if err != nil {
+			return []Calories{}, err
+		}
+		result = append(result, row)
+	}
+	return result, nil
+
+}
+
+func (repo *MeasurementRepository) GetCaloriesBetweenDates(userId int, startDate, endDate string) ([]Calories, error) {
+	rows, err := repo.db.db.Query("SELECT calories, date FROM calories WHERE user_id = ? AND date BETWEEN ? AND ?", userId, startDate, endDate)
+	if err != nil {
+		return []Calories{}, err
+	}
+	defer rows.Close()
+	var result []Calories
+	for rows.Next() {
+		var row Calories
+		err := rows.Scan(&row.Calories, &row.Date)
+		if err != nil {
+			return []Calories{}, err
+		}
+		result = append(result, row)
+	}
+	return result, nil
+
+}
+
+func (repo *MeasurementRepository) CreateCalories(calories Calories) (Calories, error) {
+	res, err := repo.db.db.Exec("INSERT INTO calories(user_id, calories, date) VALUES(?, ?, ?)", calories.User_id, calories.Calories, calories.Date)
+	if err != nil {
+		return Calories{}, err
+	}
+	lastId, err := res.LastInsertId()
+	if err != nil {
+		return Calories{}, err
+	}
+
+	var newCalories Calories
+
+	row := repo.db.db.QueryRow("SELECT id, calories, date FROM calories WHERE id = ?", lastId)
+	err = row.Scan(&newCalories.ID, &newCalories.Calories, &newCalories.Date)
+	if err != nil {
+		return Calories{}, err
+	}
+	return newCalories, nil
 
 }
