@@ -29,7 +29,7 @@ func Base(title string) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<!doctype html><html class=\"min-h-screen\" lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 1)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -42,7 +42,7 @@ func Base(title string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</title><link rel=\"stylesheet\" href=\"/static/css/main.css\"><script src=\"https://unpkg.com/htmx.org@1.9.10\"></script></head><body class=\"min-h-screen flex flex-col\"><header><!-- Your header content --></header><main class=\"flex flex-col flex-1\"><!-- Content will be injected here -->")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 2)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -50,11 +50,7 @@ func Base(title string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = Nav().Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</main><footer><!-- Your footer content --></footer></body><script>\n\t\t\tdocument.body.addEventListener('htmx:beforeSwap', function(evt) {\n\t\t\tif(evt.detail.xhr.status === 404){\n\t\t\t\t// alert the user when a 404 occurs (maybe use a nicer mechanism than alert())\n\t\t\t\talert(\"Error: Could Not Find Resource\");\n\t\t\t} else if(evt.detail.xhr.status === 400){\n\t\t\t\t// allow 422 responses to swap as we are using this as a signal that\n\t\t\t\t// a form was submitted with bad data and want to rerender with the\n\t\t\t\t// errors\n\t\t\t\t//\n\t\t\t\t// set isError to false to avoid error logging in console\n\t\t\t\tevt.detail.shouldSwap = true;\n\t\t\t\tevt.detail.isError = false;\n\t\t\t} else if(evt.detail.xhr.status === 418){\n\t\t\t\t// if the response code 418 (I'm a teapot) is returned, retarget the\n\t\t\t\t// content of the response to the element with the id `teapot`\n\t\t\t\tevt.detail.shouldSwap = true;\n\t\t\t\tevt.detail.target = htmx.find(\"#teapot\");\n\t\t\t}\n\t\t});\n\t\t</script></html>")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 3)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
