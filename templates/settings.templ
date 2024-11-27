@@ -1,112 +1,105 @@
 package templates
+
 import (
-    "fmt"
-    "github.com/dmitkov28/dietapp/data"
+	"fmt"
+	"github.com/dmitkov28/dietapp/data"
 )
 
 type SettingsErrors struct {
-	Current_weight string
-	Target_weight  string
-	Goal_deadline  string
+	Current_weight          string
+	Target_weight           string
+	Target_weight_loss_rate string
+	Goal_deadline           string
 }
 
-
 templ SettingsForm(settings data.Settings, errors SettingsErrors) {
-    @Base("SettingsForm") {
-        <div class="w-full p-8">
-            <h1 class="font-bold text-2xl text-center">Generate Plan</h1>
-            <form hx-boost="true" method="POST" action="/settings" class="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
-                <div>
-                    <label>Current Weight</label>
-                    if settings.Current_weight != 0 {
-                        <input 
-                            value={ fmt.Sprintf("%.1f", settings.Current_weight) } 
-                            name="current_weight" 
-                            step="0.1" 
-                            class={
-                                "w-full border shadow-md px-3 py-1 rounded-md",
+	@Base("SettingsForm") {
+		<div class="w-full p-8">
+			<h1 class="font-bold text-2xl text-center">Generate Plan</h1>
+			<form hx-boost="true" method="POST" action="/settings" class="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
+				<div>
+					<label>Current Weight</label>
+					if settings.Current_weight != 0 {
+						<input
+							value={ fmt.Sprintf("%.1f", settings.Current_weight) }
+							name="current_weight"
+							step="0.1"
+							class={ "w-full border shadow-md px-3 py-1 rounded-md",
                                 templ.KV("border-red-500 text-red-500", errors.Current_weight != ""),
-                                templ.KV("border-slate-300", errors.Current_weight == "")
-                            }
-                            type="number" 
-                            placeholder="Current weight in kg"
-                        />
-                    } else {
-                        <input 
-                            name="current_weight" 
-                            step="0.1" 
-                            class={
-                                "w-full border shadow-md px-3 py-1 rounded-md",
+                                templ.KV("border-slate-300", errors.Current_weight == "") }
+							type="number"
+							placeholder="Current weight in kg"
+						/>
+					} else {
+						<input
+							name="current_weight"
+							step="0.1"
+							class={ "w-full border shadow-md px-3 py-1 rounded-md",
                                 templ.KV("border-red-500 text-red-500", errors.Current_weight != ""),
-                                templ.KV("border-slate-300", errors.Current_weight == "")
-                            }
-                            type="number" 
-                            placeholder="Current weight in kg"
-                        />
-                    }
-                    if errors.Current_weight != "" {
-                        <span class="text-red-500">Invalid weight</span>
-                    }
-                </div>
-                <div>
-                    <label>Target Weight</label>
-                    if settings.Target_weight != 0 {
-                        <input 
-                            value={ fmt.Sprintf("%.1f", settings.Target_weight) } 
-                            name="target_weight" 
-                            step="0.1" 
-                            class={
-                                "w-full border shadow-md px-3 py-1 rounded-md",
+                                templ.KV("border-slate-300", errors.Current_weight == "") }
+							type="number"
+							placeholder="Current weight in kg"
+						/>
+					}
+					if errors.Current_weight != "" {
+						<span class="text-red-500">Invalid weight</span>
+					}
+				</div>
+				<div>
+					<label>Target Weight</label>
+					if settings.Target_weight != 0 {
+						<input
+							value={ fmt.Sprintf("%.1f", settings.Target_weight) }
+							name="target_weight"
+							step="0.1"
+							class={ "w-full border shadow-md px-3 py-1 rounded-md",
                                 templ.KV("border-red-500 text-red-500", errors.Target_weight != ""),
-                                templ.KV("border-slate-300", errors.Target_weight == "")
-                            }
-                            type="number" 
-                            placeholder="Target weight in kg"
-                        />
-                    } else {
-                        <input 
-                            name="target_weight" 
-                            step="0.1" 
-                            class={
-                                "w-full border shadow-md px-3 py-1 rounded-md",
+                                templ.KV("border-slate-300", errors.Target_weight == "") }
+							type="number"
+							placeholder="Target weight in kg"
+						/>
+					} else {
+						<input
+							name="target_weight"
+							step="0.1"
+							class={ "w-full border shadow-md px-3 py-1 rounded-md",
                                 templ.KV("border-red-500 text-red-500", errors.Target_weight != ""),
-                                templ.KV("border-slate-300", errors.Target_weight == "")
-                            }
-                            type="number" 
-                            placeholder="Target weight in kg"
-                        />
-                    }
-                    if errors.Target_weight != "" {
-                        <span class="text-red-500">Invalid weight</span>
-                    }
-                </div>
-                <div>
-                    <label>Time Period</label>
-                    if settings.Goal_deadline != "" {
-                        <input
-                            value={ settings.Goal_deadline }
-                            name="goal_deadline"
-                            class="w-full border border-slate-300 shadow-md px-3 py-1 rounded-md"
-                            type="number"
-                            min="1"
-                            placeholder="Time period in weeks"
-                            required
-                        />
-                    } else {
-                        <input
-                            name="goal_deadline"
-                            class="w-full border border-slate-300 shadow-md px-3 py-1 rounded-md"
-                            type="number"
-                            min="1"
-                            placeholder="Time period in weeks"
-                            required
-                        />
-                    }
-                </div>
-                <button class="text-white font-semibold bg-blue-500 rounded-md p-3">Generate</button>
-            </form>
-        </div>
-    }
+                                templ.KV("border-slate-300", errors.Target_weight == "") }
+							type="number"
+							placeholder="Target weight in kg"
+						/>
+					}
+					if errors.Target_weight != "" {
+						<span class="text-red-500">Invalid weight</span>
+					}
+				</div>
+				<div>
+					<label>Time Period</label>
+					if settings.Target_weight_loss_rate != 0 {
+						<input
+							value={ fmt.Sprintf("%.1f", settings.Target_weight_loss_rate) }
+							name="goal_deadline"
+							class="w-full border border-slate-300 shadow-md px-3 py-1 rounded-md"
+							type="number"
+							min="1"
+							placeholder="Time period in weeks"
+							required
+						/>
+					} else {
+						<input
+							name="goal_deadline"
+							class="w-full border border-slate-300 shadow-md px-3 py-1 rounded-md"
+							type="number"
+							min="1"
+							placeholder="Time period in weeks"
+							required
+						/>
+					}
+				</div>
+				<button class="text-white font-semibold bg-blue-500 rounded-md p-3">Generate</button>
+			</form>
+		</div>
+	}
 }
 
 templ SettingsList(settings data.Settings) {
@@ -117,7 +110,7 @@ templ SettingsList(settings data.Settings) {
 				<b>User: { fmt.Sprintf("%d", settings.User_id) }</b>
 				<p>Current Weight: { fmt.Sprintf("%.1f", settings.Current_weight) } kg</p>
 				<p>Target Weight: { fmt.Sprintf("%.1f", settings.Target_weight) } kg</p>
-				<p>Deadline: { settings.Goal_deadline } kg</p>
+				<p>Deadline: { fmt.Sprintf("%.1f", settings.Target_weight_loss_rate) } kg</p>
 			</div>
 		</div>
 	}
