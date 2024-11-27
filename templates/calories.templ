@@ -1,0 +1,41 @@
+package templates
+
+templ CaloriesForm() {
+	@Base("CaloriesForm") {
+		<div class="w-full p-8">
+			<form method="POST" action="/calories" class="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
+				<div>
+					<label>Calories</label>
+					<input
+						name="calories"
+						class="w-full border shadow-md px-3 py-1 rounded-md"
+						type="number"
+						placeholder="Calories"
+						required
+					/>
+				</div>
+				<div class="flex flex-col gap-1">
+					<label>Date</label>
+					<input
+						name="date"
+						class="w-full border shadow-md px-3 py-1 rounded-md text-slate-400"
+						type="date"
+						required
+					/>
+				</div>
+				<button class="text-white font-semibold bg-blue-500 rounded-md p-3">Log Calories</button>
+			</form>
+		</div>
+	}
+}
+
+templ CaloriesPage() {
+	@Base("CaloriesPage") {
+		<div class="w-full flex flex-col flex-1 items-center justify-center">
+			<h1 class="font-bold text-2xl text-center">Calorie Log</h1>
+			<div class="stats">
+				@CaloriesForm()
+			</div>
+		</div>
+	}
+}
