@@ -41,7 +41,7 @@ func HomePage(date string) templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"w-full p-8\"><div id=\"main-content\" class=\"grid grid-cols-1 gap-4\"><h1 class=\"font-bold text-2xl text-center\">")
+			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 1)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -54,7 +54,7 @@ func HomePage(date string) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</h1><div class=\"col-span-2\">w@Stats(88)</div><div hx-get=\"/generate-plan\" hx-target=\"#main-content\" class=\"md:col-span-1 text-center col-span-2 rounded-md border border-slate-200 shadow-md p-3 cursor-pointer\">Generate Plan</div><div hx-get=\"/settings\" hx-target=\"#main-content\" class=\"md:col-span-1 text-center col-span-2 rounded-md border border-slate-200 shadow-md p-3 cursor-pointer\">Settings</div><div class=\"md:col-span-1 text-center col-span-2 rounded-md border border-slate-200 shadow-md p-3\">Stats</div><div class=\"md:col-span-1 text-center col-span-2 rounded-md border border-slate-200 shadow-md p-3\">Add Weight</div><div class=\"md:col-span-1 text-center col-span-2 rounded-md border border-slate-200 shadow-md p-3\">Add Calories</div></div></div>")
+			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 2)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

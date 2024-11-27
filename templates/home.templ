@@ -2,36 +2,28 @@ package templates
 
 templ HomePage(date string) {
 	@Base("Home Page") {
-		<div class="w-full p-8">
-			<div id="main-content" class="grid grid-cols-1 gap-4">
+		<div class="w-full flex flex-col flex-1 justify-center items-center p-8">
+			<div id="main-content" class="w-full grid grid-cols-1 gap-4">
 				<h1 class="font-bold text-2xl text-center">{ date }</h1>
-	
-				<div class="col-span-2">
-				w@Stats(88)
-				</div>
-				<div
-					hx-get="/generate-plan"
-					hx-target="#main-content"
-					class="md:col-span-1 text-center col-span-2 rounded-md border border-slate-200 shadow-md p-3 cursor-pointer"
-				>
-					Generate Plan
-				</div>
-				<div
+				<a
 					hx-get="/settings"
 					hx-target="#main-content"
 					class="md:col-span-1 text-center col-span-2 rounded-md border border-slate-200 shadow-md p-3 cursor-pointer"
 				>
 					Settings
-				</div>
-				<div class="md:col-span-1 text-center col-span-2 rounded-md border border-slate-200 shadow-md p-3">
+				</a>
+				<a href="/stats" class="md:col-span-1 text-center col-span-2 rounded-md border border-slate-200 shadow-md p-3 cursor-pointer">
 					Stats
-				</div>
-				<div class="md:col-span-1 text-center col-span-2 rounded-md border border-slate-200 shadow-md p-3">
+				</a>
+				<a
+					href="/weight"
+					class="md:col-span-1 text-center col-span-2 rounded-md border border-slate-200 shadow-md p-3 cursor-pointer"
+				>
 					Add Weight
-				</div>
-				<div class="md:col-span-1 text-center col-span-2 rounded-md border border-slate-200 shadow-md p-3">
+				</a>
+				<a href="/calories" class="md:col-span-1 text-center col-span-2 rounded-md border border-slate-200 shadow-md p-3 cursor-pointer">
 					Add Calories
-				</div>
+				</a>
 			</div>
 		</div>
 	}
