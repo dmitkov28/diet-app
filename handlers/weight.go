@@ -3,7 +3,6 @@ package handlers
 import (
 	"fmt"
 	"strconv"
-	"time"
 
 	"github.com/dmitkov28/dietapp/data"
 	"github.com/dmitkov28/dietapp/templates"
@@ -18,12 +17,13 @@ func WeightGETHandler(measurementsRepo *data.MeasurementRepository) echo.Handler
 			fmt.Println(err)
 		}
 
-		first := weights[0].Date
-		fmt.Println(first)
+		fmt.Println(userId, weights)
 
-		parsed, err := time.Parse(time.RFC3339, first)
-		fmt.Println(parsed.Format("20-01-2006"), err)
-		return render(c, templates.WeightPage())
+		// first := weights[0].Date
+		// fmt.Println(first)
+
+		// fmt.Println(parsed.Format("20-01-2006"), err)
+		return render(c, templates.WeightPage(weights))
 	}
 }
 
@@ -31,25 +31,33 @@ func WeightPOSTHandler(measurementsRepo *data.MeasurementRepository) echo.Handle
 	return func(c echo.Context) error {
 		userId := c.Get("user_id").(int)
 		weight, err := strconv.ParseFloat(c.FormValue("weight"), 64)
-
 		if err != nil {
-			fmt.Println(err)
+			return err
 		}
-
 		date := c.FormValue("date")
 
-		// validate inputs
-
-		formData := data.Weight{
+		newWeight := data.Weight{
 			User_id: userId,
 			Weight:  weight,
 			Date:    date,
 		}
 
-		result, err := measurementsRepo.CreateWeight(formData)
+		result, err := measurementsRepo.CreateWeight(newWeight)
+		if err != nil {
+			return err
+		}
 
-		fmt.Println(result)
+		weights, err := measurementsRepo.GetWeightByUserId(userId)
+		if err != nil {
+			return err
+		}
 
-		return render(c, templates.WeightForm())
+		var diff float64
+		if len(weights) > 1 {
+			prevWeight := weights[len(weights)-2].Weight
+			diff = data.CalculatePercentageDifference(prevWeight, result.Weight)
+		}
+		
+		return render(c, templates.WeightTableRow(result, diff, false))
 	}
 }
