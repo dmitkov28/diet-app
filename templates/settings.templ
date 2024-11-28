@@ -170,7 +170,7 @@ templ SettingsForm(settings data.Settings, errors SettingsErrors) {
 	}
 }
 
-templ SettingsPage(settings data.Settings) {
+templ SettingsPage(settings data.Settings, bmr float64) {
 	@Base("SettingsPage") {
 		<div class="w-full p-8">
 			<h2>User settings</h2>
@@ -183,6 +183,7 @@ templ SettingsPage(settings data.Settings) {
 				<p>Height:  { fmt.Sprintf("%d", settings.Height) }</p>
 				<p>Age:  { fmt.Sprintf("%d", settings.Age) }</p>
 				<p>Sex:  { settings.Sex }</p>
+				<p>BMR:  { fmt.Sprintf("%.1f", bmr) }</p>
 			</div>
 		</div>
 	}
