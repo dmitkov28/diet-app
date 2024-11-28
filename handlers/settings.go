@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/dmitkov28/dietapp/data"
+	"github.com/dmitkov28/dietapp/diet"
 	"github.com/dmitkov28/dietapp/templates"
 	"github.com/labstack/echo/v4"
 )
@@ -16,7 +17,10 @@ func SettingsGETHandler(settingsRepo *data.SettingsRepository) echo.HandlerFunc 
 		if err != nil {
 			return render(c, templates.SettingsForm(data.Settings{}, templates.SettingsErrors{}))
 		}
-		return render(c, templates.SettingsPage(settings))
+
+		bmr := diet.CalculateBMR(settings.Current_weight, settings.Height, settings.Age, settings.Sex)
+
+		return render(c, templates.SettingsPage(settings, bmr))
 	}
 }
 
@@ -59,8 +63,15 @@ func SettingsPOSTHandler(settingsRepo *data.SettingsRepository) echo.HandlerFunc
 			formErrors.Age = "Invalid height"
 		}
 
+		sex := c.FormValue("sex")
+
+		if sex != "M" && sex != "F" {
+			formValid = false
+			formErrors.Sex = "Invalid sex"
+		}
+
 		if !formValid {
-			return render(c, templates.SettingsForm(data.Settings{Current_weight: currentWeight, Target_weight: targetWeight, Target_weight_loss_rate: targetWeightLossRate}, formErrors))
+			return render(c, templates.SettingsForm(data.Settings{Current_weight: currentWeight, Target_weight: targetWeight, Target_weight_loss_rate: targetWeightLossRate, Sex: sex}, formErrors))
 		}
 
 		formSettings := data.Settings{
@@ -70,7 +81,7 @@ func SettingsPOSTHandler(settingsRepo *data.SettingsRepository) echo.HandlerFunc
 			Target_weight_loss_rate: targetWeightLossRate,
 			Age:                     int(age),
 			Height:                  int(height),
-			Sex:                     "M",
+			Sex:                     sex,
 		}
 
 		fmt.Println(formSettings)
@@ -79,7 +90,9 @@ func SettingsPOSTHandler(settingsRepo *data.SettingsRepository) echo.HandlerFunc
 		if err != nil {
 			fmt.Println(err)
 		}
-		fmt.Println(settings.Target_weight_loss_rate)
-		return render(c, templates.SettingsPage(settings))
+
+		bmr := diet.CalculateBMR(settings.Current_weight, settings.Height, settings.Age, settings.Sex)
+
+		return render(c, templates.SettingsPage(settings, bmr))
 	}
 }
