@@ -1,5 +1,11 @@
 package data
 
+import (
+	"time"
+
+	"golang.org/x/exp/constraints"
+)
+
 type Weight struct {
 	ID      int
 	User_id int
@@ -16,6 +22,23 @@ type Calories struct {
 
 type MeasurementRepository struct {
 	db *DB
+}
+
+func ParseDateString(dateString string) string {
+	parsed, err := time.Parse(time.RFC3339, dateString)
+	if err != nil {
+		return "NaN"
+	}
+	return parsed.Format("02 Jan 2006")
+}
+
+type Number interface {
+    constraints.Float | int | int32 | int64
+}
+
+func CalculatePercentageDifference[T Number](value1, value2 T) T {
+
+    return ((value2 - value1) * 100) / value1
 }
 
 func NewMeasurementsRepository(db *DB) *MeasurementRepository {
