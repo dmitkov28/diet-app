@@ -10,13 +10,60 @@ type SettingsErrors struct {
 	Target_weight           string
 	Target_weight_loss_rate string
 	Goal_deadline           string
+	Age                     string
+	Height                  string
+	Sex                     string
 }
 
 templ SettingsForm(settings data.Settings, errors SettingsErrors) {
 	@Base("SettingsForm") {
 		<div class="w-full p-8">
-			<h1 class="font-bold text-2xl text-center">Generate Plan</h1>
+			<h1 class="font-bold text-2xl text-center">Settings</h1>
 			<form hx-boost="true" method="POST" action="/settings" class="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
+				<div>
+					<label>Age</label>
+					if settings.Age != 0 {
+						<input
+							name="age"
+							value={ fmt.Sprintf("%d", settings.Age) }
+							class={ "w-full border shadow-md px-3 py-1 rounded-md", templ.KV("border-red-500 text-red-500", errors.Age != ""),
+                            templ.KV("border-slate-300", errors.Age == "") }
+							type="number"
+							placeholder="age"
+						/>
+					} else {
+						<input
+							name="age"
+							class={ "w-full border shadow-md px-3 py-1 rounded-md", templ.KV("border-red-500 text-red-500", errors.Age != ""),
+                            templ.KV("border-slate-300", errors.Age == "") }
+							type="number"
+							placeholder="age"
+						/>
+					}
+				</div>
+				<div class="flex flex-col">
+					<label>Sex</label>
+					if settings.Sex != "" {
+						<select
+							name="sex"
+							value={ settings.Sex }
+							class="w-full border shadow-md px-3 py-1 rounded-md bg-white"
+							placeholder="Sex"
+						>
+							<option value="M">Male</option>
+							<option value="F">Female</option>
+						</select>
+					} else {
+						<select
+							name="sex"
+							value={ settings.Sex }
+							placeholder="Sex"
+						>
+							<option value="M">Male</option>
+							<option value="F">Female</option>
+						</select>
+					}
+				</div>
 				<div>
 					<label>Current Weight</label>
 					if settings.Current_weight != 0 {
@@ -43,6 +90,27 @@ templ SettingsForm(settings data.Settings, errors SettingsErrors) {
 					}
 					if errors.Current_weight != "" {
 						<span class="text-red-500">Invalid weight</span>
+					}
+				</div>
+				<div>
+					<label>Height (cm)</label>
+					if settings.Height != 0 {
+						<input
+							name="height"
+							value={ fmt.Sprintf("%d", settings.Height) }
+							class={ "w-full border shadow-md px-3 py-1 rounded-md", templ.KV("border-red-500 text-red-500", errors.Height != ""),
+                            templ.KV("border-slate-300", errors.Height == "") }
+							type="number"
+							placeholder="Height"
+						/>
+					} else {
+						<input
+							name="height"
+							class={ "w-full border shadow-md px-3 py-1 rounded-md", templ.KV("border-red-500 text-red-500", errors.Height != ""),
+                            templ.KV("border-slate-300", errors.Height == "") }
+							type="number"
+							placeholder="Height"
+						/>
 					}
 				</div>
 				<div>
@@ -74,7 +142,7 @@ templ SettingsForm(settings data.Settings, errors SettingsErrors) {
 					}
 				</div>
 				<div>
-					<label>Time Period</label>
+					<label>Target weight loss rate (%)</label>
 					if settings.Target_weight_loss_rate != 0 {
 						<input
 							value={ fmt.Sprintf("%.1f", settings.Target_weight_loss_rate) }
@@ -82,35 +150,39 @@ templ SettingsForm(settings data.Settings, errors SettingsErrors) {
 							class="w-full border border-slate-300 shadow-md px-3 py-1 rounded-md"
 							type="number"
 							min="1"
-							placeholder="Time period in weeks"
+							placeholder="Target weight loss rate (%)"
 							required
 						/>
 					} else {
 						<input
-							name="goal_deadline"
+							name="target_weight_loss_rate"
 							class="w-full border border-slate-300 shadow-md px-3 py-1 rounded-md"
 							type="number"
-							min="1"
-							placeholder="Time period in weeks"
+							step="0.1"
+							placeholder="Target weight loss rate(%)"
 							required
 						/>
 					}
 				</div>
-				<button class="text-white font-semibold bg-blue-500 rounded-md p-3">Generate</button>
+				<button class="text-white font-semibold bg-blue-500 rounded-md p-3">Save</button>
 			</form>
 		</div>
 	}
 }
 
-templ SettingsList(settings data.Settings) {
-	@Base("SettingsList") {
+templ SettingsPage(settings data.Settings) {
+	@Base("SettingsPage") {
 		<div class="w-full p-8">
 			<h2>User settings</h2>
+			@SettingsForm(settings, SettingsErrors{})
 			<div class="stats">
 				<b>User: { fmt.Sprintf("%d", settings.User_id) }</b>
 				<p>Current Weight: { fmt.Sprintf("%.1f", settings.Current_weight) } kg</p>
 				<p>Target Weight: { fmt.Sprintf("%.1f", settings.Target_weight) } kg</p>
-				<p>Deadline: { fmt.Sprintf("%.1f", settings.Target_weight_loss_rate) } kg</p>
+				<p>Target Weight loss rate: { fmt.Sprintf("%.1f", settings.Target_weight_loss_rate) }%</p>
+				<p>Height:  { fmt.Sprintf("%d", settings.Height) }</p>
+				<p>Age:  { fmt.Sprintf("%d", settings.Age) }</p>
+				<p>Sex:  { settings.Sex }</p>
 			</div>
 		</div>
 	}
