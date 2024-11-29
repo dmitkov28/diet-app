@@ -67,7 +67,7 @@ func (repo *SettingsRepository) ListSettings() []Settings {
 	return data
 }
 
-func (repo *SettingsRepository) GetSettingsByUserID(userId string) (Settings, error) {
+func (repo *SettingsRepository) GetSettingsByUserID(userId int) (Settings, error) {
 	res := repo.db.db.QueryRow("SELECT id, user_id, current_weight, target_weight, target_weight_loss_rate, age, height, sex, activity_level FROM settings WHERE user_id = ?", userId)
 	var settings Settings
 	err := res.Scan(&settings.ID, &settings.User_id, &settings.Current_weight, &settings.Target_weight, &settings.Target_weight_loss_rate, &settings.Age, &settings.Height, &settings.Sex, &settings.Activity_level)

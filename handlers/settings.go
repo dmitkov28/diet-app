@@ -12,7 +12,7 @@ import (
 
 func SettingsGETHandler(settingsRepo *data.SettingsRepository) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		userId := fmt.Sprintf("%d", c.Get("user_id").(int))
+		userId :=  c.Get("user_id").(int)
 		settings, err := settingsRepo.GetSettingsByUserID(userId)
 		if err != nil {
 			return render(c, templates.SettingsForm(data.Settings{}, templates.SettingsErrors{}))
