@@ -2,7 +2,6 @@ package data
 
 import (
 	"database/sql"
-	"time"
 
 	"golang.org/x/exp/constraints"
 )
@@ -23,14 +22,6 @@ type Calories struct {
 
 type MeasurementRepository struct {
 	db *DB
-}
-
-func ParseDateString(dateString string) string {
-	parsed, err := time.Parse(time.RFC3339, dateString)
-	if err != nil {
-		return "NaN"
-	}
-	return parsed.Format("02 Jan 2006")
 }
 
 type Number interface {
@@ -190,6 +181,69 @@ func (repo *MeasurementRepository) GetMeasurementsByUserId(userId int) ([]Weight
         ORDER BY w.date DESC`
 
 	rows, err := repo.db.db.Query(query, userId)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var results []WeightCalories
+	for rows.Next() {
+		var wc WeightCalories
+		var caloriesID sql.NullInt64
+		var calories sql.NullFloat64
+		var caloriesDate sql.NullString
+
+		err := rows.Scan(
+			&wc.WeightID,
+			&wc.Weight,
+			&wc.WeightDate,
+			&caloriesID,
+			&calories,
+			&caloriesDate,
+			&wc.UserID,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		if caloriesID.Valid {
+			val := int(caloriesID.Int64)
+			wc.CaloriesID = &val
+		}
+		if calories.Valid {
+			val := int(calories.Float64)
+			wc.Calories = &val
+		}
+		if caloriesDate.Valid {
+			wc.CaloriesDate = &caloriesDate.String
+		}
+
+		results = append(results, wc)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return results, nil
+}
+
+func (repo *MeasurementRepository) GetMeasurementsBetweenDates(userId int, startDate, endDate string) ([]WeightCalories, error) {
+	query := `
+        SELECT 
+            w.id, 
+            w.weight, 
+            w.date as weight_date,
+            c.id as calories_id,
+            c.calories,
+            c.date as calories_date,
+            w.user_id
+        FROM weight w
+        LEFT JOIN calories c ON w.date = c.date AND w.user_id = c.user_id
+        WHERE w.user_id = ? AND w.date BETWEEN ? AND ?
+        ORDER BY w.date DESC`
+
+	rows, err := repo.db.db.Query(query, userId, startDate, endDate)
 	if err != nil {
 		return nil, err
 	}
