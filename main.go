@@ -35,7 +35,7 @@ func main() {
 	e.GET("/weight", handlers.WeightGETHandler(measurementsRepo), authMiddleware(sessionsRepo))
 	e.POST("/weight", handlers.WeightPOSTHandler(measurementsRepo), authMiddleware(sessionsRepo))
 
-	e.GET("/stats", handlers.StatsGETHandler(), authMiddleware(sessionsRepo))
+	e.GET("/stats", handlers.StatsGETHandler(measurementsRepo), authMiddleware(sessionsRepo))
 
 	e.GET("/calories", handlers.CaloriesGETHandler(measurementsRepo), authMiddleware(sessionsRepo))
 	e.POST("/calories", handlers.CaloriesPOSTHandler(measurementsRepo), authMiddleware(sessionsRepo))
