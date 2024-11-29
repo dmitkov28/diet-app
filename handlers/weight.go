@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"fmt"
+	"net/http"
 	"strconv"
 
 	"github.com/dmitkov28/dietapp/data"
@@ -42,22 +43,12 @@ func WeightPOSTHandler(measurementsRepo *data.MeasurementRepository) echo.Handle
 			Date:    date,
 		}
 
-		result, err := measurementsRepo.CreateWeight(newWeight)
+		_, err = measurementsRepo.CreateWeight(newWeight)
 		if err != nil {
 			return err
 		}
 
-		weights, err := measurementsRepo.GetWeightByUserId(userId)
-		if err != nil {
-			return err
-		}
-
-		var diff float64
-		if len(weights) > 1 {
-			prevWeight := weights[len(weights)-2].Weight
-			diff = data.CalculatePercentageDifference(prevWeight, result.Weight)
-		}
-		
-		return render(c, templates.WeightTableRow(result, diff, false))
+		c.Response().Header().Set("HX-Redirect", "/stats")
+		return c.NoContent(http.StatusOK)
 	}
 }
