@@ -1,6 +1,7 @@
 package data
 
 import (
+	"database/sql"
 	"time"
 
 	"golang.org/x/exp/constraints"
@@ -33,12 +34,12 @@ func ParseDateString(dateString string) string {
 }
 
 type Number interface {
-    constraints.Float | int | int32 | int64
+	constraints.Float | int | int32 | int64
 }
 
 func CalculatePercentageDifference[T Number](value1, value2 T) T {
 
-    return ((value2 - value1) * 100) / value1
+	return ((value2 - value1) * 100) / value1
 }
 
 func NewMeasurementsRepository(db *DB) *MeasurementRepository {
@@ -161,4 +162,77 @@ func (repo *MeasurementRepository) CreateCalories(calories Calories) (Calories, 
 	}
 	return newCalories, nil
 
+}
+
+type WeightCalories struct {
+	WeightID     int     `json:"weight_id"`
+	Weight       float64 `json:"weight"`
+	WeightDate   string  `json:"weight_date"`
+	CaloriesID   *int    `json:"calories_id,omitempty"`
+	Calories     *int    `json:"calories,omitempty"`
+	CaloriesDate *string `json:"calories_date,omitempty"`
+	UserID       int     `json:"user_id"`
+}
+
+func (repo *MeasurementRepository) GetMeasurementsByUserId(userId int) ([]WeightCalories, error) {
+	query := `
+        SELECT 
+            w.id, 
+            w.weight, 
+            w.date as weight_date,
+            c.id as calories_id,
+            c.calories,
+            c.date as calories_date,
+            w.user_id
+        FROM weight w
+        LEFT JOIN calories c ON w.date = c.date AND w.user_id = c.user_id
+        WHERE w.user_id = ?
+        ORDER BY w.date DESC`
+
+	rows, err := repo.db.db.Query(query, userId)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var results []WeightCalories
+	for rows.Next() {
+		var wc WeightCalories
+		var caloriesID sql.NullInt64
+		var calories sql.NullFloat64
+		var caloriesDate sql.NullString
+
+		err := rows.Scan(
+			&wc.WeightID,
+			&wc.Weight,
+			&wc.WeightDate,
+			&caloriesID,
+			&calories,
+			&caloriesDate,
+			&wc.UserID,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		if caloriesID.Valid {
+			val := int(caloriesID.Int64)
+			wc.CaloriesID = &val
+		}
+		if calories.Valid {
+			val := int(calories.Float64)
+			wc.Calories = &val
+		}
+		if caloriesDate.Valid {
+			wc.CaloriesDate = &caloriesDate.String
+		}
+
+		results = append(results, wc)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return results, nil
 }
