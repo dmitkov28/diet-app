@@ -28,7 +28,7 @@ func main() {
 		return c.Redirect(http.StatusSeeOther, "/dashboard")
 	}, authMiddleware(sessionsRepo))
 
-	e.GET("/dashboard", handlers.DashboardGETHandler(measurementsRepo), authMiddleware(sessionsRepo))
+	e.GET("/dashboard", handlers.DashboardGETHandler(measurementsRepo, settingsRepo), authMiddleware(sessionsRepo))
 
 	e.GET("/settings", handlers.SettingsGETHandler(settingsRepo), authMiddleware(sessionsRepo))
 	e.POST("/settings", handlers.SettingsPOSTHandler(settingsRepo), authMiddleware(sessionsRepo))

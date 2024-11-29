@@ -2,37 +2,54 @@ package handlers
 
 import (
 	"fmt"
+	"math"
 	"time"
 
+	"github.com/dmitkov28/dietapp/charts"
 	"github.com/dmitkov28/dietapp/data"
 	"github.com/dmitkov28/dietapp/diet"
 	"github.com/dmitkov28/dietapp/templates"
+	"github.com/go-echarts/go-echarts/v2/opts"
 	"github.com/labstack/echo/v4"
 )
 
-func DashboardGETHandler(repo *data.MeasurementRepository) echo.HandlerFunc {
+func DashboardGETHandler(measurementsRepo *data.MeasurementRepository, settingsRepo *data.SettingsRepository) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		today := time.Now().Format("Jan 2, 2006")
 		userId := c.Get("user_id").(int)
-		items, err := repo.GetMeasurementsByUserId(userId)
+
+		items, err := measurementsRepo.GetMeasurementsByUserId(userId)
+
 		if err != nil {
 			fmt.Println(err)
 		}
-		
+
+		settings, err := settingsRepo.GetSettingsByUserID(userId)
+
+		if err != nil {
+			fmt.Println(err)
+		}
+
 		currentData := items[0]
-		prevWeekStart, prevWeekEnd := data.GetPreviousWeekRange()
-		
-		filterStart := prevWeekStart.Format("2006-01-02")
-		filterEnd := prevWeekEnd.Format("2006-01-02")
-
-		filtered, err := repo.GetMeasurementsBetweenDates(userId, filterStart, filterEnd)
+		current, lastWeek, err := measurementsRepo.GetCurrentWeightAvg(userId)
 		if err != nil {
 			fmt.Println(err)
 		}
+		weightDiff := math.Round(((current-lastWeek)/lastWeek)*1000) / 1000
+		bmr := diet.CalculateBMR(currentData.Weight, settings.Height, settings.Age, settings.Sex)
+		calorieGoal := diet.CalculateCalorieGoal(bmr, settings.Activity_level, currentData.Weight, settings.Target_weight_loss_rate)
+		expectedDuration := diet.CaclulateExpectedDietDuration(currentData.Weight, settings.Target_weight, settings.Target_weight_loss_rate)
+		
+		var xAxis []string
+		var chartValues []opts.LineData
+		for _, item := range items {
+			xAxis = append(xAxis, item.WeightDate)
+			chartValues = append(chartValues, opts.LineData{Name: item.WeightDate, Value: item.Weight})
+		}
 
-		averageWeightPreviousWeek := diet.CalculateAverageWeight(filtered)
-		fmt.Println(averageWeightPreviousWeek)
+		chart := charts.GenerateLineChart("Weight", "", xAxis, chartValues)
+		chartHtml := charts.RenderChart(*chart)
 
-		return render(c, templates.HomePageFull(today, currentData))
+		return render(c, templates.HomePage(today, currentData, settings, weightDiff, calorieGoal, expectedDuration, chartHtml))
 	}
 }
