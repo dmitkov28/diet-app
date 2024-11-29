@@ -290,3 +290,30 @@ func (repo *MeasurementRepository) GetMeasurementsBetweenDates(userId int, start
 
 	return results, nil
 }
+
+func (repo *MeasurementRepository) GetCurrentWeightAvg(userId int) (float64, float64, error) {
+	query := `
+	SELECT 
+    	AVG(CASE WHEN date >= date('now', '-6 days') THEN weight END) AS current_week_avg,
+    	AVG(CASE WHEN date >= date('now', '-13 days') AND date < date('now', '-6 days') THEN weight END) AS last_week_avg
+	FROM weight
+	WHERE user_id = ?
+	`
+
+	rows, err := repo.db.db.Query(query, userId)
+	if err != nil {
+		return 0, 0, err
+	}
+
+	defer rows.Close()
+
+	var currentWeekAvg, lastWeekAvg float64
+
+	for rows.Next() {
+		err := rows.Scan(&currentWeekAvg, &lastWeekAvg)
+		if err != nil {
+			return 0, 0, err
+		}
+	}
+	return currentWeekAvg, lastWeekAvg, nil
+}
