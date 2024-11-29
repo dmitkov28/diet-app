@@ -3,51 +3,52 @@ package templates
 import (
 	"fmt"
 	"github.com/dmitkov28/dietapp/data"
+	"math"
 )
 
-templ HomePageFull(date string, currentData data.WeightCalories) {
+templ HomePage(date string, currentData data.WeightCalories, settings data.Settings, weightDiff, calorieGoal, expectedDuration float64, weightChart string) {
 	@Base("Home Page") {
 		<div class="w-full flex flex-col flex-1 justify-center items-center p-8">
 			<div class="w-full grid grid-cols-1 gap-4">
 				<h1 class="font-bold text-2xl text-center">{ date }</h1>
 				<div
-					class="md:col-span-1 text-center col-span-2 rounded-md border border-slate-200 shadow-md p-3 cursor-pointer"
+					class="md:col-span-1 text-center col-span-2 flex gap-4 justify-center items-center rounded-md border border-slate-200 shadow-md p-3"
 				>
 					<span class="text-xl font-bold text-center">{ fmt.Sprintf("%.1f", currentData.Weight) } kg</span>
+					<span
+						class={
+							"text-sm font-semibold text-center flex justify-center items-center gap-2",
+							templ.KV("text-green-500", weightDiff <= settings.Target_weight_loss_rate),
+							templ.KV("text-red-500", weightDiff > settings.Target_weight_loss_rate),
+						}
+					>
+						<img class="h-4" src="/static/img/arrow-down.svg"/>
+						<span>
+							if weightDiff > 0 {
+								-
+							}
+							{ fmt.Sprintf("%.2f", weightDiff * 100) } %
+						</span>
+					</span>
 				</div>
 				<div
-					class="md:col-span-1 text-center col-span-2 rounded-md border border-slate-200 shadow-md p-3 cursor-pointer"
+					class="md:col-span-1 text-center col-span-2 flex gap-4 justify-center items-center rounded-md border border-slate-200 shadow-md p-3"
 				>
-					<span class="text-xl font-bold text-center">{ fmt.Sprintf("%d", currentData.Calories) } cal</span>
+					<span class="text-xl font-bold">
+						{ fmt.Sprintf("%0.f", math.Ceil(calorieGoal)) } cal
+					</span>
+				</div>
+				<div
+					class="md:col-span-1 text-center col-span-2 flex gap-4 justify-center items-center rounded-md border border-slate-200 shadow-md p-3"
+				>
+					<span class="text-xl font-bold">
+						≈ { fmt.Sprintf("%0.f", math.Abs(math.Ceil(expectedDuration))) } weeks to go
+					</span>
+				</div>
+				<div>
+					@templ.Raw(weightChart)
 				</div>
 			</div>
 		</div>
 	}
-}
-
-templ HomePage(date string) {
-	<div class="w-full flex flex-col flex-1 justify-center items-center p-8">
-		<div class="w-full grid grid-cols-1 gap-4">
-			<h1 class="font-bold text-2xl text-center">{ date }</h1>
-			<a
-				hx-get="/settings"
-				hx-target="#main-content"
-				class="md:col-span-1 text-center col-span-2 rounded-md border border-slate-200 shadow-md p-3 cursor-pointer"
-			>
-				Settings
-			</a>
-			<a href="/stats" class="md:col-span-1 text-center col-span-2 rounded-md border border-slate-200 shadow-md p-3 cursor-pointer">
-				Stats
-			</a>
-			<a
-				href="/weight"
-				class="md:col-span-1 text-center col-span-2 rounded-md border border-slate-200 shadow-md p-3 cursor-pointer"
-			>
-				Add Weight
-			</a>
-			<a href="/calories" class="md:col-span-1 text-center col-span-2 rounded-md border border-slate-200 shadow-md p-3 cursor-pointer">
-				Add Calories
-			</a>
-		</div>
-	</div>
 }
