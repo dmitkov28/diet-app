@@ -14,7 +14,8 @@ type WeightFormErrors struct {
 templ WeightForm() {
 	@Base("WeightForm") {
 		<div class="w-full p-8">
-			<form hx-post="/weight" hx-target="#weight-table tbody" hx-swap="beforeend" class="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
+			// <form hx-post="/weight" hx-target="#weight-table tbody" hx-swap="beforeend" class="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
+			<form hx-post="/weight" hx-replace-url="/stats" hx-swap="beforeend" class="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
 				<div>
 					<label>Weight</label>
 					<input

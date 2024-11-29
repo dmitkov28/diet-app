@@ -1,11 +1,75 @@
 package templates
 
-templ StatsPage(currentWeight int) {
+import (
+	"fmt"
+	"github.com/dmitkov28/dietapp/data"
+)
+
+templ StatsPage(currentWeight int, items []data.WeightCalories) {
 	@Base("StatsPage") {
-		<div class="flex gap-2 items-center">
-			<h2 class="font-bold text-xl">Current Weight:  88 kg</h2>
+		<div class="flex flex-col gap-2 items-center">
+			<h2 class="font-bold text-xl">Current Weight: { fmt.Sprintf("%d", currentWeight) } kg</h2>
 			<img class="h-10" src="/static/img/arrow-down.svg"/>
 			<span class="text-green-600">-11%</span>
+			<div class="w-full px-4">
+				@StatsTable(items)
+			</div>
 		</div>
 	}
+}
+
+templ StatsTable(items []data.WeightCalories) {
+	<table class="w-full text-sm">
+		<thead>
+			<tr class="bg-gray-100 border-b">
+				<th class="px-6 py-4 text-left font-semibold text-gray-600">Date</th>
+				<th class="px-6 py-4 text-left font-semibold text-gray-600">Weight (lbs)</th>
+				<th class="px-6 py-4 text-left font-semibold text-gray-600">Calories</th>
+				<th class="px-6 py-4 text-left font-semibold text-gray-600">Weight Loss (%)</th>
+			</tr>
+		</thead>
+		<tbody class="divide-y divide-gray-200">
+			for i := 0; i <= len(items) - 1; i++ {
+				if i == len(items) - 1 {
+					@DataTableRow(items[i], true, 0)
+				} else {
+					@DataTableRow(items[i], false, data.CalculatePercentageDifference(items[i+1].Weight, items[i].Weight))
+				}
+			}
+		</tbody>
+	</table>
+}
+
+templ DataTableRow(item data.WeightCalories, isFirst bool, diff float64) {
+	<tr class="hover:bg-gray-50">
+		<td class="px-6 py-4">{ data.ParseDateString(item.WeightDate) }</td>
+		<td class="px-6 py-4">{ fmt.Sprintf("%.1f", item.Weight) }</td>
+		<td class="px-6 py-4">
+			if item.Calories != nil {
+				{ fmt.Sprintf("%d", *item.Calories) }
+			} else {
+				N/A
+			}
+		</td>
+		<td
+			class={
+				"px-6 py-4",
+				templ.KV("text-green-500", diff < 0),
+				templ.KV("text-red-500", diff > 0),
+			}
+		>
+			if !isFirst {
+				<span class="flex items-center w-full">
+					{ fmt.Sprintf("%.1f", diff) }%
+					if diff < 0 {
+						<img class="h-5 ml-2" src="/static/img/arrow-down.svg"/>
+					} else {
+						<img class="h-5 ml-2" src="/static/img/arrow-up.svg"/>
+					}
+				</span>
+			} else {
+				N/A				
+			}
+		</td>
+	</tr>
 }
