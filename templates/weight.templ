@@ -1,9 +1,6 @@
 package templates
 
-import (
-	"fmt"
-	"github.com/dmitkov28/dietapp/data"
-)
+import "github.com/dmitkov28/dietapp/data"
 
 type WeightFormErrors struct {
 	Current_weight string
@@ -12,34 +9,31 @@ type WeightFormErrors struct {
 }
 
 templ WeightForm() {
-	@Base("WeightForm") {
-		<div class="w-full p-8">
-			// <form hx-post="/weight" hx-target="#weight-table tbody" hx-swap="beforeend" class="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
-			<form hx-post="/weight" hx-replace-url="/stats" hx-swap="beforeend" class="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
-				<div>
-					<label>Weight</label>
-					<input
-						name="weight"
-						step="0.1"
-						class="w-full border shadow-md px-3 py-1 rounded-md"
-						type="number"
-						placeholder="Weight in kg"
-						required
-					/>
-				</div>
-				<div class="flex flex-col gap-1">
-					<label>Date</label>
-					<input
-						name="date"
-						class="w-full border shadow-md px-3 py-1 rounded-md text-slate-400"
-						type="date"
-						required
-					/>
-				</div>
-				<button class="text-white font-semibold bg-blue-500 rounded-md p-3">Log Weight</button>
-			</form>
-		</div>
-	}
+	<div class="w-full p-8">
+		<form hx-post="/weight" hx-replace-url="/stats" hx-swap="beforeend" class="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
+			<div>
+				<label>Weight</label>
+				<input
+					name="weight"
+					step="0.1"
+					class="w-full border shadow-md px-3 py-1 rounded-md"
+					type="number"
+					placeholder="Weight in kg"
+					required
+				/>
+			</div>
+			<div class="flex flex-col gap-1">
+				<label>Date</label>
+				<input
+					name="date"
+					class="w-full border shadow-md px-3 py-1 rounded-md text-slate-400"
+					type="date"
+					required
+				/>
+			</div>
+			<button class="text-white font-semibold bg-blue-500 rounded-md p-3">Log Weight</button>
+		</form>
+	</div>
 }
 
 templ WeightPage(weights []data.Weight) {
@@ -49,60 +43,7 @@ templ WeightPage(weights []data.Weight) {
 			<div class="stats">
 				@WeightForm()
 			</div>
-			<div class="my-4">
-				if len(weights) == 0 || weights == nil {
-					<p>No data.</p>
-				} else {
-					@WeightTable(weights)
-				}
-			</div>
 		</div>
 	}
 }
 
-templ WeightTable(weights []data.Weight) {
-	<div id="weight-table" class="w-full bg-white shadow-lg rounded-lg overflow-hidden">
-		<div class="overflow-x-auto">
-			<table class="w-full text-sm">
-				<thead>
-					<tr class="bg-gray-100 border-b">
-						<th class="px-6 py-4 text-left font-semibold text-gray-600">Date</th>
-						<th class="px-6 py-4 text-left font-semibold text-gray-600">Weight (lbs)</th>
-						<th class="px-6 py-4 text-left font-semibold text-gray-600">Calories</th>
-						<th class="px-6 py-4 text-left font-semibold text-gray-600">Weight Loss (%)</th>
-					</tr>
-				</thead>
-				<tbody class="divide-y divide-gray-200">
-					for idx, weight := range weights {
-						if idx == 0 {
-							@WeightTableRow(weight, 0, true)
-						} else {
-							@WeightTableRow(weight, data.CalculatePercentageDifference(weights[idx-1].Weight, weight.Weight), false)
-						}
-					}
-				</tbody>
-			</table>
-		</div>
-	</div>
-}
-
-templ WeightTableRow(weight data.Weight, diff float64, isFirst bool) {
-	<tr class="hover:bg-gray-50">
-		<td class="px-6 py-4">{ data.ParseDateString(weight.Date) }</td>
-		<td class="px-6 py-4">{ fmt.Sprintf("%.1f", weight.Weight) }</td>
-		<td class="px-6 py-4">2200</td>
-		<td
-			class={
-				"px-6 py-4",
-				templ.KV("text-green-500", diff < 0),
-				templ.KV("text-red-500", diff > 0),
-			}
-		>
-			if !isFirst {
-				{ fmt.Sprintf("%.1f", diff) }%
-			} else {
-				N/A				
-			}
-		</td>
-	</tr>
-}

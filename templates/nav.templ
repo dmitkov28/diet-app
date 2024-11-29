@@ -1,13 +1,27 @@
 package templates
 
 templ Nav() {
-	<nav>
-		<ul>
-			<li>
-				<a href="/">Home</a>
+	<nav class="p-4">
+		<ul class="flex gap-4 justify-between">
+			<li hx-replace-url="/dashboard" hx-get="/dashboard" hx-target="#main-content" class="flex flex-col justify-center items-center cursor-pointer">
+				<img class="h-5" src="/static/img/home.svg"/>
+				<span>Home</span>
 			</li>
-			<li>
-				<a href="/">Home</a>
+			<li hx-replace-url="/stats" hx-get="/stats" hx-target="#main-content" class="flex flex-col justify-center items-center cursor-pointer">
+				<img class="h-5" src="/static/img/stats.svg"/>
+				<span>Stats</span>
+			</li>
+			<li hx-replace-url="/weight" hx-get="/weight" hx-target="#main-content" class="flex flex-col justify-center items-center cursor-pointer">
+				<img class="h-5" src="/static/img/scale.svg"/>
+				<span>
+					Weight
+				</span>
+			</li>
+			<li hx-replace-url="/calories" hx-get="/calories" hx-target="#main-content" class="flex flex-col justify-center items-center cursor-pointer">
+				<img class="h-5" src="/static/img/food.svg"/>
+				<span>
+					Calories
+				</span>
 			</li>
 		</ul>
 	</nav>

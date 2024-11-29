@@ -5,17 +5,28 @@ import (
 	"github.com/dmitkov28/dietapp/data"
 )
 
-templ StatsPage(currentWeight int, items []data.WeightCalories) {
+templ StatsPageFull(currentWeight int, items []data.WeightCalories) {
 	@Base("StatsPage") {
 		<div class="flex flex-col gap-2 items-center">
 			<h2 class="font-bold text-xl">Current Weight: { fmt.Sprintf("%d", currentWeight) } kg</h2>
 			<img class="h-10" src="/static/img/arrow-down.svg"/>
 			<span class="text-green-600">-11%</span>
-			<div class="w-full px-4">
+			<div class="w-full px-4 flex">
 				@StatsTable(items)
 			</div>
 		</div>
 	}
+}
+
+templ StatsPage(currentWeight int, items []data.WeightCalories) {
+	<div class="flex flex-col gap-2 items-center">
+		<h2 class="font-bold text-xl">Current Weight: { fmt.Sprintf("%d", currentWeight) } kg</h2>
+		<img class="h-10" src="/static/img/arrow-down.svg"/>
+		<span class="text-green-600">-11%</span>
+		<div class="w-full px-4">
+			@StatsTable(items)
+		</div>
+	</div>
 }
 
 templ StatsTable(items []data.WeightCalories) {
@@ -23,7 +34,7 @@ templ StatsTable(items []data.WeightCalories) {
 		<thead>
 			<tr class="bg-gray-100 border-b">
 				<th class="px-6 py-4 text-left font-semibold text-gray-600">Date</th>
-				<th class="px-6 py-4 text-left font-semibold text-gray-600">Weight (lbs)</th>
+				<th class="px-6 py-4 text-left font-semibold text-gray-600">Weight (kg)</th>
 				<th class="px-6 py-4 text-left font-semibold text-gray-600">Calories</th>
 				<th class="px-6 py-4 text-left font-semibold text-gray-600">Weight Loss (%)</th>
 			</tr>

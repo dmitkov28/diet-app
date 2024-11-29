@@ -1,30 +1,53 @@
 package templates
 
-templ HomePage(date string) {
+import (
+	"fmt"
+	"github.com/dmitkov28/dietapp/data"
+)
+
+templ HomePageFull(date string, currentData data.WeightCalories) {
 	@Base("Home Page") {
 		<div class="w-full flex flex-col flex-1 justify-center items-center p-8">
-			<div id="main-content" class="w-full grid grid-cols-1 gap-4">
+			<div class="w-full grid grid-cols-1 gap-4">
 				<h1 class="font-bold text-2xl text-center">{ date }</h1>
-				<a
-					hx-get="/settings"
-					hx-target="#main-content"
+				<div
 					class="md:col-span-1 text-center col-span-2 rounded-md border border-slate-200 shadow-md p-3 cursor-pointer"
 				>
-					Settings
-				</a>
-				<a href="/stats" class="md:col-span-1 text-center col-span-2 rounded-md border border-slate-200 shadow-md p-3 cursor-pointer">
-					Stats
-				</a>
-				<a
-					href="/weight"
+					<span class="text-xl font-bold text-center">{ fmt.Sprintf("%.1f", currentData.Weight) } kg</span>
+				</div>
+				<div
 					class="md:col-span-1 text-center col-span-2 rounded-md border border-slate-200 shadow-md p-3 cursor-pointer"
 				>
-					Add Weight
-				</a>
-				<a href="/calories" class="md:col-span-1 text-center col-span-2 rounded-md border border-slate-200 shadow-md p-3 cursor-pointer">
-					Add Calories
-				</a>
+					<span class="text-xl font-bold text-center">{ fmt.Sprintf("%d", currentData.Calories) } cal</span>
+				</div>
 			</div>
 		</div>
 	}
+}
+
+templ HomePage(date string) {
+	<div class="w-full flex flex-col flex-1 justify-center items-center p-8">
+		<div class="w-full grid grid-cols-1 gap-4">
+			<h1 class="font-bold text-2xl text-center">{ date }</h1>
+			<a
+				hx-get="/settings"
+				hx-target="#main-content"
+				class="md:col-span-1 text-center col-span-2 rounded-md border border-slate-200 shadow-md p-3 cursor-pointer"
+			>
+				Settings
+			</a>
+			<a href="/stats" class="md:col-span-1 text-center col-span-2 rounded-md border border-slate-200 shadow-md p-3 cursor-pointer">
+				Stats
+			</a>
+			<a
+				href="/weight"
+				class="md:col-span-1 text-center col-span-2 rounded-md border border-slate-200 shadow-md p-3 cursor-pointer"
+			>
+				Add Weight
+			</a>
+			<a href="/calories" class="md:col-span-1 text-center col-span-2 rounded-md border border-slate-200 shadow-md p-3 cursor-pointer">
+				Add Calories
+			</a>
+		</div>
+	</div>
 }
