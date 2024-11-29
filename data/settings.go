@@ -13,6 +13,7 @@ type Settings struct {
 	Age                     int
 	Height                  int
 	Sex                     string
+	Activity_level          float64
 	User_id                 int
 }
 
@@ -25,7 +26,7 @@ func NewSettingsRepository(db *DB) *SettingsRepository {
 }
 
 func (repo *SettingsRepository) CreateSettings(s Settings) (Settings, error) {
-	result, err := repo.db.db.Exec("INSERT OR REPLACE INTO settings(user_id, current_weight, target_weight, target_weight_loss_rate, age, height, sex) VALUES(?,?,?,?,?,?,?)", s.User_id, s.Current_weight, s.Target_weight, s.Target_weight_loss_rate, s.Age, s.Height, s.Sex)
+	result, err := repo.db.db.Exec("INSERT OR REPLACE INTO settings(user_id, current_weight, target_weight, target_weight_loss_rate, age, height, sex, activity_level) VALUES(?,?,?,?,?,?,?,?)", s.User_id, s.Current_weight, s.Target_weight, s.Target_weight_loss_rate, s.Age, s.Height, s.Sex, s.Activity_level)
 	if err != nil {
 		return Settings{}, fmt.Errorf("couldn't write to db: %v", err)
 	}
@@ -37,9 +38,9 @@ func (repo *SettingsRepository) CreateSettings(s Settings) (Settings, error) {
 
 	var newSettings Settings
 	err = repo.db.db.QueryRow(
-		"SELECT id, user_id, current_weight, target_weight, target_weight_loss_rate, age, height, sex FROM settings WHERE id = ?",
+		"SELECT id, user_id, current_weight, target_weight, target_weight_loss_rate, age, height, sex, activity_level FROM settings WHERE id = ?",
 		lastID,
-	).Scan(&newSettings.ID, &newSettings.User_id, &newSettings.Current_weight, &newSettings.Target_weight, &newSettings.Target_weight_loss_rate, &newSettings.Age, &newSettings.Height, &newSettings.Sex)
+	).Scan(&newSettings.ID, &newSettings.User_id, &newSettings.Current_weight, &newSettings.Target_weight, &newSettings.Target_weight_loss_rate, &newSettings.Age, &newSettings.Height, &newSettings.Sex, &newSettings.Activity_level)
 
 	if err != nil {
 		return Settings{}, fmt.Errorf("couldn't retrieve new settings: %v", err)
@@ -49,7 +50,7 @@ func (repo *SettingsRepository) CreateSettings(s Settings) (Settings, error) {
 }
 
 func (repo *SettingsRepository) ListSettings() []Settings {
-	rows, err := repo.db.db.Query("SELECT id, current_weight, target_weight, target_weight_loss_rate, age, height, sex FROM settings")
+	rows, err := repo.db.db.Query("SELECT id, current_weight, target_weight, target_weight_loss_rate, age, height, sex, activity_level FROM settings")
 	if err != nil {
 		log.Fatalf("Failed to query the table: %v", err)
 	}
@@ -57,7 +58,7 @@ func (repo *SettingsRepository) ListSettings() []Settings {
 	var data []Settings
 	for rows.Next() {
 		var m Settings
-		err := rows.Scan(&m.ID, &m.Current_weight, &m.Target_weight, &m.Target_weight_loss_rate, &m.Age, &m.Height, &m.Sex)
+		err := rows.Scan(&m.ID, &m.Current_weight, &m.Target_weight, &m.Target_weight_loss_rate, &m.Age, &m.Height, &m.Sex, &m.Activity_level)
 		if err != nil {
 			log.Fatalf("Failed to scan row: %v", err)
 		}
@@ -67,9 +68,9 @@ func (repo *SettingsRepository) ListSettings() []Settings {
 }
 
 func (repo *SettingsRepository) GetSettingsByUserID(userId string) (Settings, error) {
-	res := repo.db.db.QueryRow("SELECT id, user_id, current_weight, target_weight, target_weight_loss_rate, age, height, sex FROM settings WHERE user_id = ?", userId)
+	res := repo.db.db.QueryRow("SELECT id, user_id, current_weight, target_weight, target_weight_loss_rate, age, height, sex, activity_level FROM settings WHERE user_id = ?", userId)
 	var settings Settings
-	err := res.Scan(&settings.ID, &settings.User_id, &settings.Current_weight, &settings.Target_weight, &settings.Target_weight_loss_rate, &settings.Age, &settings.Height, &settings.Sex)
+	err := res.Scan(&settings.ID, &settings.User_id, &settings.Current_weight, &settings.Target_weight, &settings.Target_weight_loss_rate, &settings.Age, &settings.Height, &settings.Sex, &settings.Activity_level)
 
 	if err != nil {
 		return Settings{}, err

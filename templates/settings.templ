@@ -12,6 +12,7 @@ type SettingsErrors struct {
 	Goal_deadline           string
 	Age                     string
 	Height                  string
+	Activity_level          string
 	Sex                     string
 }
 
@@ -56,7 +57,7 @@ templ SettingsForm(settings data.Settings, errors SettingsErrors) {
 					} else {
 						<select
 							name="sex"
-							value={ settings.Sex }
+							class="w-full border shadow-md px-3 py-1 rounded-md bg-white"
 							placeholder="Sex"
 						>
 							<option value="M">Male</option>
@@ -65,7 +66,7 @@ templ SettingsForm(settings data.Settings, errors SettingsErrors) {
 					}
 				</div>
 				<div>
-					<label>Current Weight</label>
+					<label>Current Weight (kg)</label>
 					if settings.Current_weight != 0 {
 						<input
 							value={ fmt.Sprintf("%.1f", settings.Current_weight) }
@@ -114,7 +115,30 @@ templ SettingsForm(settings data.Settings, errors SettingsErrors) {
 					}
 				</div>
 				<div>
-					<label>Target Weight</label>
+					<label>Activity Level</label>
+					if settings.Activity_level != 0 {
+						<input
+							name="activity_level"
+							value={ fmt.Sprintf("%.1f", settings.Activity_level) }
+							class={ "w-full border shadow-md px-3 py-1 rounded-md",
+                                templ.KV("border-red-500 text-red-500", errors.Activity_level != ""),
+                                templ.KV("border-slate-300", errors.Activity_level == "") }
+							type="number"
+							step="0.01"
+							placeholder="Activity level"
+						/>
+					} else {
+						<input
+							name="activity_level"
+							class="w-full border shadow-md px-3 py-1 rounded-md"
+							type="number"
+							step="0.01"
+							placeholder="Activity level"
+						/>
+					}
+				</div>
+				<div>
+					<label>Target Weight (kg)</label>
 					if settings.Target_weight != 0 {
 						<input
 							value={ fmt.Sprintf("%.1f", settings.Target_weight) }
@@ -145,11 +169,12 @@ templ SettingsForm(settings data.Settings, errors SettingsErrors) {
 					<label>Target weight loss rate (%)</label>
 					if settings.Target_weight_loss_rate != 0 {
 						<input
-							value={ fmt.Sprintf("%.1f", settings.Target_weight_loss_rate) }
-							name="goal_deadline"
+							value={ fmt.Sprintf("%.1f", settings.Target_weight_loss_rate * 100) }
+							name="target_weight_loss_rate"
 							class="w-full border border-slate-300 shadow-md px-3 py-1 rounded-md"
 							type="number"
-							min="1"
+							step="0.1"
+							min="0"
 							placeholder="Target weight loss rate (%)"
 							required
 						/>
@@ -159,6 +184,7 @@ templ SettingsForm(settings data.Settings, errors SettingsErrors) {
 							class="w-full border border-slate-300 shadow-md px-3 py-1 rounded-md"
 							type="number"
 							step="0.1"
+							min="0"
 							placeholder="Target weight loss rate(%)"
 							required
 						/>
@@ -170,7 +196,7 @@ templ SettingsForm(settings data.Settings, errors SettingsErrors) {
 	}
 }
 
-templ SettingsPage(settings data.Settings, bmr float64) {
+templ SettingsPage(settings data.Settings, bmr, calorieGoal, expectedDuration float64) {
 	@Base("SettingsPage") {
 		<div class="w-full p-8">
 			<h2>User settings</h2>
@@ -179,11 +205,13 @@ templ SettingsPage(settings data.Settings, bmr float64) {
 				<b>User: { fmt.Sprintf("%d", settings.User_id) }</b>
 				<p>Current Weight: { fmt.Sprintf("%.1f", settings.Current_weight) } kg</p>
 				<p>Target Weight: { fmt.Sprintf("%.1f", settings.Target_weight) } kg</p>
-				<p>Target Weight loss rate: { fmt.Sprintf("%.1f", settings.Target_weight_loss_rate) }%</p>
+				<p>Target Weight loss rate: { fmt.Sprintf("%.1f", settings.Target_weight_loss_rate * 100 ) }%</p>
 				<p>Height:  { fmt.Sprintf("%d", settings.Height) }</p>
 				<p>Age:  { fmt.Sprintf("%d", settings.Age) }</p>
 				<p>Sex:  { settings.Sex }</p>
-				<p>BMR:  { fmt.Sprintf("%.1f", bmr) }</p>
+				<p>BMR:  { fmt.Sprintf("%.1f", bmr) } cal</p>
+				<p>Calorie Goal:  { fmt.Sprintf("%.1f", calorieGoal) } cal</p>
+				<p>Expected Duration:  { fmt.Sprintf("%.1f", expectedDuration) } weeks</p>
 			</div>
 		</div>
 	}

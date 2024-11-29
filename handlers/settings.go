@@ -19,8 +19,9 @@ func SettingsGETHandler(settingsRepo *data.SettingsRepository) echo.HandlerFunc 
 		}
 
 		bmr := diet.CalculateBMR(settings.Current_weight, settings.Height, settings.Age, settings.Sex)
-
-		return render(c, templates.SettingsPage(settings, bmr))
+		calorieGoal := diet.CalculateCalorieGoal(bmr, settings.Activity_level, settings.Current_weight, settings.Target_weight_loss_rate)
+		expectedDuration := diet.CaclulateExpectedDietDuration(settings.Current_weight, settings.Target_weight, settings.Target_weight_loss_rate)
+		return render(c, templates.SettingsPage(settings, bmr, calorieGoal, expectedDuration))
 	}
 }
 
@@ -31,7 +32,6 @@ func SettingsPOSTHandler(settingsRepo *data.SettingsRepository) echo.HandlerFunc
 		formValid := true
 
 		currentWeight, err := strconv.ParseFloat(c.FormValue("current_weight"), 64)
-
 		if err != nil || currentWeight <= 0 {
 			formValid = false
 			formErrors.Current_weight = "Invalid weight"
@@ -45,9 +45,10 @@ func SettingsPOSTHandler(settingsRepo *data.SettingsRepository) echo.HandlerFunc
 
 		targetWeightLossRate, err := strconv.ParseFloat(c.FormValue("target_weight_loss_rate"), 64)
 
-		if err != nil || targetWeightLossRate < 0 {
+		if err != nil {
+			fmt.Println(targetWeightLossRate, err)
 			formValid = false
-			formErrors.Current_weight = "Invalid rate"
+			formErrors.Target_weight_loss_rate = "Invalid rate"
 		}
 
 		age, err := strconv.ParseInt(c.FormValue("age"), 10, 64)
@@ -70,21 +71,27 @@ func SettingsPOSTHandler(settingsRepo *data.SettingsRepository) echo.HandlerFunc
 			formErrors.Sex = "Invalid sex"
 		}
 
+		activity_level, err := strconv.ParseFloat(c.FormValue("activity_level"), 64)
+
+		if err != nil || activity_level < 0 {
+			formValid = false
+			formErrors.Activity_level = "Invalid activity level"
+		}
+
 		if !formValid {
-			return render(c, templates.SettingsForm(data.Settings{Current_weight: currentWeight, Target_weight: targetWeight, Target_weight_loss_rate: targetWeightLossRate, Sex: sex}, formErrors))
+			return render(c, templates.SettingsForm(data.Settings{Current_weight: currentWeight, Target_weight: targetWeight, Target_weight_loss_rate: targetWeightLossRate, Sex: sex, Activity_level: activity_level}, formErrors))
 		}
 
 		formSettings := data.Settings{
 			User_id:                 userId,
 			Current_weight:          currentWeight,
 			Target_weight:           targetWeight,
-			Target_weight_loss_rate: targetWeightLossRate,
+			Target_weight_loss_rate: targetWeightLossRate / 100,
 			Age:                     int(age),
 			Height:                  int(height),
 			Sex:                     sex,
+			Activity_level:          activity_level,
 		}
-
-		fmt.Println(formSettings)
 
 		settings, err := settingsRepo.CreateSettings(formSettings)
 		if err != nil {
@@ -92,7 +99,8 @@ func SettingsPOSTHandler(settingsRepo *data.SettingsRepository) echo.HandlerFunc
 		}
 
 		bmr := diet.CalculateBMR(settings.Current_weight, settings.Height, settings.Age, settings.Sex)
-
-		return render(c, templates.SettingsPage(settings, bmr))
+		calorieGoal := diet.CalculateCalorieGoal(bmr, settings.Activity_level, settings.Current_weight, settings.Target_weight_loss_rate)
+		expectedDuration := diet.CaclulateExpectedDietDuration(settings.Current_weight, settings.Target_weight, settings.Target_weight_loss_rate)
+		return render(c, templates.SettingsPage(settings, bmr, calorieGoal, expectedDuration))
 	}
 }
