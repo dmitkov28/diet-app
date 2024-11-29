@@ -2,7 +2,9 @@ package handlers
 
 import (
 	"fmt"
+	"net/http"
 	"strconv"
+
 	"github.com/dmitkov28/dietapp/data"
 	"github.com/dmitkov28/dietapp/templates"
 	"github.com/labstack/echo/v4"
@@ -19,7 +21,7 @@ func CaloriesGETHandler(measurementsRepo *data.MeasurementRepository) echo.Handl
 		}
 
 		fmt.Println(calories)
-		
+
 		return render(c, templates.CaloriesPage())
 	}
 }
@@ -43,10 +45,13 @@ func CaloriesPOSTHandler(measurementsRepo *data.MeasurementRepository) echo.Hand
 			Date:     date,
 		}
 
-		result, err := measurementsRepo.CreateCalories(formData)
+		_, err = measurementsRepo.CreateCalories(formData)
 
-		fmt.Println(result)
+		if err != nil {
+			fmt.Println(err)
+		}
 
-		return render(c, templates.CaloriesForm())
+		c.Response().Header().Set("HX-Redirect", "/stats")
+		return c.NoContent(http.StatusOK)
 	}
 }
