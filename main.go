@@ -24,10 +24,11 @@ func main() {
 	e.Static("/static", "static")
 
 	e.GET("/", func(c echo.Context) error {
+		c.Response().Header().Set("HX-Redirect", "/stats")
 		return c.Redirect(http.StatusSeeOther, "/dashboard")
 	}, authMiddleware(sessionsRepo))
 
-	e.GET("/dashboard", handlers.DashboardGETHandler(), authMiddleware(sessionsRepo))
+	e.GET("/dashboard", handlers.DashboardGETHandler(measurementsRepo), authMiddleware(sessionsRepo))
 
 	e.GET("/settings", handlers.SettingsGETHandler(settingsRepo), authMiddleware(sessionsRepo))
 	e.POST("/settings", handlers.SettingsPOSTHandler(settingsRepo), authMiddleware(sessionsRepo))

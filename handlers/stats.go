@@ -15,6 +15,7 @@ func StatsGETHandler(repo *data.MeasurementRepository) echo.HandlerFunc {
 		if err != nil {
 			fmt.Println(err)
 		}
-		return render(c, templates.StatsPage(89, items))
+		
+		return render(c, templates.StatsPageFull(89, items))
 	}
 }

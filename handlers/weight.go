@@ -18,12 +18,6 @@ func WeightGETHandler(measurementsRepo *data.MeasurementRepository) echo.Handler
 			fmt.Println(err)
 		}
 
-		fmt.Println(userId, weights)
-
-		// first := weights[0].Date
-		// fmt.Println(first)
-
-		// fmt.Println(parsed.Format("20-01-2006"), err)
 		return render(c, templates.WeightPage(weights))
 	}
 }

@@ -12,16 +12,6 @@ import (
 
 func CaloriesGETHandler(measurementsRepo *data.MeasurementRepository) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		userId := c.Get("user_id").(int)
-		firstDate := "2024-11-01"
-		secondDate := "2024-11-25"
-		calories, err := measurementsRepo.GetCaloriesBetweenDates(userId, firstDate, secondDate)
-		if err != nil {
-			fmt.Println(err)
-		}
-
-		fmt.Println(calories)
-
 		return render(c, templates.CaloriesPage())
 	}
 }
