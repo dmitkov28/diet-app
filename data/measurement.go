@@ -178,7 +178,9 @@ func (repo *MeasurementRepository) GetMeasurementsByUserId(userId int) ([]Weight
         FROM weight w
         LEFT JOIN calories c ON w.date = c.date AND w.user_id = c.user_id
         WHERE w.user_id = ?
-        ORDER BY w.date DESC`
+        ORDER BY w.date DESC
+		LIMIT 10
+		`
 
 	rows, err := repo.db.db.Query(query, userId)
 	if err != nil {
