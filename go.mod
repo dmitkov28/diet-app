@@ -4,6 +4,7 @@ go 1.22.1
 
 require (
 	github.com/a-h/templ v0.2.793
+	github.com/go-echarts/go-echarts/v2 v2.4.5
 	github.com/labstack/echo/v4 v4.12.0
 	github.com/mattn/go-sqlite3 v1.14.24
 	golang.org/x/crypto v0.28.0
