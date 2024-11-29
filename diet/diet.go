@@ -1,5 +1,6 @@
 package diet
 
+import "github.com/dmitkov28/dietapp/data"
 
 func CalculateBMR(weight float64, height, age int, sex string) float64 {
 	if sex == "M" {
@@ -26,4 +27,16 @@ func CaclulateExpectedDietDuration(currentWeight, targetWeight, targetWeightLoss
 	weightToLose := currentWeight - targetWeight
 	weightToLosePerWeek := currentWeight * targetWeightLossRate
 	return weightToLose / weightToLosePerWeek
+}
+
+func CalculateAverageWeight(items []data.WeightCalories) float64 {
+	if len(items) == 0 {
+		return 0
+	}
+	sum := float64(0)
+	for _, item := range items {
+		sum += item.Weight
+	}
+	return sum / float64(len(items))
+
 }
