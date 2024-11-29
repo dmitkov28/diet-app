@@ -5,8 +5,9 @@ CREATE TABLE IF NOT EXISTS settings (
     target_weight REAL NOT NULL,
     target_weight_loss_rate REAL NOT NULL,
     height INT NOT NULL,
-    AGE INT NOT NULL,
-    SEX TEXT NOT NULL,
+    age INT NOT NULL,
+    sex TEXT NOT NULL,
+    activity_level REAL NOT NULL,
     user_id INT NOT NULL UNIQUE,
     FOREIGN KEY(user_id) REFERENCES users(id)
     ON DELETE CASCADE
