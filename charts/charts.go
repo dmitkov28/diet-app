@@ -25,7 +25,7 @@ func GenerateLineChart(title, subtitle string, xAxis []string, values []opts.Lin
 		}),
 
 		charts.WithGridOpts(opts.Grid{
-			Left:   "10%",
+			Left:   "12%",
 			Right:  "10%",
 			Bottom: "20%",
 			Top:    "20%",
