@@ -7,13 +7,19 @@ import (
 
 templ StatsPage(items []data.WeightCalories, page int, noMoreResults bool) {
 	@Base("StatsPage") {
-		<div class="flex flex-col">
+		<div class="flex flex-col flex-1">
 			<h1 class="font-bold text-xl py-4 text-center">Stats</h1>
-			<div class="flex-col flex-1 overflow-hidden">
-				<div class="h-full overflow-auto px-4">
-					@StatsTable(items)
-				</div>
-				@DataTableControls(page, noMoreResults)
+			<div class="flex flex-col flex-1 overflow-hidden">
+				if len(items) != 0 {
+					<div class="h-full overflow-auto px-4">
+						@StatsTable(items)
+					</div>
+					@DataTableControls(page, noMoreResults)
+				} else {
+					<div class="h-full flex flex-1 items-center justify-center">
+						No data.
+					</div>
+				}
 			</div>
 		</div>
 	}

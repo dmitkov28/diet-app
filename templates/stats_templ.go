@@ -50,19 +50,30 @@ func StatsPage(items []data.WeightCalories, page int, noMoreResults bool) templ.
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = StatsTable(items).Render(ctx, templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
+			if len(items) != 0 {
+				templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 2)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = StatsTable(items).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 3)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = DataTableControls(page, noMoreResults).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			} else {
+				templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 4)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
 			}
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 2)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = DataTableControls(page, noMoreResults).Render(ctx, templ_7745c5c3_Buffer)
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 3)
+			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 5)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -97,7 +108,7 @@ func StatsTable(items []data.WeightCalories) templ.Component {
 			templ_7745c5c3_Var3 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 4)
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 6)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -114,7 +125,7 @@ func StatsTable(items []data.WeightCalories) templ.Component {
 				}
 			}
 		}
-		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 5)
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 7)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -143,33 +154,33 @@ func DataTableRow(item data.WeightCalories, isFirst bool, diff float64) templ.Co
 			templ_7745c5c3_Var4 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 6)
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 8)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var5 string
 		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(data.ParseDateString(item.WeightDate))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/stats.templ`, Line: 46, Col: 63}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/stats.templ`, Line: 52, Col: 63}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 7)
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 9)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var6 string
 		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.1f", item.Weight))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/stats.templ`, Line: 47, Col: 58}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/stats.templ`, Line: 53, Col: 58}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 8)
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 10)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -177,19 +188,19 @@ func DataTableRow(item data.WeightCalories, isFirst bool, diff float64) templ.Co
 			var templ_7745c5c3_Var7 string
 			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", *item.Calories))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/stats.templ`, Line: 50, Col: 39}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/stats.templ`, Line: 56, Col: 39}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 9)
+			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 11)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 10)
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 12)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -202,7 +213,7 @@ func DataTableRow(item data.WeightCalories, isFirst bool, diff float64) templ.Co
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 11)
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 13)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -215,50 +226,50 @@ func DataTableRow(item data.WeightCalories, isFirst bool, diff float64) templ.Co
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 12)
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 14)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if !isFirst {
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 13)
+			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 15)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var10 string
 			templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.1f", diff))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/stats.templ`, Line: 64, Col: 32}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/stats.templ`, Line: 70, Col: 32}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 14)
+			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 16)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			if diff < 0 {
-				templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 15)
+				templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 17)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			} else {
-				templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 16)
+				templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 18)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 17)
+			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 19)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 18)
+			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 20)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 19)
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 21)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -287,7 +298,7 @@ func DataTableControls(page int, noMoreResults bool) templ.Component {
 			templ_7745c5c3_Var11 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 20)
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 22)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -300,33 +311,33 @@ func DataTableControls(page int, noMoreResults bool) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 21)
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 23)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var13 string
 		templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("/stats?page=%d", page-1))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/stats.templ`, Line: 81, Col: 49}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/stats.templ`, Line: 87, Col: 49}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 22)
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 24)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var14 string
 		templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("/stats?page=%d", page-1))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/stats.templ`, Line: 82, Col: 57}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/stats.templ`, Line: 88, Col: 57}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 23)
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 25)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -339,17 +350,17 @@ func DataTableControls(page int, noMoreResults bool) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 24)
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 26)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if page <= 1 {
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 25)
+			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 27)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 26)
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 28)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -361,33 +372,33 @@ func DataTableControls(page int, noMoreResults bool) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 27)
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 29)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var17 string
 		templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("/stats?page=%d", page+1))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/stats.templ`, Line: 94, Col: 49}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/stats.templ`, Line: 100, Col: 49}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 28)
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 30)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var18 string
 		templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("/stats?page=%d", page+1))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/stats.templ`, Line: 95, Col: 57}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/stats.templ`, Line: 101, Col: 57}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 29)
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 31)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -400,17 +411,17 @@ func DataTableControls(page int, noMoreResults bool) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 30)
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 32)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if noMoreResults {
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 31)
+			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 33)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 32)
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 34)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
