@@ -6,6 +6,10 @@ import (
 	"golang.org/x/exp/constraints"
 )
 
+const (
+	ItemsPerPage = 10
+)
+
 type Weight struct {
 	ID      int
 	User_id int
@@ -165,7 +169,7 @@ type WeightCalories struct {
 	UserID       int     `json:"user_id"`
 }
 
-func (repo *MeasurementRepository) GetMeasurementsByUserId(userId int) ([]WeightCalories, error) {
+func (repo *MeasurementRepository) GetMeasurementsByUserId(userId, offset int,) ([]WeightCalories, error) {
 	query := `
         SELECT 
             w.id, 
@@ -180,9 +184,10 @@ func (repo *MeasurementRepository) GetMeasurementsByUserId(userId int) ([]Weight
         WHERE w.user_id = ?
         ORDER BY w.date DESC
 		LIMIT 10
+		OFFSET ?
 		`
 
-	rows, err := repo.db.db.Query(query, userId)
+	rows, err := repo.db.db.Query(query, userId, offset)
 	if err != nil {
 		return nil, err
 	}

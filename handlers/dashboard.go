@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math"
 	"slices"
+	"strconv"
 	"time"
 
 	"github.com/dmitkov28/dietapp/charts"
@@ -19,12 +20,23 @@ func DashboardGETHandler(measurementsRepo *data.MeasurementRepository, settingsR
 		today := time.Now().Format("Jan 2, 2006")
 		userId := c.Get("user_id").(int)
 
-		items, err := measurementsRepo.GetMeasurementsByUserId(userId)
-		
+		page, err := strconv.ParseInt(c.QueryParam("page"), 10, 64)
+
 		if err != nil {
 			fmt.Println(err)
 		}
-		
+
+		var offset = 0
+
+		if page != 0 {
+			offset = int(page) * data.ItemsPerPage
+		}
+
+		items, err := measurementsRepo.GetMeasurementsByUserId(userId, offset)
+		if err != nil {
+			fmt.Println(err)
+		}
+
 		slices.Reverse(items)
 
 		settings, err := settingsRepo.GetSettingsByUserID(userId)
@@ -42,7 +54,7 @@ func DashboardGETHandler(measurementsRepo *data.MeasurementRepository, settingsR
 		bmr := diet.CalculateBMR(currentData.Weight, settings.Height, settings.Age, settings.Sex)
 		calorieGoal := diet.CalculateCalorieGoal(bmr, settings.Activity_level, currentData.Weight, settings.Target_weight_loss_rate)
 		expectedDuration := diet.CaclulateExpectedDietDuration(currentData.Weight, settings.Target_weight, settings.Target_weight_loss_rate)
-		
+
 		var xAxis []string
 		var chartValues []opts.LineData
 		for _, item := range items {

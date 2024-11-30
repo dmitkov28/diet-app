@@ -5,14 +5,15 @@ import (
 	"github.com/dmitkov28/dietapp/data"
 )
 
-templ StatsPage(currentWeight int, items []data.WeightCalories) {
+templ StatsPage(items []data.WeightCalories, page int, noMoreResults bool) {
 	@Base("StatsPage") {
-		<div class="flex flex-col gap-2 items-center">
-			<h2 class="font-bold text-xl">Current Weight: { fmt.Sprintf("%d", currentWeight) } kgz</h2>
-			<img class="h-10" src="/static/img/arrow-down.svg"/>
-			<span class="text-green-600">-11%</span>
-			<div class="w-full px-4 flex-grow overflow-y-auto  max-h-[calc(100vh-200px)] ">
-				@StatsTable(items)
+		<div class="flex flex-col">
+			<h1 class="font-bold text-xl py-4 text-center">Stats</h1>
+			<div class="flex-col flex-1 overflow-hidden">
+				<div class="h-full overflow-auto px-4">
+					@StatsTable(items)
+				</div>
+				@DataTableControls(page, noMoreResults)
 			</div>
 		</div>
 	}
@@ -20,9 +21,9 @@ templ StatsPage(currentWeight int, items []data.WeightCalories) {
 
 templ StatsTable(items []data.WeightCalories) {
 	<table class="w-full text-sm">
-		<thead>
+		<thead class="sticky top-0 bg-white">
 			<tr class="bg-gray-100 border-b">
-				<th class="px-6 py-4 text-left font-semibold text-gray-600">Date</th>
+				<th class="cursor-pointer px-6 py-4 text-left font-semibold text-gray-600">Date</th>
 				<th class="px-6 py-4 text-left font-semibold text-gray-600">Weight (kg)</th>
 				<th class="px-6 py-4 text-left font-semibold text-gray-600">Calories</th>
 				<th class="px-6 py-4 text-left font-semibold text-gray-600">Weight Loss (%)</th>
@@ -72,4 +73,34 @@ templ DataTableRow(item data.WeightCalories, isFirst bool, diff float64) {
 			}
 		</td>
 	</tr>
+}
+
+templ DataTableControls(page int, noMoreResults bool) {
+	<div class="flex justify-between mt-4 mb-12 px-8">
+		<button
+			hx-get={ fmt.Sprintf("/stats?page=%d", page-1) }
+			hx-replace-url={ fmt.Sprintf("/stats?page=%d", page-1) }
+			hx-target="#main-content"
+			class={
+				"px-2 py-1 rounded-md cursor-pointer",
+				templ.KV("bg-[#2596be] text-white", page > 1),
+				templ.KV("bg-gray-300 text-gray-500 cursor-not-allowed", page <= 1),
+			}
+			disabled?={ page <= 1 }
+		>
+			Prev
+		</button>
+		<button
+			hx-get={ fmt.Sprintf("/stats?page=%d", page+1) }
+			hx-replace-url={ fmt.Sprintf("/stats?page=%d", page+1) }
+			hx-target="#main-content"
+			class={
+				"bg-[#2596be] text-white px-2 py-1 rounded-md cursor-pointer",
+				templ.KV("bg-gray-300 text-gray-500 cursor-not-allowed", noMoreResults),
+			}
+			disabled?={ noMoreResults }
+		>
+			Next
+		</button>
+	</div>
 }
