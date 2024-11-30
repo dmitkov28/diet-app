@@ -45,7 +45,12 @@ func DashboardGETHandler(measurementsRepo *data.MeasurementRepository, settingsR
 			fmt.Println(err)
 		}
 
+		if len(items) == 0 {
+			return render(c, templates.HomePage(today, data.WeightCalories{}, settings, 0, 0, 0, ""))
+		}
+
 		currentData := items[0]
+
 		current, lastWeek, err := measurementsRepo.GetCurrentWeightAvg(userId)
 		if err != nil {
 			fmt.Println(err)

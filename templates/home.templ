@@ -13,43 +13,54 @@ templ HomePage(date string, currentData data.WeightCalories, settings data.Setti
 				<h1 class="font-bold text-2xl text-center">{ date }</h1>
 				<div
 					class="md:col-span-1 text-center col-span-2 flex gap-4 justify-center items-center rounded-md border border-slate-200 shadow-md p-3"
-				>	
+				>
 					<img src="/static/img/trophy.svg" class="h-5"/>
-
-					<span class="text-xl font-bold text-center">{ fmt.Sprintf("%.1f", currentData.Weight) } kg</span>
-					<span
-						class={
-							"text-sm font-semibold text-center flex justify-center items-center gap-2",
-							templ.KV("text-green-500", weightDiff <= settings.Target_weight_loss_rate),
-							templ.KV("text-red-500", weightDiff > settings.Target_weight_loss_rate),
-						}
-					>
-						if weightDiff <= settings.Target_weight_loss_rate {
-							<img class="h-4" src="/static/img/arrow-down.svg"/>
-						} else {
-							<img class="h-4" src="/static/img/arrow-up.svg"/>
-						}
-						<span>
-							{ fmt.Sprintf("%.2f", weightDiff * 100) } %
+					if !(currentData.Weight > 0) {
+						<span class="text-xl font-bold text-center">N/A</span>
+					} else {
+						<span class="text-xl font-bold text-center">{ fmt.Sprintf("%.1f", currentData.Weight) } kg</span>
+						<span
+							class={
+								"text-sm font-semibold text-center flex justify-center items-center gap-2",
+								templ.KV("text-green-500", weightDiff <= settings.Target_weight_loss_rate),
+								templ.KV("text-red-500", weightDiff > settings.Target_weight_loss_rate),
+							}
+						>
+							if weightDiff <= settings.Target_weight_loss_rate {
+								<img class="h-4" src="/static/img/arrow-down.svg"/>
+							} else {
+								<img class="h-4" src="/static/img/arrow-up.svg"/>
+							}
+							<span>
+								{ fmt.Sprintf("%.2f", weightDiff * 100) } %
+							</span>
 						</span>
-					</span>
+					}
 				</div>
 				<div
 					class="md:col-span-1 text-center col-span-2 flex gap-4 justify-center items-center rounded-md border border-slate-200 shadow-md p-3"
 				>
 					<img src="/static/img/calories.svg" class="h-5"/>
-					<span class="text-xl font-bold">
-						{ fmt.Sprintf("%0.f", math.Ceil(calorieGoal)) } cal
-					</span>
+					if calorieGoal <= 0 {
+						<span class="text-xl font-bold">
+							N/A
+						</span>
+					} else {
+						<span class="text-xl font-bold">
+							{ fmt.Sprintf("%0.f", math.Ceil(calorieGoal)) } cal
+						</span>
+					}
 				</div>
-				<div
-					class="md:col-span-1 text-center col-span-2 flex gap-4 justify-center items-center rounded-md border border-slate-200 shadow-md p-3"
-				>
-					<img src="/static/img/calendar.svg" class="h-5"/>
-					<span class="text-xl font-bold">
-						≈ { fmt.Sprintf("%0.f", math.Abs(math.Ceil(expectedDuration))) } weeks to go
-					</span>
-				</div>
+				if expectedDuration != 0 {
+					<div
+						class="md:col-span-1 text-center col-span-2 flex gap-4 justify-center items-center rounded-md border border-slate-200 shadow-md p-3"
+					>
+						<img src="/static/img/calendar.svg" class="h-5"/>
+						<span class="text-xl font-bold">
+							≈ { fmt.Sprintf("%0.f", math.Abs(math.Ceil(expectedDuration))) } weeks to go
+						</span>
+					</div>
+				}
 				<div>
 					@templ.Raw(weightChart)
 				</div>
