@@ -7,7 +7,7 @@ import (
 	"github.com/go-echarts/go-echarts/v2/opts"
 )
 
-func GenerateLineChart(title, subtitle string, xAxis []string, values []opts.LineData) *charts.Line {
+func GenerateLineChart(title, subtitle string, xAxis []string, values []opts.LineData, max, min float64) *charts.Line {
 	chart := charts.NewLine()
 	chart.SetGlobalOptions(
 		charts.WithInitializationOpts(opts.Initialization{
@@ -43,8 +43,8 @@ func GenerateLineChart(title, subtitle string, xAxis []string, values []opts.Lin
 		}),
 
 		charts.WithYAxisOpts(opts.YAxis{
-			Min: 65,
-			Max: 80,
+			Min: max,
+			Max: min,
 			AxisLabel: &opts.AxisLabel{
 				Show:      opts.Bool(true),
 				Formatter: "{value}",

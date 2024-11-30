@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"math"
 	"slices"
-	"strconv"
 	"time"
 
 	"github.com/dmitkov28/dietapp/charts"
@@ -20,19 +19,7 @@ func DashboardGETHandler(measurementsRepo *data.MeasurementRepository, settingsR
 		today := time.Now().Format("Jan 2, 2006")
 		userId := c.Get("user_id").(int)
 
-		page, err := strconv.ParseInt(c.QueryParam("page"), 10, 64)
-
-		if err != nil {
-			fmt.Println(err)
-		}
-
-		var offset = 0
-
-		if page != 0 {
-			offset = int(page) * data.ItemsPerPage
-		}
-
-		items, err := measurementsRepo.GetMeasurementsByUserId(userId, offset)
+		items, err := measurementsRepo.GetMeasurementsByUserId(userId, 0)
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -62,13 +49,24 @@ func DashboardGETHandler(measurementsRepo *data.MeasurementRepository, settingsR
 
 		var xAxis []string
 		var chartValues []opts.LineData
+		maxWeight := float64(0)
+		minWeight := float64(math.MaxFloat64)
+
 		for _, item := range items {
 			date := data.ParseDateString(item.WeightDate)
 			xAxis = append(xAxis, date)
 			chartValues = append(chartValues, opts.LineData{Name: date, Value: item.Weight})
+			if item.Weight > maxWeight {
+				maxWeight = item.Weight
+			}
+
+			if item.Weight < minWeight {
+				minWeight = item.Weight
+			}
+
 		}
 
-		chart := charts.GenerateLineChart("Progress", "", xAxis, chartValues)
+		chart := charts.GenerateLineChart("Progress", "", xAxis, chartValues, maxWeight, minWeight)
 		chartHtml := charts.RenderChart(*chart)
 
 		return render(c, templates.HomePage(today, currentData, settings, weightDiff, calorieGoal, expectedDuration, chartHtml))
