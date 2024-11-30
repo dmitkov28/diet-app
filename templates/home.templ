@@ -13,7 +13,9 @@ templ HomePage(date string, currentData data.WeightCalories, settings data.Setti
 				<h1 class="font-bold text-2xl text-center">{ date }</h1>
 				<div
 					class="md:col-span-1 text-center col-span-2 flex gap-4 justify-center items-center rounded-md border border-slate-200 shadow-md p-3"
-				>
+				>	
+					<img src="/static/img/trophy.svg" class="h-5"/>
+
 					<span class="text-xl font-bold text-center">{ fmt.Sprintf("%.1f", currentData.Weight) } kg</span>
 					<span
 						class={
@@ -35,6 +37,7 @@ templ HomePage(date string, currentData data.WeightCalories, settings data.Setti
 				<div
 					class="md:col-span-1 text-center col-span-2 flex gap-4 justify-center items-center rounded-md border border-slate-200 shadow-md p-3"
 				>
+					<img src="/static/img/calories.svg" class="h-5"/>
 					<span class="text-xl font-bold">
 						{ fmt.Sprintf("%0.f", math.Ceil(calorieGoal)) } cal
 					</span>
@@ -42,6 +45,7 @@ templ HomePage(date string, currentData data.WeightCalories, settings data.Setti
 				<div
 					class="md:col-span-1 text-center col-span-2 flex gap-4 justify-center items-center rounded-md border border-slate-200 shadow-md p-3"
 				>
+					<img src="/static/img/calendar.svg" class="h-5"/>
 					<span class="text-xl font-bold">
 						≈ { fmt.Sprintf("%0.f", math.Abs(math.Ceil(expectedDuration))) } weeks to go
 					</span>
