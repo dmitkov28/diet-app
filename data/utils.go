@@ -7,7 +7,7 @@ func ParseDateString(dateString string) string {
 	if err != nil {
 		return "NaN"
 	}
-	return parsed.Format("02 Jan 2006")
+	return parsed.Format("02 Jan 06")
 }
 
 func GetPreviousWeekRange() (time.Time, time.Time) {
@@ -32,3 +32,5 @@ func GetPreviousWeekRange() (time.Time, time.Time) {
 
 	return startOfPreviousWeek, endOfPreviousWeek
 }
+
+

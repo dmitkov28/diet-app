@@ -3,6 +3,7 @@ package handlers
 import (
 	"fmt"
 	"math"
+	"slices"
 	"time"
 
 	"github.com/dmitkov28/dietapp/charts"
@@ -19,10 +20,12 @@ func DashboardGETHandler(measurementsRepo *data.MeasurementRepository, settingsR
 		userId := c.Get("user_id").(int)
 
 		items, err := measurementsRepo.GetMeasurementsByUserId(userId)
-
+		
 		if err != nil {
 			fmt.Println(err)
 		}
+		
+		slices.Reverse(items)
 
 		settings, err := settingsRepo.GetSettingsByUserID(userId)
 
@@ -43,11 +46,12 @@ func DashboardGETHandler(measurementsRepo *data.MeasurementRepository, settingsR
 		var xAxis []string
 		var chartValues []opts.LineData
 		for _, item := range items {
-			xAxis = append(xAxis, item.WeightDate)
-			chartValues = append(chartValues, opts.LineData{Name: item.WeightDate, Value: item.Weight})
+			date := data.ParseDateString(item.WeightDate)
+			xAxis = append(xAxis, date)
+			chartValues = append(chartValues, opts.LineData{Name: date, Value: item.Weight})
 		}
 
-		chart := charts.GenerateLineChart("Weight", "", xAxis, chartValues)
+		chart := charts.GenerateLineChart("Progress", "", xAxis, chartValues)
 		chartHtml := charts.RenderChart(*chart)
 
 		return render(c, templates.HomePage(today, currentData, settings, weightDiff, calorieGoal, expectedDuration, chartHtml))
