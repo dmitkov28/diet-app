@@ -1,21 +1,33 @@
 package templates
 
 templ LoginPage() {
-@Base("Login Page") {
-<div class="flex flex-col flex-1 justify-center items-center border-red-700">
-	<h1 class="text-2xl font-bold mb-4">Login</h1>
-	@Login(false)
-</div>
-}
+	<html class="min-h-screen" lang="en">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<title>Login</title>
+			<link rel="stylesheet" href="/static/css/main.css"/>
+			<script src="https://unpkg.com/htmx.org@1.9.10"></script>
+		</head>
+		<body class="min-h-screen flex flex-col">
+			<header></header>
+			<main id="main-content" class="flex flex-col flex-1">
+				<div class="flex flex-col flex-1 justify-center items-center border-red-700">
+					<h1 class="text-2xl font-bold mb-4">Login</h1>
+					@Login(false)
+				</div>
+			</main>
+		</body>
+	</html>
 }
 
 templ Login(err bool) {
-<form hx-swap="outerHTML" hx-post="/login" hx-target="this" class="grid grid-cols-1 gap-6 w-full px-4">
-	<input name="email" class={"col-span-1 border border-slate-300 p-2 rounded-md", templ.KV("border border-red-500	placeholder-red-500", err)} type="text" placeholder="email" />
-	<input name="password" class={"col-span-1 border border-slate-300 p-2 rounded-md", templ.KV("border border-red-500 placeholder-red-500", err)} type="password" placeholder="password" />
-	if err {
-	<span class="text-red-500">Invalid credentials.</span>
-	}
-	<button class="col-span-1 text-white bg-blue-500 p-2 rounded-md">Log In</button>
-</form>
+	<form hx-swap="outerHTML" hx-post="/login" hx-target="this" class="grid grid-cols-1 gap-6 w-full px-4">
+		<input name="email" class={ "col-span-1 border border-slate-300 p-2 rounded-md", templ.KV("border border-red-500	placeholder-red-500", err) } type="text" placeholder="email"/>
+		<input name="password" class={ "col-span-1 border border-slate-300 p-2 rounded-md", templ.KV("border border-red-500 placeholder-red-500", err) } type="password" placeholder="password"/>
+		if err {
+			<span class="text-red-500">Invalid credentials.</span>
+		}
+		<button class="col-span-1 text-white bg-blue-500 p-2 rounded-md">Log In</button>
+	</form>
 }
