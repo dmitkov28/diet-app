@@ -32,5 +32,3 @@ func GetPreviousWeekRange() (time.Time, time.Time) {
 
 	return startOfPreviousWeek, endOfPreviousWeek
 }
-
-
