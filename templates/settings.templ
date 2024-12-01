@@ -117,7 +117,7 @@ templ SettingsForm(settings data.Settings, errors SettingsErrors) {
 				if settings.Activity_level != 0 {
 					<input
 						name="activity_level"
-						value={ fmt.Sprintf("%.1f", settings.Activity_level) }
+						value={ fmt.Sprintf("%.2f", settings.Activity_level) }
 						class={ "w-full border shadow-md px-3 py-1 rounded-md",
                                 templ.KV("border-red-500 text-red-500", errors.Activity_level != ""),
                                 templ.KV("border-slate-300", errors.Activity_level == "") }
