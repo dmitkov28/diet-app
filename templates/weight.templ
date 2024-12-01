@@ -10,7 +10,7 @@ type WeightFormErrors struct {
 
 templ WeightForm() {
 	<div class="w-full p-8">
-		<form hx-post="/weight" hx-replace-url="/stats" hx-swap="beforeend" class="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
+		<form hx-indicator="#spinner" hx-post="/weight" hx-replace-url="/stats" hx-swap="beforeend" class="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
 			<div>
 				<label>Weight</label>
 				<input
@@ -31,7 +31,10 @@ templ WeightForm() {
 					required
 				/>
 			</div>
-			<button class="text-white font-semibold bg-blue-500 rounded-md p-3">Log Weight</button>
+			<button class="text-white font-semibold bg-blue-500 rounded-md p-3 flex gap-2 justify-center items-center">
+				@Spinner()
+				Log Weight
+			</button>
 		</form>
 	</div>
 }
@@ -46,4 +49,3 @@ templ WeightPage(weights []data.Weight) {
 		</div>
 	}
 }
-
