@@ -164,7 +164,7 @@ templ SettingsForm(settings data.Settings, errors SettingsErrors) {
 				}
 			</div>
 			<div>
-				<label>Target weight loss rate (%)</label>
+				<label>Target weekly weight loss rate (%)</label>
 				if settings.Target_weight_loss_rate != 0 {
 					<input
 						value={ fmt.Sprintf("%.1f", settings.Target_weight_loss_rate*100) }
@@ -173,7 +173,7 @@ templ SettingsForm(settings data.Settings, errors SettingsErrors) {
 						type="number"
 						step="0.1"
 						min="0"
-						placeholder="Target weight loss rate (%)"
+						placeholder="Target weekly weight loss rate (%)"
 						required
 					/>
 				} else {
@@ -183,7 +183,7 @@ templ SettingsForm(settings data.Settings, errors SettingsErrors) {
 						type="number"
 						step="0.1"
 						min="0"
-						placeholder="Target weight loss rate(%)"
+						placeholder="Target weekly weight loss rate(%)"
 						required
 					/>
 				}
