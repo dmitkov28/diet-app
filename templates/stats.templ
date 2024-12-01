@@ -33,6 +33,7 @@ templ StatsTable(items []data.WeightCalories) {
 				<th class="px-6 py-4 text-left font-semibold text-gray-600">Weight (kg)</th>
 				<th class="px-6 py-4 text-left font-semibold text-gray-600">Calories</th>
 				<th class="px-6 py-4 text-left font-semibold text-gray-600">Weight Loss (%)</th>
+				<th class="px-6 py-4 text-left font-semibold text-gray-600"></th>
 			</tr>
 		</thead>
 		<tbody class="divide-y divide-gray-200">
@@ -48,7 +49,7 @@ templ StatsTable(items []data.WeightCalories) {
 }
 
 templ DataTableRow(item data.WeightCalories, isFirst bool, diff float64) {
-	<tr class="hover:bg-gray-50">
+	<tr id={ fmt.Sprintf("row-%d", item.WeightID) } class="hover:bg-gray-50">
 		<td class="px-6 py-4">{ data.ParseDateString(item.WeightDate) }</td>
 		<td class="px-6 py-4">{ fmt.Sprintf("%.1f", item.Weight) }</td>
 		<td class="px-6 py-4">
@@ -77,6 +78,16 @@ templ DataTableRow(item data.WeightCalories, isFirst bool, diff float64) {
 			} else {
 				N/A				
 			}
+		</td>
+		<td>
+			<img
+				class="h-5 cursor-pointer"
+				src="/static/img/bin.svg"
+				hx-delete={ fmt.Sprintf("/stats/%d", item.WeightID) }
+				hx-target={ fmt.Sprintf("#row-%d", item.WeightID) }
+				hx-swap="outerHTML"
+				hx-confirm="Are you sure you want to delete this entry?"
+			/>
 		</td>
 	</tr>
 }
