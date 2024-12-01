@@ -2,7 +2,7 @@ package templates
 
 templ CaloriesForm() {
 	<div class="w-full p-8">
-		<form hx-post="/calories" hx-replace-url="/stats" class="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
+		<form hx-indicator="#spinner" hx-post="/calories" hx-replace-url="/stats" class="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
 			<div>
 				<label>Calories</label>
 				<input
@@ -22,7 +22,10 @@ templ CaloriesForm() {
 					required
 				/>
 			</div>
-			<button class="text-white font-semibold bg-blue-500 rounded-md p-3">Log Calories</button>
+			<button class="text-white font-semibold bg-blue-500 rounded-md p-3 flex gap-2 justify-center items-center">
+				@Spinner()
+				Log Calories
+			</button>
 		</form>
 	</div>
 }
