@@ -1,6 +1,7 @@
 package data
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 )
@@ -73,6 +74,9 @@ func (repo *SettingsRepository) GetSettingsByUserID(userId int) (Settings, error
 	err := res.Scan(&settings.ID, &settings.User_id, &settings.Current_weight, &settings.Target_weight, &settings.Target_weight_loss_rate, &settings.Age, &settings.Height, &settings.Sex, &settings.Activity_level)
 
 	if err != nil {
+		if err == sql.ErrNoRows {
+			return Settings{}, nil
+		}
 		return Settings{}, err
 	}
 
