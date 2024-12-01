@@ -23,6 +23,8 @@ func main() {
 	e := echo.New()
 	e.Static("/static", "static")
 
+	e.File("/favicon.ico", "static/img/favicon/favicon.ico")
+
 	e.GET("/", func(c echo.Context) error {
 		c.Response().Header().Set("HX-Redirect", "/stats")
 		return c.Redirect(http.StatusSeeOther, "/dashboard")
