@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS calories (
     date DATE NOT NULL,
     calories REAL,
     user_id INT NOT NULL,
+    UNIQUE(date, user_id) ON CONFLICT REPLACE,
     FOREIGN KEY(user_id) REFERENCES users(id)
     ON DELETE CASCADE
 );
