@@ -25,4 +25,15 @@ templ Nav() {
 			</li>
 		</ul>
 	</nav>
+	<script>
+		function setStyles(){
+			const url = window.location.href.split("/")[window.location.href.split("/").length - 1];
+			const activeLink = document.querySelector(`li[hx-get="/${url}"]`);
+			activeLink.style.textDecoration = "underline";
+			activeLink.style.textDecorationThickness = "2px";
+			activeLink.style.textDecorationColor = "#2596be";
+			activeLink.style.textUnderlineOffset = "8px";
+		}
+		setStyles();
+	</script>
 }
