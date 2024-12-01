@@ -35,3 +35,15 @@ func StatsGETHandler(repo *data.MeasurementRepository) echo.HandlerFunc {
 		return render(c, templates.StatsPage(items, int(page), noMoreResults))
 	}
 }
+
+func StatsDELETEHandler(repo *data.MeasurementRepository) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		id := c.Param("id")
+		err := repo.DeleteWeightAndCaloriesByWeightID(id)
+		if err != nil {
+			fmt.Println(err)
+		}
+		return c.NoContent(202)
+
+	}
+}
