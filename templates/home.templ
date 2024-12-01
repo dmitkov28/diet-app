@@ -7,7 +7,7 @@ import (
 )
 
 templ HomePage(date string, currentData data.WeightCalories, settings data.Settings, weightDiff, calorieGoal, expectedDuration float64, weightChart string) {
-	@Base("Home Page") {
+	@Base("Home") {
 		<div class="w-full flex flex-col flex-1 justify-center items-center p-8">
 			<div class="w-full grid grid-cols-1 gap-4">
 				<h1 class="font-bold text-2xl text-center">{ date }</h1>
