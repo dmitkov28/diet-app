@@ -39,6 +39,7 @@ func main() {
 	e.POST("/weight", handlers.WeightPOSTHandler(measurementsRepo), authMiddleware(sessionsRepo))
 
 	e.GET("/stats", handlers.StatsGETHandler(measurementsRepo), authMiddleware(sessionsRepo))
+	e.DELETE("/stats/:id", handlers.StatsDELETEHandler(measurementsRepo), authMiddleware(sessionsRepo))
 
 	e.GET("/calories", handlers.CaloriesGETHandler(measurementsRepo), authMiddleware(sessionsRepo))
 	e.POST("/calories", handlers.CaloriesPOSTHandler(measurementsRepo), authMiddleware(sessionsRepo))
