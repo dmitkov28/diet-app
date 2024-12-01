@@ -169,7 +169,7 @@ type WeightCalories struct {
 	UserID       int     `json:"user_id"`
 }
 
-func (repo *MeasurementRepository) GetMeasurementsByUserId(userId, offset int,) ([]WeightCalories, error) {
+func (repo *MeasurementRepository) GetMeasurementsByUserId(userId, offset int) ([]WeightCalories, error) {
 	query := `
         SELECT 
             w.id, 
@@ -323,4 +323,25 @@ func (repo *MeasurementRepository) GetCurrentWeightAvg(userId int) (float64, flo
 		}
 	}
 	return currentWeekAvg, lastWeekAvg, nil
+}
+
+func (repo *MeasurementRepository) DeleteWeightAndCaloriesByWeightID(weightID string) error {
+	tx, err := repo.db.db.Begin()
+	if err != nil {
+		return err
+	}
+	var date string
+	tx.QueryRow("SELECT date FROM weight WHERE id = ?", weightID).Scan(&date)
+	_, err = tx.Exec("DELETE FROM calories WHERE date = ?", date)
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	_, err = tx.Exec("DELETE FROM weight WHERE id = ?", weightID)
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+	tx.Commit()
+	return nil
 }
