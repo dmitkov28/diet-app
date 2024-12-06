@@ -298,31 +298,30 @@ func (repo *MeasurementRepository) GetMeasurementsBetweenDates(userId int, start
 	return results, nil
 }
 
-func (repo *MeasurementRepository) GetCurrentWeightAvg(userId int) (float64, float64, error) {
+func (repo *MeasurementRepository) GetCurrentWeightAvg(userId int) (float64, error) {
 	query := `
 	SELECT 
-    	AVG(CASE WHEN date >= date('now', '-6 days') THEN weight END) AS current_week_avg,
-    	AVG(CASE WHEN date >= date('now', '-13 days') AND date < date('now', '-6 days') THEN weight END) AS last_week_avg
+    	AVG(CASE WHEN date >= date('now', '-6 days') THEN weight END) AS current_week_avg
 	FROM weight
 	WHERE user_id = ?
 	`
 
 	rows, err := repo.db.db.Query(query, userId)
 	if err != nil {
-		return 0, 0, err
+		return 0, err
 	}
 
 	defer rows.Close()
 
-	var currentWeekAvg, lastWeekAvg float64
+	var currentWeekAvg float64
 
 	for rows.Next() {
-		err := rows.Scan(&currentWeekAvg, &lastWeekAvg)
+		err := rows.Scan(&currentWeekAvg)
 		if err != nil {
-			return 0, 0, err
+			return 0, err
 		}
 	}
-	return currentWeekAvg, lastWeekAvg, nil
+	return currentWeekAvg, nil
 }
 
 func (repo *MeasurementRepository) DeleteWeightAndCaloriesByWeightID(weightID string) error {
@@ -344,4 +343,59 @@ func (repo *MeasurementRepository) DeleteWeightAndCaloriesByWeightID(weightID st
 	}
 	tx.Commit()
 	return nil
+}
+
+type WeeklyStats struct {
+	WeekStart     string
+	AverageWeight float64
+	PercentChange float64
+}
+
+func (repo *MeasurementRepository) GetWeeklyStats(weeks int) ([]WeeklyStats, error) {
+	query := `
+		SELECT week, avg_weight
+		FROM (
+			SELECT 
+				strftime('%Y-%W', date) as week,
+				AVG(weight) as avg_weight
+			FROM weight
+			GROUP BY week
+			ORDER BY week DESC
+			LIMIT 3
+		) subquery
+		ORDER BY week ASC;`
+
+		rows, err := repo.db.db.Query(query, weeks)
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	var stats []WeeklyStats
+	var prevWeight float64
+
+	for rows.Next() {
+		var weekStr string
+		var avgWeight float64
+
+		if err := rows.Scan(&weekStr, &avgWeight); err != nil {
+			return nil, err
+		}
+
+		var percentChange float64
+		if len(stats) > 0 {
+			percentChange = ((avgWeight - prevWeight) / prevWeight) * 100
+		}
+
+		stats = append(stats, WeeklyStats{
+			WeekStart:     weekStr,
+			AverageWeight: avgWeight,
+			PercentChange: percentChange,
+		})
+
+		prevWeight = avgWeight
+	}
+
+	return stats, nil
 }
