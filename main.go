@@ -1,13 +1,19 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/dmitkov28/dietapp/data"
 	"github.com/dmitkov28/dietapp/handlers"
+	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 )
+
+func init() {
+	_ = godotenv.Load(".env")
+}
 
 func main() {
 	db, err := data.NewDB()
