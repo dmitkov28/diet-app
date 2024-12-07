@@ -1,6 +1,10 @@
 package data
 
-import "time"
+import (
+	"strconv"
+	"strings"
+	"time"
+)
 
 func ParseDateString(dateString string) string {
 	parsed, err := time.Parse(time.RFC3339, dateString)
@@ -10,25 +14,31 @@ func ParseDateString(dateString string) string {
 	return parsed.Format("02 Jan 06")
 }
 
-func GetPreviousWeekRange() (time.Time, time.Time) {
-
-	now := time.Now()
-
-	currentYear, currentMonth, currentDay := now.Date()
-	currentLocation := now.Location()
-
-	currentDayMidnight := time.Date(currentYear, currentMonth, currentDay, 0, 0, 0, 0, currentLocation)
-
-	currentWeekday := int(currentDayMidnight.Weekday())
-
-	if currentWeekday == 0 {
-		currentWeekday = 7
+func ParseWeekYearString(weekYearString string) (int, int) {
+	splitStr := strings.Split(weekYearString, "-")
+	if len(splitStr) != 2 {
+		return 0, 0
 	}
 
-	daysToPreviousMonday := currentWeekday + 6
-	startOfPreviousWeek := currentDayMidnight.AddDate(0, 0, -daysToPreviousMonday)
+	year, err := strconv.ParseInt(splitStr[0], 10, 64)
+	if err != nil {
+		return 0, 0
+	}
+	week, err := strconv.ParseInt(splitStr[1], 10, 64)
 
-	endOfPreviousWeek := startOfPreviousWeek.AddDate(0, 0, 6).Add(time.Hour*24 - time.Nanosecond)
+	if err != nil {
+		return 0, 0
+	}
 
-	return startOfPreviousWeek, endOfPreviousWeek
+	return int(year), int(week)
+
+}
+
+func HasCurrentWeek(v WeeklyStats) bool {
+	currentYear, currentWeek := time.Now().ISOWeek()
+	year, week := ParseWeekYearString(v.YearWeek)
+	if currentYear != year || currentWeek != week {
+		return false
+	}
+	return true
 }
