@@ -6,67 +6,83 @@ import (
 	"math"
 )
 
-templ HomePage(date string, currentData data.WeightCalories, settings data.Settings, weightDiff, calorieGoal, expectedDuration float64, weightChart string) {
+templ HomePage(date string, currentData data.WeeklyStats, settings data.Settings, calorieGoal, expectedDuration float64, weightChart string, hasCurrentWeek, needsAdjustment bool) {
 	@Base("Home") {
 		<div class="w-full flex flex-col flex-1 justify-center items-center p-8">
 			<div class="w-full grid grid-cols-1 gap-4">
-				<h1 class="font-bold text-2xl text-center">{ date }</h1>
-				<div
-					class="md:col-span-1 text-center col-span-2 flex gap-4 justify-center items-center rounded-md border border-slate-200 shadow-md p-3"
-				>
-					<img src="/static/img/trophy.svg" class="h-5"/>
-					if !(currentData.Weight > 0) {
-						<span class="text-xl font-bold text-center">N/A</span>
-					} else {
-						<span class="text-xl font-bold text-center">{ fmt.Sprintf("%.1f", currentData.Weight) } kg</span>
-						if !(math.IsNaN(weightDiff)) {
-							<span
-								class={
-									"text-sm font-semibold text-center flex justify-center items-center gap-2",
-									templ.KV("text-green-500", weightDiff <= settings.Target_weight_loss_rate),
-									templ.KV("text-red-500", weightDiff > settings.Target_weight_loss_rate),
-								}
-							>
-								if weightDiff <= settings.Target_weight_loss_rate {
-									<img class="h-4" src="/static/img/arrow-down.svg"/>
-								} else {
-									<img class="h-4" src="/static/img/arrow-up.svg"/>
-								}
-								<span>
-									{ fmt.Sprintf("%.2f", weightDiff * 100) } %
-								</span>
-							</span>
-						}
+				<div class="col-span-2 text-center">
+					<h1 class="font-bold text-2xl">{ date }</h1>
+					if !hasCurrentWeek {
+						<span class="text-sm font-light italic text-slate-400">Data for current week not availble</span>
 					}
 				</div>
-				<div
-					class="md:col-span-1 text-center col-span-2 flex gap-4 justify-center items-center rounded-md border border-slate-200 shadow-md p-3"
-				>
-					<img src="/static/img/calories.svg" class="h-5"/>
-					if calorieGoal <= 0 {
-						<span class="text-xl font-bold">
-							N/A
-						</span>
-					} else {
-						<span class="text-xl font-bold">
-							{ fmt.Sprintf("%0.f", math.Ceil(calorieGoal)) } cal
-						</span>
-					}
-				</div>
+				@Card(CardProps{iconSrc: "static/img/trophy.svg", positiveChange: currentData.PercentChange <= settings.Target_weight_loss_rate, changeRate: currentData.PercentChange, value: currentData.AverageWeight, unit: "kg"})
+				@Card(CardProps{iconSrc: "/static/img/calories.svg", value: math.Ceil(calorieGoal), unit: "cal", roundValue: true})
+				if needsAdjustment {
+					<span id="warning" class="text-center text-sm text-red-500 animate-pulse">Progress has slowed down. Consider decreasing calories</span>
+				}
 				if expectedDuration != 0 {
-					<div
-						class="md:col-span-1 text-center col-span-2 flex gap-4 justify-center items-center rounded-md border border-slate-200 shadow-md p-3"
-					>
-						<img src="/static/img/calendar.svg" class="h-5"/>
-						<span class="text-xl font-bold">
-							≈ { fmt.Sprintf("%0.f", math.Abs(math.Ceil(expectedDuration))) } weeks to go
-						</span>
-					</div>
+					@Card(CardProps{iconSrc: "/static/img/calendar.svg", value: math.Abs(math.Ceil(expectedDuration)), unit: "weeks to go", roundValue: true})
 				}
 				<div>
 					@templ.Raw(weightChart)
 				</div>
 			</div>
 		</div>
+		<script>
+			function displayWarning () {
+				const warning = document.getElementById("warning");
+				setTimeout(() => {
+					warning.style.display = "none";
+				}, 5000)
+			};
+			displayWarning();
+		</script>
 	}
+}
+
+type CardProps struct {
+	unit           string
+	value          float64
+	changeRate     float64
+	positiveChange bool
+	iconSrc        string
+	roundValue     bool
+}
+
+templ Card(props CardProps) {
+	<div
+		class="md:col-span-1 text-center col-span-2 flex gap-4 justify-center items-center rounded-md border border-slate-200 shadow-md p-3"
+	>
+		if  props.iconSrc != "" {
+			<img src={ props.iconSrc } class="h-5"/>
+		}
+		if !(props.value > 0) {
+			<span class="text-xl font-bold text-center">N/A</span>
+		} else {
+			if props.roundValue {
+				<span class="text-xl font-bold text-center">{ fmt.Sprintf("%.0f", props.value) } { props.unit }</span>
+			} else {
+				<span class="text-xl font-bold text-center">{ fmt.Sprintf("%.1f", props.value) } { props.unit }</span>
+			}
+			if !(math.IsNaN(props.changeRate)) && !(props.changeRate == 0) {
+				<span
+					class={
+						"text-sm font-semibold text-center flex justify-center items-center gap-1",
+						templ.KV("text-green-500", props.positiveChange),
+						templ.KV("text-red-500", !props.positiveChange),
+					}
+				>
+					if props.positiveChange {
+						<img class="h-4" src="/static/img/arrow-down.svg"/>
+					} else {
+						<img class="h-4" src="/static/img/arrow-up.svg"/>
+					}
+					<span>
+						{ fmt.Sprintf("%.2f", props.changeRate) } %
+					</span>
+				</span>
+			}
+		}
+	</div>
 }

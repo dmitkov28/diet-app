@@ -1,6 +1,6 @@
 package templates
 
-import "github.com/dmitkov28/dietapp/data"
+import "time"
 
 type WeightFormErrors struct {
 	Current_weight string
@@ -26,6 +26,7 @@ templ WeightForm() {
 				<label>Date</label>
 				<input
 					name="date"
+					value={time.Now().Format("2006-01-02")}
 					class="w-full border shadow-md px-3 py-1 rounded-md text-slate-400"
 					type="date"
 					required
@@ -39,7 +40,7 @@ templ WeightForm() {
 	</div>
 }
 
-templ WeightPage(weights []data.Weight) {
+templ WeightPage() {
 	@Base("Weight") {
 		<div class="w-full flex flex-col flex-1 items-center justify-center">
 			<h1 class="font-bold text-2xl text-center">Weight Log</h1>
