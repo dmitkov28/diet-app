@@ -20,7 +20,7 @@ func SettingsGETHandler(settingsRepo *data.SettingsRepository) echo.HandlerFunc 
 
 		bmr := diet.CalculateBMR(settings.Current_weight, settings.Height, settings.Age, settings.Sex)
 		calorieGoal := diet.CalculateCalorieGoal(bmr, settings.Activity_level, settings.Current_weight, settings.Target_weight_loss_rate)
-		expectedDuration := diet.CaclulateExpectedDietDuration(settings.Current_weight, settings.Target_weight, settings.Target_weight_loss_rate)
+		expectedDuration := diet.CalculateExpectedDietDuration(settings.Current_weight, settings.Target_weight, settings.Target_weight_loss_rate)
 		return render(c, templates.SettingsPage(settings, bmr, calorieGoal, expectedDuration))
 	}
 }
@@ -100,7 +100,7 @@ func SettingsPOSTHandler(settingsRepo *data.SettingsRepository) echo.HandlerFunc
 
 		bmr := diet.CalculateBMR(settings.Current_weight, settings.Height, settings.Age, settings.Sex)
 		calorieGoal := diet.CalculateCalorieGoal(bmr, settings.Activity_level, settings.Current_weight, settings.Target_weight_loss_rate)
-		expectedDuration := diet.CaclulateExpectedDietDuration(settings.Current_weight, settings.Target_weight, settings.Target_weight_loss_rate)
+		expectedDuration := diet.CalculateExpectedDietDuration(settings.Current_weight, settings.Target_weight, settings.Target_weight_loss_rate)
 		return render(c, templates.SettingsPage(settings, bmr, calorieGoal, expectedDuration))
 	}
 }
