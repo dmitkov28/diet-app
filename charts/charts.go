@@ -56,6 +56,12 @@ func GenerateLineChart(title, subtitle string, xAxis []string, values []opts.Lin
 				},
 			},
 		}),
+
+		charts.WithTooltipOpts(opts.Tooltip{
+			Show:      opts.Bool(true),
+			Trigger:   "item",
+			TriggerOn: "mousemove",
+		}),
 	)
 	chart.SetXAxis(xAxis).AddSeries("data", values)
 	return chart
