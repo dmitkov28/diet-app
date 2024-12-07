@@ -1,8 +1,16 @@
 package diet
 
-import "github.com/dmitkov28/dietapp/data"
+import (
+	"math"
+
+	"github.com/dmitkov28/dietapp/data"
+)
 
 func CalculateBMR(weight float64, height, age int, sex string) float64 {
+	if weight == 0 || height == 0 {
+		return 0
+	}
+
 	if sex == "M" {
 		return (13.7516 * weight) + (5.0033 * float64(height)) - (6.755 * float64(age)) + 66.473
 	} else {
@@ -23,20 +31,25 @@ func CalculateDeficit(weight, weightLossRate float64) float64 {
 	return (weight * weightLossRate * poundsPerKg * float64(caloriesPerPound)) / float64(daysPerWeek)
 }
 
-func CaclulateExpectedDietDuration(currentWeight, targetWeight, targetWeightLossRate float64) float64 {
+func CalculateExpectedDietDuration(currentWeight, targetWeight, targetWeightLossRate float64) float64 {
+	if currentWeight == 0 || targetWeight == 0 || targetWeightLossRate == 0 {
+		return 0
+	}
+
 	weightToLose := currentWeight - targetWeight
 	weightToLosePerWeek := currentWeight * targetWeightLossRate
 	return weightToLose / weightToLosePerWeek
 }
 
-func CalculateAverageWeight(items []data.WeightCalories) float64 {
-	if len(items) == 0 {
-		return 0
+func CheckNeedsAdjustment(stats []data.WeeklyStats) bool {
+	const minLoss = 0.5
+	var weeksMissedTarget int
+	for _, stat := range stats {
+		roundedStatsChange := math.Round(stat.PercentChange*100) / 100
+		if roundedStatsChange > minLoss {
+			weeksMissedTarget++
+		}
 	}
-	sum := float64(0)
-	for _, item := range items {
-		sum += item.Weight
-	}
-	return sum / float64(len(items))
 
+	return weeksMissedTarget >= 2
 }
