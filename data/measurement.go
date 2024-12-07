@@ -201,7 +201,7 @@ func (repo *MeasurementRepository) GetWeeklyStats(userId, weeks int) ([]WeeklySt
 		) subquery
 		ORDER BY week ASC;`
 
-	rows, err := repo.db.db.Query(query, userId, weeks + 1)
+	rows, err := repo.db.db.Query(query, userId, weeks+1)
 	if err != nil {
 		return nil, err
 	}
@@ -231,6 +231,14 @@ func (repo *MeasurementRepository) GetWeeklyStats(userId, weeks int) ([]WeeklySt
 		})
 
 		prevWeight = avgWeight
+	}
+
+	if len(stats) == 0 {
+		return []WeeklyStats{}, nil
+	}
+
+	if len(stats) == 1 {
+		return stats, nil
 	}
 
 	return stats[1:], nil
