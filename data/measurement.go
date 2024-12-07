@@ -181,12 +181,12 @@ func (repo *MeasurementRepository) DeleteWeightAndCaloriesByWeightID(weightID st
 }
 
 type WeeklyStats struct {
-	WeekStart     string
+	YearWeek      string
 	AverageWeight float64
 	PercentChange float64
 }
 
-func (repo *MeasurementRepository) GetWeeklyStats(weeks int) ([]WeeklyStats, error) {
+func (repo *MeasurementRepository) GetWeeklyStats(userId, weeks int) ([]WeeklyStats, error) {
 	query := `
 		SELECT week, avg_weight
 		FROM (
@@ -194,13 +194,14 @@ func (repo *MeasurementRepository) GetWeeklyStats(weeks int) ([]WeeklyStats, err
 				strftime('%Y-%W', date) as week,
 				AVG(weight) as avg_weight
 			FROM weight
+			WHERE user_id = ?
 			GROUP BY week
 			ORDER BY week DESC
-			LIMIT 3
+			LIMIT ?
 		) subquery
 		ORDER BY week ASC;`
 
-		rows, err := repo.db.db.Query(query, weeks)
+	rows, err := repo.db.db.Query(query, userId, weeks + 1)
 	if err != nil {
 		return nil, err
 	}
@@ -211,10 +212,10 @@ func (repo *MeasurementRepository) GetWeeklyStats(weeks int) ([]WeeklyStats, err
 	var prevWeight float64
 
 	for rows.Next() {
-		var weekStr string
+		var yearWeek string
 		var avgWeight float64
 
-		if err := rows.Scan(&weekStr, &avgWeight); err != nil {
+		if err := rows.Scan(&yearWeek, &avgWeight); err != nil {
 			return nil, err
 		}
 
@@ -224,7 +225,7 @@ func (repo *MeasurementRepository) GetWeeklyStats(weeks int) ([]WeeklyStats, err
 		}
 
 		stats = append(stats, WeeklyStats{
-			WeekStart:     weekStr,
+			YearWeek:      yearWeek,
 			AverageWeight: avgWeight,
 			PercentChange: percentChange,
 		})
@@ -232,5 +233,5 @@ func (repo *MeasurementRepository) GetWeeklyStats(weeks int) ([]WeeklyStats, err
 		prevWeight = avgWeight
 	}
 
-	return stats, nil
+	return stats[1:], nil
 }
