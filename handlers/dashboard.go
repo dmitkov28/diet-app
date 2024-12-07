@@ -3,7 +3,6 @@ package handlers
 import (
 	"fmt"
 	"math"
-	"slices"
 	"time"
 
 	"github.com/dmitkov28/dietapp/charts"
@@ -18,13 +17,12 @@ func DashboardGETHandler(measurementsRepo *data.MeasurementRepository, settingsR
 	return func(c echo.Context) error {
 		today := time.Now().Format("Jan 2, 2006")
 		userId := c.Get("user_id").(int)
-
-		items, err := measurementsRepo.GetMeasurementsByUserId(userId, 0)
+		stats, err := measurementsRepo.GetWeeklyStats(userId, 3)
 		if err != nil {
 			fmt.Println(err)
 		}
-
-		slices.Reverse(items)
+		currentData := stats[len(stats)-1]
+		hasCurrentWeek := data.HasCurrentWeek(currentData)
 
 		settings, err := settingsRepo.GetSettingsByUserID(userId)
 
@@ -32,43 +30,33 @@ func DashboardGETHandler(measurementsRepo *data.MeasurementRepository, settingsR
 			fmt.Println(err)
 		}
 
-		if len(items) == 0 {
-			return render(c, templates.HomePage(today, data.WeightCalories{}, settings, 0, 0, 0, ""))
-		}
-
-		currentData := items[0]
-
-		current, lastWeek, err := measurementsRepo.GetCurrentWeightAvg(userId)
-		if err != nil {
-			fmt.Println(err)
-		}
-		weightDiff := math.Round(((current-lastWeek)/lastWeek)*1000) / 1000
-		bmr := diet.CalculateBMR(currentData.Weight, settings.Height, settings.Age, settings.Sex)
-		calorieGoal := diet.CalculateCalorieGoal(bmr, settings.Activity_level, currentData.Weight, settings.Target_weight_loss_rate)
-		expectedDuration := diet.CaclulateExpectedDietDuration(currentData.Weight, settings.Target_weight, settings.Target_weight_loss_rate)
+		bmr := diet.CalculateBMR(currentData.AverageWeight, settings.Height, settings.Age, settings.Sex)
+		calorieGoal := diet.CalculateCalorieGoal(bmr, settings.Activity_level, currentData.AverageWeight, settings.Target_weight_loss_rate)
+		expectedDuration := diet.CalculateExpectedDietDuration(currentData.AverageWeight, settings.Target_weight, settings.Target_weight_loss_rate)
 
 		var xAxis []string
 		var chartValues []opts.LineData
-		maxWeight := float64(0)
-		minWeight := float64(math.MaxFloat64)
+		var maxWeight float64
+		minWeight := math.MaxFloat64
 
-		for _, item := range items {
-			date := data.ParseDateString(item.WeightDate)
-			xAxis = append(xAxis, date)
-			chartValues = append(chartValues, opts.LineData{Name: date, Value: item.Weight})
-			if item.Weight > maxWeight {
-				maxWeight = item.Weight
+		for _, val := range stats {
+			xAxis = append(xAxis, val.YearWeek)
+			chartValues = append(chartValues, opts.LineData{Value: val.AverageWeight, Name: val.YearWeek})
+			if maxWeight < val.AverageWeight {
+				maxWeight = val.AverageWeight
 			}
 
-			if item.Weight < minWeight {
-				minWeight = item.Weight
+			if minWeight > val.AverageWeight {
+				minWeight = val.AverageWeight
 			}
-
 		}
 
-		chart := charts.GenerateLineChart("Progress", "", xAxis, chartValues, maxWeight, minWeight)
+		chart := charts.GenerateLineChart("Weekly Progress", "", xAxis, chartValues, maxWeight, minWeight)
 		chartHtml := charts.RenderChart(*chart)
 
-		return render(c, templates.HomePage(today, currentData, settings, weightDiff, calorieGoal, expectedDuration, chartHtml))
+		needsAdjustment := diet.CheckNeedsAdjustment(stats)
+		
+
+		return render(c, templates.HomePage(today, currentData, settings, calorieGoal, expectedDuration, chartHtml, hasCurrentWeek, needsAdjustment))
 	}
 }
