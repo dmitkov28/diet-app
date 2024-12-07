@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -12,13 +11,7 @@ import (
 
 func WeightGETHandler(measurementsRepo *data.MeasurementRepository) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		userId := c.Get("user_id").(int)
-		weights, err := measurementsRepo.GetWeightByUserId(userId)
-		if err != nil {
-			fmt.Println(err)
-		}
-
-		return render(c, templates.WeightPage(weights))
+		return render(c, templates.WeightPage())
 	}
 }
 
