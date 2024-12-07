@@ -7,7 +7,7 @@ import (
 )
 
 func ParseDateString(dateString string) string {
-	parsed, err := time.Parse(time.RFC3339, dateString)
+	parsed, err := time.Parse(time.DateOnly, dateString)
 	if err != nil {
 		return "NaN"
 	}
