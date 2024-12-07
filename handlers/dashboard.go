@@ -21,7 +21,14 @@ func DashboardGETHandler(measurementsRepo *data.MeasurementRepository, settingsR
 		if err != nil {
 			fmt.Println(err)
 		}
-		currentData := stats[len(stats)-1]
+
+		var currentData data.WeeklyStats
+		if len(stats) == 0 {
+			currentData = data.WeeklyStats{}
+		} else {
+			currentData = stats[len(stats)-1]
+		}
+
 		hasCurrentWeek := data.HasCurrentWeek(currentData)
 
 		settings, err := settingsRepo.GetSettingsByUserID(userId)
@@ -55,7 +62,6 @@ func DashboardGETHandler(measurementsRepo *data.MeasurementRepository, settingsR
 		chartHtml := charts.RenderChart(*chart)
 
 		needsAdjustment := diet.CheckNeedsAdjustment(stats)
-		
 
 		return render(c, templates.HomePage(today, currentData, settings, calorieGoal, expectedDuration, chartHtml, hasCurrentWeek, needsAdjustment))
 	}
