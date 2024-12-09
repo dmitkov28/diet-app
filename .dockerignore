@@ -1,0 +1,9 @@
+node_modules
+.env*
+*db
+Dockerfile*
+LICENSE
+Makefile
+package.json
+tailwind.config.js
+terraform/
