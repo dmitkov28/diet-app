@@ -7,3 +7,4 @@ Makefile
 package.json
 tailwind.config.js
 terraform/
+README.md
