@@ -3,3 +3,7 @@ tmp
 *.db
 *.txt
 .env
+.terraform
+*.tfstate
+*.tfstate.*
+*.lock.hcl
