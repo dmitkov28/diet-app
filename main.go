@@ -8,6 +8,7 @@ import (
 	"github.com/dmitkov28/dietapp/handlers"
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 func init() {
@@ -15,6 +16,7 @@ func init() {
 }
 
 func main() {
+
 	db, err := data.NewDB()
 	if err != nil {
 		log.Fatal(err)
@@ -27,8 +29,10 @@ func main() {
 
 	e := echo.New()
 	e.Static("/static", "static")
-
 	e.File("/favicon.ico", "static/img/favicon/favicon.ico")
+	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
+		Format: "${time_rfc3339_nano} ${method}, uri=${uri}, status=${status}\n",
+	}))
 
 	e.GET("/", func(c echo.Context) error {
 		c.Response().Header().Set("HX-Redirect", "/stats")
