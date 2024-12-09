@@ -22,6 +22,12 @@ variable "api_gateway_name" {
   default     = "tf_debug_gw"
 }
 
+variable "ENV" {
+  description = "ENV"
+  type        = string
+  default     = "PROD"
+}
+
 variable "AWS_LWA_PORT" {
   description = "Container Port"
   type        = number
@@ -30,12 +36,12 @@ variable "AWS_LWA_PORT" {
 
 variable "TURSO_URL" {
   description = "Turso URL"
-  type = string
-  sensitive = true
+  type        = string
+  sensitive   = true
 }
 
 variable "TURSO_TOKEN" {
   description = "Turso Token"
-  type = string
-  sensitive = true
+  type        = string
+  sensitive   = true
 }

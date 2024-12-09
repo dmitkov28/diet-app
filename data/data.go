@@ -3,6 +3,7 @@ package data
 import (
 	"database/sql"
 	"fmt"
+	"log"
 	"os"
 
 	_ "github.com/mattn/go-sqlite3"
@@ -14,10 +15,24 @@ type DB struct {
 }
 
 func NewDB() (*DB, error) {
-	// db, err := sql.Open("sqlite3", "./db.db")
-	tursoUrl := os.Getenv("TURSO_URL")
-	tursoToken := os.Getenv("TURSO_TOKEN")
-	dbConnectionString := fmt.Sprintf("%s?authToken=%s", tursoUrl, tursoToken)
+	env := os.Getenv("ENV")
+	var dbConnectionString string
+
+	if env == "PROD" {
+		tursoUrl := os.Getenv("TURSO_URL")
+		tursoToken := os.Getenv("TURSO_TOKEN")
+		dbConnectionString = fmt.Sprintf("%s?authToken=%s", tursoUrl, tursoToken)
+	} else {
+		localDbUrl := os.Getenv("LOCAL_DB_URL")
+		if localDbUrl == "" {
+			log.Fatal("Missing DB connection details.")
+		}
+		dbConnectionString = localDbUrl
+	}
+
+	if dbConnectionString == "" {
+		log.Fatal("Missing DB connection details.")
+	}
 
 	db, err := sql.Open("libsql", dbConnectionString)
 	if err != nil {
