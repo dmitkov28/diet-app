@@ -237,7 +237,7 @@ func (repo *MeasurementRepository) GetWeeklyStats(userId, weeks int) ([]WeeklySt
 		return []WeeklyStats{}, nil
 	}
 
-	if len(stats) == 1 {
+	if len(stats) < weeks {
 		return stats, nil
 	}
 
