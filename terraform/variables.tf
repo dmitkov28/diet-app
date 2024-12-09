@@ -27,3 +27,15 @@ variable "AWS_LWA_PORT" {
   type        = number
   default     = 1323
 }
+
+variable "TURSO_URL" {
+  description = "Turso URL"
+  type = string
+  sensitive = true
+}
+
+variable "TURSO_TOKEN" {
+  description = "Turso Token"
+  type = string
+  sensitive = true
+}

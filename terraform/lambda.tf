@@ -10,6 +10,8 @@ resource "aws_lambda_function" "lambda_func" {
   environment {
     variables = {
       AWS_LWA_PORT = var.AWS_LWA_PORT
+      TURSO_TOKEN  = var.TURSO_TOKEN
+      TURSO_URL    = var.TURSO_URL
     }
   }
 
