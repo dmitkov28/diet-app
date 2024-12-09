@@ -1,7 +1,7 @@
 include .env
 export 
 
-.PHONY: dev css templates air stop db goose bootstrap
+.PHONY: dev css templates air stop db goose bootstrap deploy
 
 dev:
 	make db && make goose && make bootstrap && make air & make templates & make css
@@ -24,6 +24,9 @@ templates:
 
 css:
 	npx tailwindcss -i ./static/css/input.css -o ./static/css/main.css --watch --minify
+
+deploy:
+	cd terraform && terraform apply -var-file="secret.tfvars" --auto-approve
 
 stop:
 	pkill -f "air" || true
