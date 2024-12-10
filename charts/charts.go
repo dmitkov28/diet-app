@@ -1,7 +1,7 @@
 package charts
 
 import (
-	"bytes"
+	"fmt"
 
 	"github.com/go-echarts/go-echarts/v2/charts"
 	"github.com/go-echarts/go-echarts/v2/opts"
@@ -68,10 +68,7 @@ func GenerateLineChart(title, subtitle string, xAxis []string, values []opts.Lin
 }
 
 func RenderChart(chart charts.Line) string {
-	buf := new(bytes.Buffer)
-	err := chart.Render(buf)
-	if err != nil {
-		return ""
-	}
-	return buf.String()
+	content := chart.RenderSnippet()
+	chartContent := fmt.Sprintf("%s\n%s", content.Element, content.Script)
+	return chartContent
 }
