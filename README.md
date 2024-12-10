@@ -23,6 +23,8 @@ I built this application to solve my own diet tracking needs, focusing on:
 
 ## Tech Stack
 
+<img style="height: 400px; margin: auto; display: block;" src="./.github/assets/diagram.png"/>
+
 - **Backend**: Go
   - Basic echo web app
 
