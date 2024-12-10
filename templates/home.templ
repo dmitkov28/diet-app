@@ -32,11 +32,13 @@ templ HomePage(date string, currentData data.WeeklyStats, settings data.Settings
 		<script>
 			function displayWarning () {
 				const warning = document.getElementById("warning");
-				setTimeout(() => {
-					warning.style.display = "none";
-				}, 5000)
-			};
-			displayWarning();
+				if (warning) {
+					setTimeout(() => {
+						warning.style.display = "none";
+					}, 5000)
+				};
+				displayWarning();
+			}
 		</script>
 	}
 }
