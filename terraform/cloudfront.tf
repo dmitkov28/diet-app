@@ -11,7 +11,9 @@ resource "aws_cloudfront_distribution" "cloudfront_dist" {
   wait_for_deployment = true
   web_acl_id          = null
 
+
   default_cache_behavior {
+    compress = true
     allowed_methods = [
       "DELETE",
       "GET",
