@@ -42,6 +42,7 @@ func Base(title string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
+<<<<<<< HEAD
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</title><link rel=\"stylesheet\" href=\"/static/css/main.css\"><script src=\"https://unpkg.com/htmx.org@1.9.10\"></script>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -53,6 +54,9 @@ func Base(title string) templ.Component {
 			}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</head><body class=\"min-h-screen flex flex-col\"><header></header><main id=\"main-content\" class=\"flex flex-col flex-1\">")
+=======
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</title><link rel=\"stylesheet\" href=\"/static/css/main.css\"><script src=\"https://unpkg.com/htmx.org@1.9.10\"></script><script src=\"https://go-echarts.github.io/go-echarts-assets/assets/echarts.min.js\"></script></head><body class=\"min-h-screen flex flex-col\"><header></header><main id=\"main-content\" class=\"flex flex-col flex-1\">")
+>>>>>>> 8e6ec68 (conditionally render echarts script tag if page title is 'Home')
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
