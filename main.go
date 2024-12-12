@@ -53,8 +53,8 @@ func main() {
 	e.GET("/calories", handlers.CaloriesGETHandler(measurementsRepo), authMiddleware(sessionsRepo))
 	e.POST("/calories", handlers.CaloriesPOSTHandler(measurementsRepo), authMiddleware(sessionsRepo))
 
-	e.GET("/scan", handlers.ScanGETHandler())
-	e.GET("/scan/:ean", handlers.ScanBarCodeGETHandler())
+	e.GET("/scan", handlers.ScanGETHandler(), authMiddleware(sessionsRepo))
+	e.GET("/scan/:ean", handlers.ScanBarCodeGETHandler(), authMiddleware(sessionsRepo))
 
 	e.GET("/login", handlers.LoginGETHandler())
 	e.POST("/login", handlers.LoginPOSTHandler(usersRepo, sessionsRepo))
