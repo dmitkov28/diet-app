@@ -53,8 +53,10 @@ func main() {
 	e.GET("/calories", handlers.CaloriesGETHandler(measurementsRepo), authMiddleware(sessionsRepo))
 	e.POST("/calories", handlers.CaloriesPOSTHandler(measurementsRepo), authMiddleware(sessionsRepo))
 
-	e.GET("/login", handlers.LoginGETHandler())
+	e.GET("/scan", handlers.ScanGETHandler())
+	e.GET("/scan/:ean", handlers.ScanBarCodeGETHandler())
 
+	e.GET("/login", handlers.LoginGETHandler())
 	e.POST("/login", handlers.LoginPOSTHandler(usersRepo, sessionsRepo))
 
 	e.Logger.Fatal(e.Start(":1323"))
