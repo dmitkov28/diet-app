@@ -1,7 +1,10 @@
 include .env
 export 
 
-.PHONY: dev css templates air stop db goose bootstrap deploy
+.PHONY: dev css templates air stop db goose bootstrap deploy ngrok
+
+ngrok:
+	docker run -it -e NGROK_AUTHTOKEN="${NGROK_TOKEN}" ngrok/ngrok:latest http host.docker.internal:1323
 
 dev:
 	make db && make goose && make bootstrap && make air & make templates & make css
