@@ -11,7 +11,7 @@ type WeightFormErrors struct {
 templ WeightForm() {
 	<div class="w-full p-8">
 		<form hx-indicator="#spinner" hx-post="/weight" hx-replace-url="/stats" hx-swap="beforeend" class="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
-			<div>
+			<div class="flex flex-col gap-1 col-span-2 md:col-span-1">
 				<label>Weight</label>
 				<input
 					name="weight"
@@ -22,17 +22,17 @@ templ WeightForm() {
 					required
 				/>
 			</div>
-			<div class="flex flex-col gap-1">
+			<div class="flex flex-col gap-1 col-span-2 md:col-span-1">
 				<label>Date</label>
 				<input
 					name="date"
-					value={time.Now().Format("2006-01-02")}
+					value={ time.Now().Format("2006-01-02") }
 					class="w-full border shadow-md px-3 py-1 rounded-md text-slate-400"
 					type="date"
 					required
 				/>
 			</div>
-			<button class="text-white font-semibold bg-blue-500 rounded-md p-3 flex gap-2 justify-center items-center">
+			<button class="text-white font-semibold bg-blue-500 rounded-md p-3 flex gap-2 justify-center items-center col-span-2">
 				@Spinner()
 				Log Weight
 			</button>
