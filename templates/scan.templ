@@ -1,20 +1,24 @@
 package templates
 
-import "github.com/dmitkov28/dietapp/diet"
-import "fmt"
+import (
+	"fmt"
+	"github.com/dmitkov28/dietapp/diet"
+)
 
 templ ScanPage() {
-@Base("Scan") {
-<div class="w-full flex flex-col flex-1 gap-2 justify-center items-center p-8">
-	<div id="reader" class="w-full max-w-lg"></div>
-	<div id="result" class="mt-4 text-md overflow-scroll max-w-full"></div>
-	<button onclick="startCamera()"
-		class="bg-[#2596be] text-white p-3 font-bold rounded-md flex items-center justify-center gap-2">
-		<img class="h-5" src="/static/img/scan.svg" />
-		Scan Food
-	</button>
-</div>
-<script type="module">
+	@Base("Scan") {
+		<div class="w-full flex flex-col flex-1 gap-2 justify-center items-center p-8">
+			<div id="reader" class="w-full max-w-lg"></div>
+			<div id="result" class="mt-4 text-md overflow-scroll max-w-full"></div>
+			<button
+				onclick="startCamera()"
+				class="bg-[#2596be] text-white p-3 font-bold rounded-md flex items-center justify-center gap-2"
+			>
+				<img class="h-5" src="/static/img/scan.svg"/>
+				Scan Food
+			</button>
+		</div>
+		<script type="module">
 	const resultDiv = document.getElementById("result");
 
 	async function fetchFoodFacts(ean) {
@@ -87,74 +91,87 @@ templ ScanPage() {
 
 	window.startCamera = startCamera
 </script>
-}
-}
-
-templ FoodFacts(data diet.NutritionData){
-<div class="rounded-md border-slate-200 shadow-md p-4">
-	if data.Status == "failure"{
-	<h2>Unknown product 😞</h2>
-	} else {
-	<h2 class="font-bold text-xl mb-2 text-center">{data.Product.ProductNameEn} ({data.Product.Brands})</h2>
-	@NutritionTable(data)
 	}
-
-</div>
 }
 
+templ FoodFacts(data diet.NutritionData) {
+	<div class="rounded-md border-slate-200 shadow-md p-4">
+		if data.Status == "failure" {
+			<h2>Unknown product 😞</h2>
+		} else {
+			<h2 class="font-bold text-xl mb-2 text-center">{ data.Product.ProductNameEn } ({ data.Product.Brands })</h2>
+			@NutritionTable(data)
+		}
+	</div>
+}
 
-templ NutritionTable(data diet.NutritionData){
-<div class="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden">
-	<table class="w-full border-collapse border border-gray-300">
-		<thead class="bg-gray-100">
-			<tr>
-				<th class="text-left px-4 py-2 border-b border-gray-300 font-semibold">Nutrient</th>
-				<th class="text-right px-4 py-2 border-b border-gray-300 font-semibold">Amount</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td class="text-left px-4 py-2 border-b border-gray-300">Calories</td>
-				<td class="text-right px-4 py-2 border-b border-gray-300">{fmt.Sprintf("%d",
-					data.Product.Nutriments.EnergyKcal)}</td>
-			</tr>
-			<tr class="bg-gray-50">
-				<td class="text-left px-4 py-2 border-b border-gray-300">Total Fat</td>
-				<td class="text-right px-4 py-2 border-b border-gray-300">{fmt.Sprintf("%d",
-					data.Product.Nutriments.Fat)}g</td>
-			</tr>
-			<tr>
-				<td class="text-left px-4 py-2 border-b border-gray-300">Saturated Fat</td>
-				<td class="text-right px-4 py-2 border-b border-gray-300">{fmt.Sprintf("%.1f",
-					data.Product.Nutriments.SaturatedFat)}g</td>
-			</tr>
-			<tr>
-				<td class="text-left px-4 py-2 border-b border-gray-300">Sodium</td>
-				<td class="text-right px-4 py-2 border-b border-gray-300">{fmt.Sprintf("%.1f",
-					data.Product.Nutriments.Sodium)}mg</td>
-			</tr>
-			<tr class="bg-gray-50">
-				<td class="text-left px-4 py-2 border-b border-gray-300">Total Carbohydrate</td>
-				<td class="text-right px-4 py-2 border-b border-gray-300">{fmt.Sprintf("%d",
-					data.Product.Nutriments.Carbohydrates)}g</td>
-			</tr>
-			<tr>
-				<td class="text-left px-4 py-2 border-b border-gray-300">Dietary Fiber</td>
-				<td class="text-right px-4 py-2 border-b border-gray-300">{fmt.Sprintf("%.1f",
-					data.Product.Nutriments.Fiber)}g</td>
-			</tr>
-			<tr class="bg-gray-50">
-				<td class="text-left px-4 py-2 border-b border-gray-300">Sugars</td>
-				<td class="text-right px-4 py-2 border-b border-gray-300">{fmt.Sprintf("%.1f",
-					data.Product.Nutriments.Sugars)}g</td>
-			</tr>
-			<tr>
-				<td class="text-left px-4 py-2">Protein</td>
-				<td class="text-right px-4 py-2">{fmt.Sprintf("%d",
-					data.Product.Nutriments.Proteins)}g</td>
-			</tr>
-		</tbody>
-	</table>
-</div>
-
+templ NutritionTable(data diet.NutritionData) {
+	<div class="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden">
+		<table class="w-full border-collapse border border-gray-300">
+			<thead class="bg-gray-100">
+				<tr>
+					<th class="text-left px-4 py-2 border-b border-gray-300 font-semibold">Nutrient</th>
+					<th class="text-right px-4 py-2 border-b border-gray-300 font-semibold">Amount</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class="text-left px-4 py-2 border-b border-gray-300">Calories</td>
+					<td class="text-right px-4 py-2 border-b border-gray-300">
+						{ fmt.Sprintf("%d",
+					data.Product.Nutriments.EnergyKcal) }
+					</td>
+				</tr>
+				<tr class="bg-gray-50">
+					<td class="text-left px-4 py-2 border-b border-gray-300">Total Fat</td>
+					<td class="text-right px-4 py-2 border-b border-gray-300">
+						{ fmt.Sprintf("%d",
+					data.Product.Nutriments.Fat) }g
+					</td>
+				</tr>
+				<tr>
+					<td class="text-left px-4 py-2 border-b border-gray-300">Saturated Fat</td>
+					<td class="text-right px-4 py-2 border-b border-gray-300">
+						{ fmt.Sprintf("%.1f",
+					data.Product.Nutriments.SaturatedFat) }g
+					</td>
+				</tr>
+				<tr>
+					<td class="text-left px-4 py-2 border-b border-gray-300">Sodium</td>
+					<td class="text-right px-4 py-2 border-b border-gray-300">
+						{ fmt.Sprintf("%.1f",
+					data.Product.Nutriments.Sodium) }mg
+					</td>
+				</tr>
+				<tr class="bg-gray-50">
+					<td class="text-left px-4 py-2 border-b border-gray-300">Total Carbohydrate</td>
+					<td class="text-right px-4 py-2 border-b border-gray-300">
+						{ fmt.Sprintf("%d",
+					data.Product.Nutriments.Carbohydrates) }g
+					</td>
+				</tr>
+				<tr>
+					<td class="text-left px-4 py-2 border-b border-gray-300">Dietary Fiber</td>
+					<td class="text-right px-4 py-2 border-b border-gray-300">
+						{ fmt.Sprintf("%.1f",
+					data.Product.Nutriments.Fiber) }g
+					</td>
+				</tr>
+				<tr class="bg-gray-50">
+					<td class="text-left px-4 py-2 border-b border-gray-300">Sugars</td>
+					<td class="text-right px-4 py-2 border-b border-gray-300">
+						{ fmt.Sprintf("%.1f",
+					data.Product.Nutriments.Sugars) }g
+					</td>
+				</tr>
+				<tr>
+					<td class="text-left px-4 py-2">Protein</td>
+					<td class="text-right px-4 py-2">
+						{ fmt.Sprintf("%d",
+					data.Product.Nutriments.Proteins) }g
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 }
