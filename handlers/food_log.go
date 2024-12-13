@@ -24,3 +24,11 @@ func FoodLogGETHandler(repo *data.FoodLogRepository, settingsRepo *data.Settings
 		return render(c, templates.FoodLog(foodLogs, totals))
 	}
 }
+
+func AddFoodGETHandler(repo *data.FoodLogRepository, settingsRepo *data.SettingsRepository) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		// userId := c.Get("user_id").(int)
+
+		return render(c, templates.AddFood())
+	}
+}
