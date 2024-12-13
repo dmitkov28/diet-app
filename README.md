@@ -10,6 +10,9 @@ A minimalist, high-performance diet tracking application built to manage my pers
   <img src=".github/assets/Screen Shot 2024-12-09 at 13.13.37.png" alt="Diet Tracker Screenshot 4" height="300"/>
   <img src=".github/assets/Screen Shot 2024-12-09 at 13.13.41.png" alt="Diet Tracker Screenshot 5" height="300"/>
   <img src=".github/assets/Screen Shot 2024-12-09 at 13.13.44.png" alt="Diet Tracker Screenshot 6" height="300"/>
+  <img src=".github/assets/Screen Shot 2024-12-13 at 14.30.09.png" alt="Diet Tracker Screenshot 7" height="300"/>
+  <img src=".github/assets/Screen Shot 2024-12-13 at 14.31.11.png" alt="Diet Tracker Screenshot 8" height="300"/>
+  <img src=".github/assets/Screen Shot 2024-12-13 at 14.32.31.png" alt="Diet Tracker Screenshot 8" height="300"/>
 </div>
 
 ## Motivation
