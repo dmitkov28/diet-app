@@ -26,6 +26,7 @@ func main() {
 	sessionsRepo := data.NewSessionsRepository(db)
 	settingsRepo := data.NewSettingsRepository(db)
 	measurementsRepo := data.NewMeasurementsRepository(db)
+	foodLogRepo := data.NewFoodLogsRepository(db)
 
 	e := echo.New()
 	e.Static("/static", "static")
@@ -59,7 +60,7 @@ func main() {
 	e.GET("/search", handlers.SearchFoodGETHandler(measurementsRepo), authMiddleware(sessionsRepo))
 	e.GET("/search_food", handlers.SearchFoodGetHandlerWithParams(measurementsRepo), authMiddleware(sessionsRepo))
 
-	e.GET("/food_log", handlers.FoodLogGETHandler(measurementsRepo, settingsRepo), authMiddleware(sessionsRepo))
+	e.GET("/food_log", handlers.FoodLogGETHandler(foodLogRepo, settingsRepo), authMiddleware(sessionsRepo))
 
 	e.GET("/login", handlers.LoginGETHandler())
 	e.POST("/login", handlers.LoginPOSTHandler(usersRepo, sessionsRepo))
