@@ -24,6 +24,22 @@ I built this application to solve my own diet tracking needs, focusing on:
 - Learning some Go along the way
 - Spending some time away from bloated JS Frameworks
 
+## Features (more coming soon!)
+
+- **Weight Logging**
+  - Track daily or weekly weight changes to monitor progress.
+
+- **Food Tracking**
+  - Log food intake by entering meals manually or using a food scanner.
+
+- **Food Search**
+  - Search for food items using the OpenFoodFacts API to retrieve detailed nutritional information and make data entry easier.
+
+- **Progress Tracking & Reports**
+  - View detailed stats on weight and nutrition trends over time.
+ 
+
+
 ## Tech Stack
 
 <img style="height: 400px; margin: auto; display: block;" src="./.github/assets/diagram.png"/>
