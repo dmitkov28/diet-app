@@ -3,6 +3,7 @@ package handlers
 import (
 	"fmt"
 	"log"
+	"net/url"
 
 	"github.com/dmitkov28/dietapp/data"
 	"github.com/dmitkov28/dietapp/diet"
@@ -18,7 +19,7 @@ func SearchFoodGETHandler(measurementsRepo *data.MeasurementRepository) echo.Han
 
 func SearchFoodGetHandlerWithParams(measurementsRepo *data.MeasurementRepository) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		food := c.QueryParam("query")
+		food := url.QueryEscape(c.QueryParam("query"))
 		fmt.Println(food)
 		result, err := diet.SearchFood(food)
 		if err != nil {
