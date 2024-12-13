@@ -308,6 +308,36 @@ type SearchedFoodResponse struct {
 			FatServing              float64 `json:"fat_serving"`
 			FatUnit                 string  `json:"fat_unit"`
 			FatValue                float64 `json:"fat_value"`
+			Fiber                   float64 `json:"fiber"`
+			Fiber100G               float64 `json:"fiber_100g"`
+			FiberServing            float64 `json:"fiber_serving"`
+			FiberUnit               string  `json:"fiber_unit"`
+			FiberValue              float64 `json:"fiber_value"`
+			Proteins                float64 `json:"proteins"`
+			Proteins100G            float64 `json:"proteins_100g"`
+			ProteinsServing         float64 `json:"proteins_serving"`
+			ProteinsUnit            string  `json:"proteins_unit"`
+			ProteinsValue           float64 `json:"proteins_value"`
+			Salt                    float64 `json:"salt"`
+			Salt100G                float64 `json:"salt_100g"`
+			SaltServing             float64 `json:"salt_serving"`
+			SaltUnit                string  `json:"salt_unit"`
+			SaltValue               float64 `json:"salt_value"`
+			SaturatedFat            float64 `json:"saturated-fat"`
+			SaturatedFat100G        float64 `json:"saturated-fat_100g"`
+			SaturatedFatServing     float64 `json:"saturated-fat_serving"`
+			SaturatedFatUnit        string  `json:"saturated-fat_unit"`
+			SaturatedFatValue       float64 `json:"saturated-fat_value"`
+			Sodium                  float64 `json:"sodium"`
+			Sodium100G              float64 `json:"sodium_100g"`
+			SodiumServing           float64 `json:"sodium_serving"`
+			SodiumUnit              string  `json:"sodium_unit"`
+			SodiumValue             float64 `json:"sodium_value"`
+			Sugars                  float64 `json:"sugars"`
+			Sugars100G              float64 `json:"sugars_100g"`
+			SugarsServing           float64 `json:"sugars_serving"`
+			SugarsUnit              string  `json:"sugars_unit"`
+			SugarsValue             float64 `json:"sugars_value"`
 		} `json:"nutriments"`
 	} `json:"products"`
 	Count    int `json:"count"`

@@ -44,7 +44,12 @@ templ SearchResultsComponent(data diet.SearchedFoodResponse, food string, nextPa
 									({ item.Brands })
 								}
 							</h2>
-							<p class="text-sm text-gray-500">Calories: { fmt.Sprintf("%.0f", item.Nutriments.EnergyKcal) } kcal</p>
+							<div class="flex mt-2 flex-col md:flex-row flex-wrap gap-2">
+								<p class="text-sm text-gray-500">Calories: { fmt.Sprintf("%.0f", item.Nutriments.EnergyKcal) } kcal</p>
+								<p class="text-sm text-gray-500">Protein: { fmt.Sprintf("%.0f", item.Nutriments.Proteins) } g</p>
+								<p class="text-sm text-gray-500">Carbs: { fmt.Sprintf("%.0f", item.Nutriments.Carbohydrates) } g</p>
+								<p class="text-sm text-gray-500">Fat: { fmt.Sprintf("%.0f", item.Nutriments.Fat) } g</p>
+							</div>
 						</div>
 						<button class="px-3 py-1 text-sm font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300">
 							Add
@@ -60,6 +65,7 @@ templ SearchResultsComponent(data diet.SearchedFoodResponse, food string, nextPa
 								}
 							</h2>
 							<p class="text-sm text-gray-500">Calories: { fmt.Sprintf("%.0f", item.Nutriments.EnergyKcal) } kcal</p>
+							<p class="text-sm text-gray-500">Fat: { fmt.Sprintf("%.0f", item.Nutriments.Fat) } g</p>
 						</div>
 						<button class="px-3 py-1 text-sm font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300">
 							Add
@@ -68,7 +74,7 @@ templ SearchResultsComponent(data diet.SearchedFoodResponse, food string, nextPa
 				}
 			}
 			<div class="my-4">
-			@SearchResultsLoading()
+				@SearchResultsLoading()
 			</div>
 		</ul>
 	</div>
