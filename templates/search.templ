@@ -10,7 +10,7 @@ templ SearchPage() {
 		<div class="flex flex-col gap-4 flex-1 p-2">
 			@SearchComponent()
 			<div id="search-results">
-				@Spinner()
+				@SearchResultsLoading()
 			</div>
 		</div>
 	}
@@ -22,8 +22,8 @@ templ SearchComponent() {
 			hx-get="/search_food"
 			hx-trigger="input changed delay:500ms, search"
 			hx-target="#search-results"
-			hx-indicator="#spinner"
-            name="query"
+			hx-indicator="#loading"
+			name="query"
 			type="search"
 			placeholder="Type in a food"
 			class="border border-slate-40 p-2 w-full"
@@ -47,4 +47,18 @@ templ SearchResultsComponent(data diet.SearchedFoodResponse) {
 			}
 		</ul>
 	</div>
+}
+
+templ SearchResultsLoading() {
+	<ul id="loading" class="space-y-4 htmx-indicator" id="loading-skeleton">
+		for i := 0; i < 10; i++ {
+			<li class="flex items-center justify-between p-4 bg-gray-50 rounded-lg shadow-sm animate-pulse">
+				<div>
+					<div class="h-4 bg-gray-300 rounded w-24 mb-2"></div>
+					<div class="h-3 bg-gray-200 rounded w-16"></div>
+				</div>
+				<div class="h-8 w-20 bg-gray-300 rounded"></div>
+			</li>
+		}
+	</ul>
 }
