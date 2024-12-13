@@ -262,3 +262,78 @@ func FetchNutritionData(ean string) (NutritionData, error) {
 	return result, nil
 
 }
+
+type SearchedFoodResponse struct {
+	Products []struct {
+		ProductName   string   `json:"product_name"`
+		Brands        string   `json:"brands"`
+		Fats          float64  `json:"fats"`
+		ImageURL      string   `json:"image_url"`
+		Categories    string   `json:"categories"`
+		Nutriscore    string   `json:"nutriscore_grade"`
+		Allergens     string   `json:"allergens"`
+		Packaging     string   `json:"packaging"`
+		Quantity      string   `json:"quantity"`
+		Countries     string   `json:"countries"`
+		Labels        string   `json:"labels"`
+		Manufacturing string   `json:"manufacturing_places"`
+		Stores        string   `json:"stores"`
+		NovaGroup     int      `json:"nova_group"`
+		Tags          []string `json:"_keywords"`
+		Nutriments    struct {
+			Carbohydrates           float64 `json:"carbohydrates"`
+			Carbohydrates100G       float64 `json:"carbohydrates_100g"`
+			CarbohydratesServing    float64 `json:"carbohydrates_serving"`
+			CarbohydratesUnit       string  `json:"carbohydrates_unit"`
+			CarbohydratesValue      float64 `json:"carbohydrates_value"`
+			Energy                  float64 `json:"energy"`
+			EnergyKcal              float64 `json:"energy-kcal"`
+			EnergyKcal100G          float64 `json:"energy-kcal_100g"`
+			EnergyKcalServing       float64 `json:"energy-kcal_serving"`
+			EnergyKcalUnit          string  `json:"energy-kcal_unit"`
+			EnergyKcalValue         float64 `json:"energy-kcal_value"`
+			EnergyKcalValueComputed float64 `json:"energy-kcal_value_computed"`
+			EnergyKj                float64 `json:"energy-kj"`
+			EnergyKj100G            float64 `json:"energy-kj_100g"`
+			EnergyKjServing         float64 `json:"energy-kj_serving"`
+			EnergyKjUnit            string  `json:"energy-kj_unit"`
+			EnergyKjValue           float64 `json:"energy-kj_value"`
+			EnergyKjValueComputed   float64 `json:"energy-kj_value_computed"`
+			Energy100G              float64 `json:"energy_100g"`
+			EnergyServing           float64 `json:"energy_serving"`
+			EnergyUnit              string  `json:"energy_unit"`
+			EnergyValue             float64 `json:"energy_value"`
+			Fat                     float64 `json:"fat"`
+			Fat100G                 float64 `json:"fat_100g"`
+			FatServing              float64 `json:"fat_serving"`
+			FatUnit                 string  `json:"fat_unit"`
+			FatValue                float64 `json:"fat_value"`
+		} `json:"nutriments"`
+	} `json:"products"`
+	Count    int `json:"count"`
+	Page     int `json:"page"`
+	PageSize int `json:"page_size"`
+}
+
+func SearchFood(food string) (SearchedFoodResponse, error) {
+	url := fmt.Sprintf("https://world.openfoodfacts.org/cgi/search.pl?search_terms=%s&search_simple=1&action=process&json=1", food)
+	res, err := http.Get(url)
+	if err != nil {
+		return SearchedFoodResponse{}, err
+	}
+
+	defer res.Body.Close()
+
+	var result = SearchedFoodResponse{}
+	bytes, err := io.ReadAll(res.Body)
+
+	if err != nil {
+		return SearchedFoodResponse{}, err
+	}
+
+	if err := json.Unmarshal(bytes, &result); err != nil {
+		return SearchedFoodResponse{}, err
+	}
+	return result, nil
+
+}
