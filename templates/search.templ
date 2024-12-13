@@ -1,0 +1,50 @@
+package templates
+
+import (
+	"fmt"
+	"github.com/dmitkov28/dietapp/diet"
+)
+
+templ SearchPage() {
+	@Base("Search Food") {
+		<div class="flex flex-col gap-4 flex-1 p-2">
+			@SearchComponent()
+			<div id="search-results">
+				@Spinner()
+			</div>
+		</div>
+	}
+}
+
+templ SearchComponent() {
+	<div class="w-full">
+		<input
+			hx-get="/search_food"
+			hx-trigger="input changed delay:500ms, search"
+			hx-target="#search-results"
+			hx-indicator="#spinner"
+            name="query"
+			type="search"
+			placeholder="Type in a food"
+			class="border border-slate-40 p-2 w-full"
+		/>
+	</div>
+}
+
+templ SearchResultsComponent(data diet.SearchedFoodResponse) {
+	<div>
+		<ul class="space-y-4">
+			for _, item := range data.Products {
+				<li class="flex items-center justify-between p-4 bg-gray-50 rounded-lg shadow-sm">
+					<div>
+						<h2 class="text-lg font-medium text-gray-900">{ item.ProductName } ({ item.Brands })</h2>
+						<p class="text-sm text-gray-500">Calories: { fmt.Sprintf("%.0f", item.Nutriments.EnergyKcal) } kcal</p>
+					</div>
+					<button class="px-3 py-1 text-sm font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300">
+						Add
+					</button>
+				</li>
+			}
+		</ul>
+	</div>
+}
