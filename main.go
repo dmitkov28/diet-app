@@ -56,6 +56,9 @@ func main() {
 	e.GET("/scan", handlers.ScanGETHandler(), authMiddleware(sessionsRepo))
 	e.GET("/scan/:ean", handlers.ScanBarCodeGETHandler(), authMiddleware(sessionsRepo))
 
+	e.GET("/search", handlers.SearchFoodGETHandler(measurementsRepo), authMiddleware(sessionsRepo))
+	e.GET("/search_food", handlers.SearchFoodGetHandlerWithParams(measurementsRepo), authMiddleware(sessionsRepo))
+
 	e.GET("/login", handlers.LoginGETHandler())
 	e.POST("/login", handlers.LoginPOSTHandler(usersRepo, sessionsRepo))
 
