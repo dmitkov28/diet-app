@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/url"
+	"strconv"
 
 	"github.com/dmitkov28/dietapp/data"
 	"github.com/dmitkov28/dietapp/diet"
@@ -20,12 +21,21 @@ func SearchFoodGETHandler(measurementsRepo *data.MeasurementRepository) echo.Han
 func SearchFoodGetHandlerWithParams(measurementsRepo *data.MeasurementRepository) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		food := url.QueryEscape(c.QueryParam("query"))
+		page, err := strconv.ParseInt(c.QueryParam("page"), 10, 64)
+
+		if page == 0 || err != nil {
+			page = 0
+		}
+
 		fmt.Println(food)
-		result, err := diet.SearchFood(food)
+		fmt.Println(page)
+
+		result, err := diet.SearchFood(food, int(page))
 		if err != nil {
 			log.Println(err)
 		}
 
-		return render(c, templates.SearchResultsComponent(result))
+		nextPage := result.Page + 1
+		return render(c, templates.SearchResultsComponent(result, food, nextPage))
 	}
 }

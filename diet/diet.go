@@ -315,8 +315,8 @@ type SearchedFoodResponse struct {
 	PageSize int `json:"page_size"`
 }
 
-func SearchFood(food string) (SearchedFoodResponse, error) {
-	url := fmt.Sprintf("https://world.openfoodfacts.org/cgi/search.pl?search_terms=%s&search_simple=1&action=process&json=1", food)
+func SearchFood(food string, page int) (SearchedFoodResponse, error) {
+	url := fmt.Sprintf("https://world.openfoodfacts.org/cgi/search.pl?search_terms=%s&search_simple=1&page=%daction=process&json=1", food, page)
 	res, err := http.Get(url)
 	if err != nil {
 		return SearchedFoodResponse{}, err
