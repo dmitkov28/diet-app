@@ -38,17 +38,21 @@ templ SearchResultsComponent(data diet.SearchedFoodResponse, food string, nextPa
 				if i != data.PageSize - 1 {
 					<li class="flex items-center justify-between p-4 bg-gray-50 rounded-lg shadow-sm">
 						<div>
-							<h2 class="text-lg font-medium text-gray-900">
-								{ item.ProductName }
-								if item.Brands != "" {
-									({ item.Brands })
-								}
-							</h2>
+							<a href="#" target="_blank">
+								<h2 class="text-lg font-medium text-blue-700 hover:text-blue-900">
+									{ item.ProductName }
+									if item.Brands != "" {
+										({ item.Brands })
+									}
+								</h2>
+							</a>
 							<div class="flex mt-2 flex-col md:flex-row flex-wrap gap-2">
 								<p class="text-sm text-gray-500">Calories: { fmt.Sprintf("%.0f", item.Nutriments.EnergyKcal) } kcal</p>
 								<p class="text-sm text-gray-500">Protein: { fmt.Sprintf("%.0f", item.Nutriments.Proteins) } g</p>
 								<p class="text-sm text-gray-500">Carbs: { fmt.Sprintf("%.0f", item.Nutriments.Carbohydrates) } g</p>
 								<p class="text-sm text-gray-500">Fat: { fmt.Sprintf("%.0f", item.Nutriments.Fat) } g</p>
+								<p class="text-sm text-gray-500">Serving size: { item.ServingSize }</p>
+								<p></p>
 							</div>
 						</div>
 						<button hx-get="/add_food" hx-target="#main-content" class="px-3 py-1 text-sm font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300">
@@ -67,7 +71,7 @@ templ SearchResultsComponent(data diet.SearchedFoodResponse, food string, nextPa
 							<p class="text-sm text-gray-500">Calories: { fmt.Sprintf("%.0f", item.Nutriments.EnergyKcal) } kcal</p>
 							<p class="text-sm text-gray-500">Fat: { fmt.Sprintf("%.0f", item.Nutriments.Fat) } g</p>
 						</div>
-						<button hx-get="/add_food"  hx-target="#main-content" class="px-3 py-1 text-sm font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300">
+						<button hx-get="/add_food" hx-target="#main-content" class="px-3 py-1 text-sm font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300">
 							Add
 						</button>
 					</li>
