@@ -265,22 +265,25 @@ func FetchNutritionData(ean string) (NutritionData, error) {
 
 type SearchedFoodResponse struct {
 	Products []struct {
-		ProductName   string   `json:"product_name"`
-		Brands        string   `json:"brands"`
-		Fats          float64  `json:"fats"`
-		ImageURL      string   `json:"image_url"`
-		Categories    string   `json:"categories"`
-		Nutriscore    string   `json:"nutriscore_grade"`
-		Allergens     string   `json:"allergens"`
-		Packaging     string   `json:"packaging"`
-		Quantity      string   `json:"quantity"`
-		Countries     string   `json:"countries"`
-		Labels        string   `json:"labels"`
-		Manufacturing string   `json:"manufacturing_places"`
-		Stores        string   `json:"stores"`
-		NovaGroup     int      `json:"nova_group"`
-		Tags          []string `json:"_keywords"`
-		Nutriments    struct {
+		ProductName         string      `json:"product_name"`
+		Brands              string      `json:"brands"`
+		Fats                float64     `json:"fats"`
+		ImageURL            string      `json:"image_url"`
+		Categories          string      `json:"categories"`
+		Nutriscore          string      `json:"nutriscore_grade"`
+		Allergens           string      `json:"allergens"`
+		Packaging           string      `json:"packaging"`
+		Quantity            string      `json:"quantity"`
+		Countries           string      `json:"countries"`
+		Labels              string      `json:"labels"`
+		Manufacturing       string      `json:"manufacturing_places"`
+		Stores              string      `json:"stores"`
+		NovaGroup           int         `json:"nova_group"`
+		Tags                []string    `json:"_keywords"`
+		ServingQuantity     interface{} `json:"serving_quantity"`
+		ServingQuantityUnit string      `json:"serving_quantity_unit"`
+		ServingSize         string      `json:"serving_size"`
+		Nutriments          struct {
 			Carbohydrates           float64 `json:"carbohydrates"`
 			Carbohydrates100G       float64 `json:"carbohydrates_100g"`
 			CarbohydratesServing    float64 `json:"carbohydrates_serving"`
