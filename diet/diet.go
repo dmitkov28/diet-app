@@ -384,7 +384,13 @@ func FilterForServingSize(response SearchedFoodResponse) SearchedFoodResponse {
 	result.Page = response.Page
 
 	for _, item := range response.Products {
-		if item.ServingSize != "" && item.ServingQuantity != nil && item.ServingQuantityUnit != "" {
+		if item.ServingSize != "" &&
+			item.ServingQuantity != nil &&
+			item.ServingQuantityUnit != "" &&
+			item.Nutriments.EnergyKcalServing != 0 &&
+			item.Nutriments.ProteinsServing != 0 &&
+			item.Nutriments.FatServing != 0 &&
+			item.Nutriments.CarbohydratesServing != 0 {
 			result.Products = append(result.Products, item)
 		}
 	}
