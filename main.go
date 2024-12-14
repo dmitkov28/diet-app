@@ -62,6 +62,7 @@ func main() {
 
 	e.GET("/food_log", handlers.FoodLogGETHandler(foodLogRepo, settingsRepo), authMiddleware(sessionsRepo))
 	e.POST("/food_log", handlers.FoodLogPOSTHandler(foodLogRepo, settingsRepo), authMiddleware(sessionsRepo))
+	e.DELETE("/food_log/:id", handlers.FoodLogDELETEHandler(foodLogRepo), authMiddleware(sessionsRepo))
 
 	e.GET("/login", handlers.LoginGETHandler())
 	e.POST("/login", handlers.LoginPOSTHandler(usersRepo, sessionsRepo))
