@@ -25,7 +25,8 @@ func (repo *FoodLogRepository) GetFoodLogEntriesByUserID(userId int) ([]FoodLogE
 	query := `
         SELECT *
 			FROM food_logs
-        	WHERE user_id = ?
+        	WHERE user_id = ? 
+			AND DATE(created_at) = DATE('now')
 		`
 
 	rows, err := repo.db.db.Query(query, userId)
@@ -91,4 +92,58 @@ func GetFoodLogTotals(entries []FoodLogEntry) (FoodLogTotals, error) {
 		TotalFats:     totalFats,
 		TotalCarbs:    totalCarbs,
 	}, nil
+}
+
+func (repo *FoodLogRepository) CreateFoodLogEntry(userId int, entry FoodLogEntry) (FoodLogEntry, error) {
+	statement := `
+        INSERT INTO food_logs(user_id, food_name, serving_size, number_of_servings, calories, protein, carbs, fats)
+        VALUES(?, ?, ?, ?, ?, ?, ?, ?)
+    `
+	result, err := repo.db.db.Exec(statement,
+		userId,
+		entry.FoodName,
+		entry.ServingSize,
+		entry.NumberOfServings,
+		entry.Calories,
+		entry.Protein,
+		entry.Carbs,
+		entry.Fats,
+	)
+	if err != nil {
+		return FoodLogEntry{}, err
+	}
+
+	id, err := result.LastInsertId()
+	if err != nil {
+		return FoodLogEntry{}, err
+	}
+
+	var created FoodLogEntry
+	err = repo.db.db.QueryRow(`
+        SELECT id, user_id, food_name, serving_size, number_of_servings, calories, protein, carbs, fats 
+        FROM food_logs 
+        WHERE id = ?`, id).Scan(
+		&created.ID,
+		&created.UserID,
+		&created.FoodName,
+		&created.ServingSize,
+		&created.NumberOfServings,
+		&created.Calories,
+		&created.Protein,
+		&created.Carbs,
+		&created.Fats,
+	)
+	if err != nil {
+		return FoodLogEntry{}, err
+	}
+
+	return created, nil
+}
+
+func (repo *FoodLogRepository) DeleteFoodLogEntry(entryId int) error {
+	_, err := repo.db.db.Exec("DELETE FROM food_logs WHERE id = ?", entryId)
+	if err != nil {
+		return err
+	}
+	return nil
 }
