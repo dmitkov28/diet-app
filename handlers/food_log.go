@@ -25,10 +25,15 @@ func FoodLogGETHandler(repo *data.FoodLogRepository, settingsRepo *data.Settings
 	}
 }
 
-func AddFoodGETHandler(repo *data.FoodLogRepository, settingsRepo *data.SettingsRepository) echo.HandlerFunc {
+func FoodLogPOSTHandler(repo *data.FoodLogRepository, settingsRepo *data.SettingsRepository) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		// userId := c.Get("user_id").(int)
+		userId := c.Get("user_id").(int)
+		servingSize := c.FormValue("serving_size")
+		numServings := c.FormValue("number_of_servings")
+		foodName := c.FormValue("food_name")
 
-		return render(c, templates.AddFood())
+		fmt.Println(userId, foodName, servingSize, numServings)
+
+		return render(c, templates.FoodLogSuccess())
 	}
 }
