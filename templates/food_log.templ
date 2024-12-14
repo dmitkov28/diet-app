@@ -83,3 +83,10 @@ templ FoodLog(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals) {
 		}
 	}
 }
+
+templ FoodLogSuccess() {
+	<div class="flex items-center justify-center min-h-[196px]">
+		<img class="block h-20" src="/static/img/check.svg"/>
+		<span></span>
+	</div>
+}
