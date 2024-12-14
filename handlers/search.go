@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"log"
 	"net/url"
 	"strconv"
@@ -27,15 +26,13 @@ func SearchFoodGetHandlerWithParams(measurementsRepo *data.MeasurementRepository
 			page = 0
 		}
 
-		fmt.Println(food)
-		fmt.Println(page)
-
 		result, err := diet.SearchFood(food, int(page))
 		if err != nil {
 			log.Println(err)
 		}
 
-		nextPage := result.Page + 1
-		return render(c, templates.SearchResultsComponent(result, food, nextPage))
+		filteredResult := diet.FilterForServingSize(result)
+		nextPage := filteredResult.Page + 1
+		return render(c, templates.SearchResultsComponent(filteredResult, food, nextPage))
 	}
 }
