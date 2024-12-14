@@ -23,7 +23,11 @@ templ FoodLog(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals) {
 							</div>
 							<div class="w-full bg-gray-200 rounded-full h-2.5 mt-2">
 								<div
-									class={ fmt.Sprintf("bg-green-500 h-2.5 rounded-full w-[%d%%]", 22) }
+									class={ templ.KV("bg-green-500", totals.TotalCalories <= 2000),
+									templ.KV("bg-red-700 animate-pulse", totals.TotalCalories > 2000),
+									"h-2.5 rounded-full",
+									//for some reason dynamically generated numerical values don't get rendered correctly
+									fmt.Sprintf("%s", "w-[77%]") }
 								></div>
 							</div>
 						</div>
@@ -59,20 +63,10 @@ templ FoodLog(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals) {
 						</div>
 					</div>
 					<div class="mt-6 col-span-1 overflow-y-scroll relative">
-						<h3 class="sticky top-0 bg-white text-lg font-semibold text-gray-700 mb-2">Logged Food</h3>
+						<h3 class="sticky z-50 pb-2 top-0 bg-white rounded-b-md text-lg font-semibold text-gray-700 mb-2">Logged Food</h3>
 						<ul class="space-y-4">
 							for _, entry := range foodLogs {
-								<li class="flex justify-between items-center p-3 bg-gray-100 rounded-lg">
-									<div>
-										<h4 class="text-md font-medium text-gray-800">{ entry.FoodName }</h4>
-										<p class="text-sm text-gray-500">
-											Protein: { fmt.Sprintf("%.1f", entry.Protein) }g,
-											Carbs: { fmt.Sprintf("%.1f", entry.Carbs) }g, 
-											Fat: { fmt.Sprintf("%.1f", entry.Fats) }g
-										</p>
-									</div>
-									<span class="text-sm font-medium text-gray-600">{ fmt.Sprintf("%.0f", entry.Calories) } kcal</span>
-								</li>
+								@FoodLogEntry(entry)
 							}
 						</ul>
 					</div>
@@ -84,9 +78,19 @@ templ FoodLog(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals) {
 	}
 }
 
-templ FoodLogSuccess() {
-	<div class="flex items-center justify-center min-h-[196px]">
-		<img class="block h-20" src="/static/img/check.svg"/>
-		<span></span>
-	</div>
+templ FoodLogEntry(entry data.FoodLogEntry) {
+	<li class="group relative flex items-center p-3 bg-gray-100 rounded-lg">
+		<div class="w-full pr-4 flex items-center justify-between">
+			<div>
+				<h4 class="text-md font-medium text-gray-800">{ entry.FoodName } <span class="font-extrabold">x { fmt.Sprintf("%.0f", entry.NumberOfServings) }</span></h4>
+				<p class="text-sm text-gray-500">
+					Protein: { fmt.Sprintf("%.1f", entry.Protein) }g,
+					Carbs: { fmt.Sprintf("%.1f", entry.Carbs) }g, 
+					Fat: { fmt.Sprintf("%.1f", entry.Fats) }g
+				</p>
+			</div>
+			<span class="text-sm font-medium text-gray-600">{ fmt.Sprintf("%.f", entry.Calories) } kcal</span>
+		</div>
+		<img hx-delete={ fmt.Sprintf("/food_log/%d", entry.ID) } class="h-5 hidden group-hover:flex absolute right-1 cursor-pointer" src="/static/img/bin.svg"/>
+	</li>
 }
