@@ -21,15 +21,20 @@ func NewFoodLogsRepository(db *DB) *FoodLogRepository {
 	return &FoodLogRepository{db: db}
 }
 
-func (repo *FoodLogRepository) GetFoodLogEntriesByUserID(userId int) ([]FoodLogEntry, error) {
-	query := `
-        SELECT *
-			FROM food_logs
-        	WHERE user_id = ? 
-			AND DATE(created_at) = DATE('now')
-		`
+type GetFoodLogEntriesParams struct {
+	UserID int
+	Date   string
+}
 
-	rows, err := repo.db.db.Query(query, userId)
+func (repo *FoodLogRepository) GetFoodLogEntriesByUserID(params GetFoodLogEntriesParams) ([]FoodLogEntry, error) {
+	query := `
+		SELECT *
+		FROM food_logs
+		WHERE user_id = ?
+		AND DATE(created_at) = IFNULL(?, DATE('now'))
+	`
+
+	rows, err := repo.db.db.Query(query, params.UserID, params.Date)
 	if err != nil {
 		return nil, err
 	}

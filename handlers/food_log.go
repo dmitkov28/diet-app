@@ -14,7 +14,9 @@ import (
 func FoodLogGETHandler(repo *data.FoodLogRepository, settingsRepo *data.SettingsRepository) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		userId := c.Get("user_id").(int)
-		foodLogs, err := repo.GetFoodLogEntriesByUserID(userId)
+		dateQueryParam := c.QueryParam("date")
+		params := data.GetFoodLogEntriesParams{UserID: userId, Date: dateQueryParam}
+		foodLogs, err := repo.GetFoodLogEntriesByUserID(params)
 
 		if err != nil {
 			fmt.Println(err)
@@ -24,7 +26,7 @@ func FoodLogGETHandler(repo *data.FoodLogRepository, settingsRepo *data.Settings
 			fmt.Println(err)
 		}
 
-		return render(c, templates.FoodLog(foodLogs, totals))
+		return render(c, templates.FoodLog(foodLogs, totals, dateQueryParam))
 	}
 }
 
@@ -76,7 +78,7 @@ func FoodLogDELETEHandler(repo *data.FoodLogRepository) echo.HandlerFunc {
 		if err != nil {
 			fmt.Println(err)
 		}
-		
+
 		err = repo.DeleteFoodLogEntry(int(entryId))
 		if err != nil {
 			fmt.Println(err)
