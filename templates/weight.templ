@@ -41,7 +41,7 @@ templ WeightForm() {
 }
 
 templ WeightPage() {
-	@Base("Weight") {
+	@Base(TemplateProps{PageTitle: "Weight"}) {
 		<div class="w-full flex flex-col flex-1 items-center justify-center">
 			<h1 class="font-bold text-2xl text-center">Weight Log</h1>
 			<div class="stats">

@@ -6,7 +6,7 @@ import (
 )
 
 templ ScanPage() {
-	@Base("Scan") {
+	@Base(TemplateProps{PageTitle: "Scan Food"}) {
 		<div class="w-full flex flex-col flex-1 gap-2 justify-center items-center p-8">
 			<div id="reader" class="w-full max-w-lg"></div>
 			<div id="result" class="mt-4 text-md overflow-scroll max-w-full"></div>
