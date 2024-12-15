@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"strconv"
+	"time"
 
 	"github.com/dmitkov28/dietapp/data"
 	"github.com/dmitkov28/dietapp/diet"
@@ -21,12 +22,30 @@ func FoodLogGETHandler(repo *data.FoodLogRepository, settingsRepo *data.Settings
 		if err != nil {
 			fmt.Println(err)
 		}
+		
 		totals, err := data.GetFoodLogTotals(foodLogs)
 		if err != nil {
 			fmt.Println(err)
 		}
 
-		return render(c, templates.FoodLog(foodLogs, totals, dateQueryParam))
+		if dateQueryParam == "" {
+			dateQueryParam = time.Now().Format("2006-01-02")
+		}
+
+		nextDate, err := time.Parse("2006-01-02", dateQueryParam)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		prevDate, err := time.Parse("2006-01-02", dateQueryParam)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		nextDateStr := nextDate.Add(time.Hour * 24).Format("2006-01-02")
+		prevtDateStr := prevDate.Add(-time.Hour * 24).Format("2006-01-02")
+
+		return render(c, templates.FoodLog(foodLogs, totals, dateQueryParam, prevtDateStr, nextDateStr))
 	}
 }
 
