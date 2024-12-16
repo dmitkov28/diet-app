@@ -48,6 +48,35 @@ func FoodLogGETHandler(repo *data.FoodLogRepository, settingsRepo *data.Settings
 	}
 }
 
+
+func FoodLogRefreshTotalsGETHandler(repo *data.FoodLogRepository, settingsRepo *data.SettingsRepository) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		userId := c.Get("user_id").(int)
+		dateQueryParam := c.QueryParam("date")
+		if dateQueryParam == "" {
+			dateQueryParam = time.Now().Format("2006-01-02")
+		}
+		
+		params := data.GetFoodLogEntriesParams{UserID: userId, Date: dateQueryParam}
+		foodLogs, err := repo.GetFoodLogEntriesByUserID(params)
+
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		totals, err := data.GetFoodLogTotals(foodLogs)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+
+
+		return render(c, templates.FoodLogTotals(totals, dateQueryParam))
+	}
+}
+
+
+
 func FoodLogPOSTHandler(repo *data.FoodLogRepository, settingsRepo *data.SettingsRepository) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		userId := c.Get("user_id").(int)
@@ -101,7 +130,7 @@ func FoodLogDELETEHandler(repo *data.FoodLogRepository) echo.HandlerFunc {
 		if err != nil {
 			fmt.Println(err)
 		}
-
+		c.Response().Header().Set("HX-Trigger", "refreshTotals")
 		return nil
 	}
 }

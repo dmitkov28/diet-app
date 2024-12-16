@@ -61,6 +61,7 @@ func main() {
 	e.GET("/search_food", handlers.SearchFoodGetHandlerWithParams(measurementsRepo), authMiddleware(sessionsRepo))
 
 	e.GET("/food_log", handlers.FoodLogGETHandler(foodLogRepo, settingsRepo), authMiddleware(sessionsRepo))
+	e.GET("/refresh_totals", handlers.FoodLogRefreshTotalsGETHandler(foodLogRepo, settingsRepo), authMiddleware(sessionsRepo))
 	e.POST("/food_log", handlers.FoodLogPOSTHandler(foodLogRepo, settingsRepo), authMiddleware(sessionsRepo))
 	e.DELETE("/food_log/:id", handlers.FoodLogDELETEHandler(foodLogRepo), authMiddleware(sessionsRepo))
 
