@@ -26,21 +26,19 @@ templ Base(props TemplateProps) {
 			<script src="https://go-echarts.github.io/go-echarts-assets/assets/echarts.min.js"></script>
 			<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 			<link
-		rel="stylesheet"
-		href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
-	/>
-	<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+				rel="stylesheet"
+				href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+			/>
+			<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 			if props.Head != nil {
 				@props.Head
 			}
 		</head>
 		<body class="min-h-screen flex flex-col pt-4">
-			<header></header>
 			<main id="main-content" class="flex flex-col flex-1 relative">
 				{ children... }
 				@Nav()
 			</main>
-			<footer></footer>
 		</body>
 		<script>
 			document.body.addEventListener('htmx:beforeSwap', function(evt) {

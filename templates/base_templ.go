@@ -57,7 +57,7 @@ func Base(props TemplateProps) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</head><body class=\"min-h-screen flex flex-col pt-4\"><header></header><main id=\"main-content\" class=\"flex flex-col flex-1 relative\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</head><body class=\"min-h-screen flex flex-col pt-4\"><main id=\"main-content\" class=\"flex flex-col flex-1 relative\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -69,7 +69,7 @@ func Base(props TemplateProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</main><footer></footer></body><script>\n\t\t\tdocument.body.addEventListener('htmx:beforeSwap', function(evt) {\n\t\t\tif(evt.detail.xhr.status === 404){\n\t\t\t\talert(\"Error: Could Not Find Resource\");\n\t\t\t} else if(evt.detail.xhr.status === 400){\n\t\t\t\t// allow 422 responses to swap as we are using this as a signal that\n\t\t\t\t// a form was submitted with bad data and want to rerender with the\n\t\t\t\t// errors\n\t\t\t\t//\n\t\t\t\t// set isError to false to avoid error logging in console\n\t\t\t\tevt.detail.shouldSwap = true;\n\t\t\t\tevt.detail.isError = false;\n\t\t\t} else if(evt.detail.xhr.status === 418){\n\t\t\t\t// if the response code 418 (I'm a teapot) is returned, retarget the\n\t\t\t\t// content of the response to the element with the id `teapot`\n\t\t\t\tevt.detail.shouldSwap = true;\n\t\t\t\tevt.detail.target = htmx.find(\"#teapot\");\n\t\t\t}\n\t\t});\n\t\t</script></html>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</main></body><script>\n\t\t\tdocument.body.addEventListener('htmx:beforeSwap', function(evt) {\n\t\t\tif(evt.detail.xhr.status === 404){\n\t\t\t\talert(\"Error: Could Not Find Resource\");\n\t\t\t} else if(evt.detail.xhr.status === 400){\n\t\t\t\t// allow 422 responses to swap as we are using this as a signal that\n\t\t\t\t// a form was submitted with bad data and want to rerender with the\n\t\t\t\t// errors\n\t\t\t\t//\n\t\t\t\t// set isError to false to avoid error logging in console\n\t\t\t\tevt.detail.shouldSwap = true;\n\t\t\t\tevt.detail.isError = false;\n\t\t\t} else if(evt.detail.xhr.status === 418){\n\t\t\t\t// if the response code 418 (I'm a teapot) is returned, retarget the\n\t\t\t\t// content of the response to the element with the id `teapot`\n\t\t\t\tevt.detail.shouldSwap = true;\n\t\t\t\tevt.detail.target = htmx.find(\"#teapot\");\n\t\t\t}\n\t\t});\n\t\t</script></html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
