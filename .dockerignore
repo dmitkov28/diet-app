@@ -5,6 +5,8 @@ Dockerfile*
 LICENSE
 Makefile
 package.json
+package-lock.json
 tailwind.config.js
 terraform/
 README.md
+*.yml
