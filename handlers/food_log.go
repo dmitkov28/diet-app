@@ -16,20 +16,19 @@ func FoodLogGETHandler(repo *data.FoodLogRepository, settingsRepo *data.Settings
 	return func(c echo.Context) error {
 		userId := c.Get("user_id").(int)
 		dateQueryParam := c.QueryParam("date")
+		if dateQueryParam == "" {
+			dateQueryParam = time.Now().Format("2006-01-02")
+		}
 		params := data.GetFoodLogEntriesParams{UserID: userId, Date: dateQueryParam}
 		foodLogs, err := repo.GetFoodLogEntriesByUserID(params)
 
 		if err != nil {
 			fmt.Println(err)
 		}
-		
+
 		totals, err := data.GetFoodLogTotals(foodLogs)
 		if err != nil {
 			fmt.Println(err)
-		}
-
-		if dateQueryParam == "" {
-			dateQueryParam = time.Now().Format("2006-01-02")
 		}
 
 		nextDate, err := time.Parse("2006-01-02", dateQueryParam)
