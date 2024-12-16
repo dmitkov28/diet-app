@@ -141,15 +141,14 @@ templ FoodLog(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals, date, pre
 				const diffX = endX - startX;
 				const diffY = endY - startY;
 
-				 const prevDate = swipeArea.dataset.prevDate;
+				const prevDate = swipeArea.dataset.prevDate;
     			const nextDate = swipeArea.dataset.nextDate;
 
 				if (Math.abs(diffX) > Math.abs(diffY)) {
-					if (diffX > 200) {
+					if (diffX > swipeArea.offsetWidth / 2) {
 						// Swipe left
 						htmx.ajax('GET', `/food_log?date=${prevDate}`, { target: '#main-content' });
-					} else if (diffX < -200) {
-						// Swipe right
+					} else if (diffX < -swipeArea.offsetWidth / 2) {
 						htmx.ajax('GET', `/food_log?date=${nextDate}`, { target: '#main-content' });
 					}
 				}
