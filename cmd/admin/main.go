@@ -7,7 +7,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/dmitkov28/dietapp/data"
+	"github.com/dmitkov28/dietapp/internal/data"
 )
 
 func main() {

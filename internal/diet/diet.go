@@ -7,7 +7,7 @@ import (
 	"math"
 	"net/http"
 
-	"github.com/dmitkov28/dietapp/data"
+	"github.com/dmitkov28/dietapp/internal/data"
 )
 
 func CalculateBMR(weight float64, height, age int, sex string) float64 {

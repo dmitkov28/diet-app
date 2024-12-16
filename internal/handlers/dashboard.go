@@ -5,9 +5,9 @@ import (
 	"math"
 	"time"
 
-	"github.com/dmitkov28/dietapp/charts"
-	"github.com/dmitkov28/dietapp/data"
-	"github.com/dmitkov28/dietapp/diet"
+	"github.com/dmitkov28/dietapp/internal/charts"
+	"github.com/dmitkov28/dietapp/internal/data"
+	"github.com/dmitkov28/dietapp/internal/diet"
 	"github.com/dmitkov28/dietapp/templates"
 	"github.com/go-echarts/go-echarts/v2/opts"
 	"github.com/labstack/echo/v4"

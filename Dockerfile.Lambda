@@ -3,7 +3,7 @@ WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download
 COPY . .
-RUN CGO_ENABLED=1 go build -o main -a -ldflags '-linkmode external -extldflags "-static"' .
+RUN CGO_ENABLED=1 go build -o main -a -ldflags '-linkmode external -extldflags "-static"' ./cmd
 
 FROM debian:bullseye-slim
 RUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/lists/*

@@ -10,7 +10,7 @@ import templruntime "github.com/a-h/templ/runtime"
 
 import (
 	"fmt"
-	"github.com/dmitkov28/dietapp/data"
+	"github.com/dmitkov28/dietapp/internal/data"
 	"time"
 )
 
@@ -124,7 +124,7 @@ func FoodLog(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals, date, prev
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"><div class=\"flex-1 min-h-[500px] flex-grow swiper-wrapper\"><div class=\"swiper-slide border border-red-500\"><div class=\"mx-auto w-fit flex items-center justify-between gap-4\"><span class=\"flex w-full h-full\"><img hx-get=\"")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"><div class=\"flex-1 min-h-[500px] flex-grow swiper-wrapper\"><div class=\"swiper-slide\"><div class=\"mx-auto w-fit flex items-center justify-between gap-4\"><span class=\"flex w-full h-full\"><img hx-get=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

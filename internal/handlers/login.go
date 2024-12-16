@@ -3,8 +3,8 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/dmitkov28/dietapp/auth"
-	"github.com/dmitkov28/dietapp/data"
+	"github.com/dmitkov28/dietapp/internal/auth"
+	"github.com/dmitkov28/dietapp/internal/data"
 	"github.com/dmitkov28/dietapp/templates"
 	"github.com/labstack/echo/v4"
 )

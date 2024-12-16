@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/dmitkov28/dietapp/data"
-	"github.com/dmitkov28/dietapp/diet"
+	"github.com/dmitkov28/dietapp/internal/data"
+	"github.com/dmitkov28/dietapp/internal/diet"
 	"github.com/dmitkov28/dietapp/templates"
 	"github.com/labstack/echo/v4"
 )
@@ -48,7 +48,6 @@ func FoodLogGETHandler(repo *data.FoodLogRepository, settingsRepo *data.Settings
 	}
 }
 
-
 func FoodLogRefreshTotalsGETHandler(repo *data.FoodLogRepository, settingsRepo *data.SettingsRepository) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		userId := c.Get("user_id").(int)
@@ -56,7 +55,7 @@ func FoodLogRefreshTotalsGETHandler(repo *data.FoodLogRepository, settingsRepo *
 		if dateQueryParam == "" {
 			dateQueryParam = time.Now().Format("2006-01-02")
 		}
-		
+
 		params := data.GetFoodLogEntriesParams{UserID: userId, Date: dateQueryParam}
 		foodLogs, err := repo.GetFoodLogEntriesByUserID(params)
 
@@ -69,13 +68,9 @@ func FoodLogRefreshTotalsGETHandler(repo *data.FoodLogRepository, settingsRepo *
 			fmt.Println(err)
 		}
 
-
-
 		return render(c, templates.FoodLogTotals(totals, dateQueryParam))
 	}
 }
-
-
 
 func FoodLogPOSTHandler(repo *data.FoodLogRepository, settingsRepo *data.SettingsRepository) echo.HandlerFunc {
 	return func(c echo.Context) error {

@@ -4,7 +4,7 @@ import (
 	"crypto/rand"
 	"encoding/base64"
 	"fmt"
-	"github.com/dmitkov28/dietapp/data"
+	"github.com/dmitkov28/dietapp/internal/data"
 	"github.com/labstack/echo/v4"
 	"golang.org/x/crypto/bcrypt"
 	"time"

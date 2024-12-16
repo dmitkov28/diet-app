@@ -11,7 +11,7 @@ import templruntime "github.com/a-h/templ/runtime"
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/dmitkov28/dietapp/diet"
+	"github.com/dmitkov28/dietapp/internal/diet"
 )
 
 func SearchPage() templ.Component {

@@ -10,7 +10,7 @@ import templruntime "github.com/a-h/templ/runtime"
 
 import (
 	"fmt"
-	"github.com/dmitkov28/dietapp/diet"
+	"github.com/dmitkov28/dietapp/internal/diet"
 )
 
 func ScanPage() templ.Component {
