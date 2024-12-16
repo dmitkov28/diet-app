@@ -47,7 +47,7 @@ func Base(props TemplateProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</title><link rel=\"stylesheet\" href=\"/static/css/main.css\"><link rel=\"manifest\" href=\"/static/manifest.json\"><link rel=\"apple-touch-icon\" href=\"/static/img/favicon/apple-touch-icon.png\"><script src=\"https://unpkg.com/htmx.org@1.9.10\"></script><script src=\"https://go-echarts.github.io/go-echarts-assets/assets/echarts.min.js\"></script><script src=\"https://unpkg.com/html5-qrcode\" type=\"text/javascript\"></script>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</title><link rel=\"stylesheet\" href=\"/static/css/main.css\"><link rel=\"manifest\" href=\"/static/manifest.json\"><link rel=\"apple-touch-icon\" href=\"/static/img/favicon/apple-touch-icon.png\"><script src=\"https://unpkg.com/htmx.org@1.9.10\"></script><script src=\"https://go-echarts.github.io/go-echarts-assets/assets/echarts.min.js\"></script><script src=\"https://unpkg.com/html5-qrcode\" type=\"text/javascript\"></script><link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css\"><script src=\"https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js\"></script>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

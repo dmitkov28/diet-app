@@ -14,6 +14,15 @@ import (
 	"time"
 )
 
+func formatDate(date string) string {
+	dateTime, err := time.Parse("2006-01-02", date)
+	if err != nil {
+		fmt.Println(err)
+	}
+	formattedDate := dateTime.Format("02 Jan, 2006")
+	return formattedDate
+}
+
 func FoodLogScripts() templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
@@ -83,7 +92,7 @@ func FoodLog(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals, date, prev
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(prevDate)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/food_log.templ`, Line: 21, Col: 28}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/food_log.templ`, Line: 30, Col: 28}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
@@ -96,7 +105,7 @@ func FoodLog(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals, date, prev
 			var templ_7745c5c3_Var5 string
 			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(nextDate)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/food_log.templ`, Line: 22, Col: 28}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/food_log.templ`, Line: 31, Col: 28}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
@@ -109,7 +118,7 @@ func FoodLog(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals, date, prev
 			var templ_7745c5c3_Var6 string
 			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(date)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/food_log.templ`, Line: 23, Col: 27}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/food_log.templ`, Line: 32, Col: 27}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 			if templ_7745c5c3_Err != nil {
@@ -127,7 +136,7 @@ func FoodLog(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals, date, prev
 				var templ_7745c5c3_Var7 string
 				templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(date)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/food_log.templ`, Line: 38, Col: 20}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/food_log.templ`, Line: 47, Col: 20}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 				if templ_7745c5c3_Err != nil {
@@ -145,7 +154,7 @@ func FoodLog(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals, date, prev
 				var templ_7745c5c3_Var8 string
 				templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(time.Now().Format("2006-01-02"))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/food_log.templ`, Line: 40, Col: 47}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/food_log.templ`, Line: 49, Col: 47}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 				if templ_7745c5c3_Err != nil {
@@ -165,68 +174,37 @@ func FoodLog(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals, date, prev
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" <div class=\"w-full flex flex-col flex-1 justify-center items-center p-8\"><div class=\"w-full grid grid-cols-1 md:grid-cols-2 md:gap-4 p-6 mx-auto bg-white rounded-lg shadow-md border  max-h-[600px]\"><div class=\"col-span-1 md:col-span-2 flex justify-between items-center mb-4\"><h2 class=\"text-xl font-bold text-gray-800\">Food Log</h2><span class=\"text-sm text-gray-500\">12/13/2024</span></div><div class=\"col-span-1\"><div class=\"mb-4\"><h3 class=\"text-lg font-semibold text-gray-700\">Total Calories</h3><div class=\"flex items-center justify-between mt-2\"><span class=\"text-2xl font-bold text-gray-800\">")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" <div class=\"w-full flex flex-col flex-1 justify-center items-center p-8\"><div class=\"w-full grid grid-cols-1 md:grid-cols-2 md:gap-4 p-6 mx-auto bg-white rounded-lg shadow-md border  max-h-[600px]\"><div class=\"col-span-1 md:col-span-2 flex justify-between items-center mb-4\"><h2 class=\"text-xl font-bold text-gray-800\">Food Log</h2><span class=\"text-sm text-gray-500\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var9 string
-				templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.0f", totals.TotalCalories))
+				templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(formatDate(date))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/food_log.templ`, Line: 56, Col: 101}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/food_log.templ`, Line: 59, Col: 63}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span> <span class=\"text-sm text-gray-500\">of ")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span></div><div class=\"col-span-1\"><div>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = FoodLogTotals(totals, date).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<h3 class=\"text-lg font-semibold text-gray-700 mb-2\">Macros</h3><div class=\"mb-4\"><div class=\"flex justify-between text-sm text-gray-700\"><span>Protein</span> <span>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var10 string
-				templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.0f", 2000.8))
+				templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.1f", totals.TotalProtein))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/food_log.templ`, Line: 57, Col: 79}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/food_log.templ`, Line: 68, Col: 60}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" kcal</span></div><div class=\"w-full bg-gray-200 rounded-full h-2.5 mt-2\">")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				var templ_7745c5c3_Var11 = []any{templ.KV("bg-green-500", totals.TotalCalories <= 2000),
-					templ.KV("bg-red-700 animate-pulse", totals.TotalCalories > 2000),
-					"h-2.5 rounded-full",
-					//for some reason dynamically generated numerical values don't get rendered correctly
-					fmt.Sprintf("%s", "w-[77%]")}
-				templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var11...)
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				var templ_7745c5c3_Var12 string
-				templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(templ.CSSClasses(templ_7745c5c3_Var11).String())
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/food_log.templ`, Line: 1, Col: 0}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"></div></div></div><div><h3 class=\"text-lg font-semibold text-gray-700 mb-2\">Macros</h3><div class=\"mb-4\"><div class=\"flex justify-between text-sm text-gray-700\"><span>Protein</span> <span>")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				var templ_7745c5c3_Var13 string
-				templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.1f", totals.TotalProtein))
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/food_log.templ`, Line: 74, Col: 60}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -234,12 +212,12 @@ func FoodLog(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals, date, prev
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var14 string
-				templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.1f", totals.TotalCarbs))
+				var templ_7745c5c3_Var11 string
+				templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.1f", totals.TotalCarbs))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/food_log.templ`, Line: 83, Col: 58}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/food_log.templ`, Line: 77, Col: 58}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -247,16 +225,16 @@ func FoodLog(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals, date, prev
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var15 string
-				templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.1f", totals.TotalCarbs))
+				var templ_7745c5c3_Var12 string
+				templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.1f", totals.TotalCarbs))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/food_log.templ`, Line: 92, Col: 58}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/food_log.templ`, Line: 86, Col: 58}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("g of 70g</span></div><div class=\"w-full bg-gray-200 rounded-full h-2.5 mt-1\"><div class=\"bg-red-500 h-2.5 rounded-full\" style=\"width: 71%;\"></div></div></div></div></div><div class=\"mt-6 col-span-1 overflow-y-scroll relative\"><h3 class=\"sticky z-50 pb-2 top-0 bg-white rounded-b-md text-lg font-semibold text-gray-700 mb-2\">Logged Food</h3><ul class=\"space-y-4\">")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("g of 70g</span></div><div class=\"w-full bg-gray-200 rounded-full h-2.5 mt-1\"><div class=\"bg-red-500 h-2.5 rounded-full\" style=\"width: 71%;\"></div></div></div></div></div><div class=\"mt-6 col-span-1 overflow-y-scroll relative scrollbar-hide\"><h3 class=\"sticky z-50 pb-2 top-0 bg-white rounded-b-md text-lg font-semibold text-gray-700 mb-2\">Logged Food</h3><ul class=\"space-y-4\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -298,6 +276,100 @@ func FoodLog(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals, date, prev
 	})
 }
 
+func FoodLogTotals(totals data.FoodLogTotals, date string) templ.Component {
+	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
+			return templ_7745c5c3_CtxErr
+		}
+		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+		if !templ_7745c5c3_IsBuffer {
+			defer func() {
+				templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err == nil {
+					templ_7745c5c3_Err = templ_7745c5c3_BufErr
+				}
+			}()
+		}
+		ctx = templ.InitializeContext(ctx)
+		templ_7745c5c3_Var13 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var13 == nil {
+			templ_7745c5c3_Var13 = templ.NopComponent
+		}
+		ctx = templ.ClearChildren(ctx)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"totals\" hx-get=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var14 string
+		templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("/refresh_totals?date=%s", date))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/food_log.templ`, Line: 154, Col: 55}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-trigger=\"refreshTotals from:body\" hx-swap=\"innerHTML\" class=\"mb-4\"><h3 class=\"text-lg font-semibold text-gray-700\">Total Calories</h3><div class=\"flex items-center justify-between mt-2\"><span class=\"text-2xl font-bold text-gray-800\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var15 string
+		templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.0f", totals.TotalCalories))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/food_log.templ`, Line: 161, Col: 93}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span> <span class=\"text-sm text-gray-500\">of ")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var16 string
+		templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.0f", 2000.8))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/food_log.templ`, Line: 162, Col: 71}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" kcal</span></div><div class=\"w-full bg-gray-200 rounded-full h-2.5 mt-2\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var17 = []any{templ.KV("bg-green-500", totals.TotalCalories <= 2000),
+			templ.KV("bg-red-700 animate-pulse", totals.TotalCalories > 2000),
+			"h-2.5 rounded-full",
+			//for some reason dynamically generated numerical values don't get rendered correctly
+			fmt.Sprintf("%s", "w-[77%]")}
+		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var17...)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var18 string
+		templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(templ.CSSClasses(templ_7745c5c3_Var17).String())
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/food_log.templ`, Line: 1, Col: 0}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"></div></div></div>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		return templ_7745c5c3_Err
+	})
+}
+
 func FoodLogEntry(entry data.FoodLogEntry) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
@@ -314,21 +386,34 @@ func FoodLogEntry(entry data.FoodLogEntry) templ.Component {
 			}()
 		}
 		ctx = templ.InitializeContext(ctx)
-		templ_7745c5c3_Var16 := templ.GetChildren(ctx)
-		if templ_7745c5c3_Var16 == nil {
-			templ_7745c5c3_Var16 = templ.NopComponent
+		templ_7745c5c3_Var19 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var19 == nil {
+			templ_7745c5c3_Var19 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<li class=\"group relative flex items-center p-3 bg-gray-100 rounded-lg\"><div class=\"w-full pr-4 flex items-center justify-between\"><div><h4 class=\"text-md font-medium text-gray-800\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<li id=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var17 string
-		templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(entry.FoodName)
+		var templ_7745c5c3_Var20 string
+		templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("food-entry-%d", entry.ID))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/food_log.templ`, Line: 161, Col: 66}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/food_log.templ`, Line: 178, Col: 45}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"group relative flex items-center p-3 bg-gray-100 rounded-lg\"><div class=\"w-full pr-4 flex items-center justify-between\"><div><h4 class=\"text-md font-medium text-gray-800\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var21 string
+		templ_7745c5c3_Var21, templ_7745c5c3_Err = templ.JoinStringErrs(entry.FoodName)
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/food_log.templ`, Line: 183, Col: 66}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var21))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -336,12 +421,12 @@ func FoodLogEntry(entry data.FoodLogEntry) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var18 string
-		templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.0f", entry.NumberOfServings))
+		var templ_7745c5c3_Var22 string
+		templ_7745c5c3_Var22, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.0f", entry.NumberOfServings))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/food_log.templ`, Line: 161, Col: 145}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/food_log.templ`, Line: 183, Col: 145}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var22))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -349,12 +434,12 @@ func FoodLogEntry(entry data.FoodLogEntry) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var19 string
-		templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.1f", entry.Protein))
+		var templ_7745c5c3_Var23 string
+		templ_7745c5c3_Var23, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.1f", entry.Protein))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/food_log.templ`, Line: 163, Col: 50}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/food_log.templ`, Line: 185, Col: 50}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var23))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -362,12 +447,12 @@ func FoodLogEntry(entry data.FoodLogEntry) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var20 string
-		templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.1f", entry.Carbs))
+		var templ_7745c5c3_Var24 string
+		templ_7745c5c3_Var24, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.1f", entry.Carbs))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/food_log.templ`, Line: 164, Col: 46}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/food_log.templ`, Line: 186, Col: 46}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var24))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -375,12 +460,12 @@ func FoodLogEntry(entry data.FoodLogEntry) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var21 string
-		templ_7745c5c3_Var21, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.1f", entry.Fats))
+		var templ_7745c5c3_Var25 string
+		templ_7745c5c3_Var25, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.1f", entry.Fats))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/food_log.templ`, Line: 165, Col: 43}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/food_log.templ`, Line: 187, Col: 43}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var21))
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var25))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -388,29 +473,42 @@ func FoodLogEntry(entry data.FoodLogEntry) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var22 string
-		templ_7745c5c3_Var22, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.f", entry.Calories))
+		var templ_7745c5c3_Var26 string
+		templ_7745c5c3_Var26, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.f", entry.Calories))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/food_log.templ`, Line: 168, Col: 87}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/food_log.templ`, Line: 190, Col: 87}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var22))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" kcal</span></div><img hx-delete=\"")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var26))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var23 string
-		templ_7745c5c3_Var23, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("/food_log/%d", entry.ID))
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/food_log.templ`, Line: 170, Col: 56}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var23))
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" kcal</span></div><button hx-get=\"/food_log\" hx-on-htmx-after-request=\"alert(&#39;Done making a request!&#39;)\" hx-swap=\"outerHTML\">X</button> <img hx-delete=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"h-5 hidden group-hover:flex absolute right-1 cursor-pointer\" src=\"/static/img/bin.svg\"></li>")
+		var templ_7745c5c3_Var27 string
+		templ_7745c5c3_Var27, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("/food_log/%d", entry.ID))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/food_log.templ`, Line: 200, Col: 52}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var27))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-target=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var28 string
+		templ_7745c5c3_Var28, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("#food-entry-%d", entry.ID))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/food_log.templ`, Line: 201, Col: 54}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var28))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-swap=\"outerHTML\" hx-confirm=\"Are you sure you want to delete this entry?\" hx-on-htmx-after-request=\"alert(&#39;Done making a request!&#39;)\" class=\"h-5 group-hover:flex absolute right-1 cursor-pointer\" src=\"/static/img/bin.svg\"></li>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -434,9 +532,9 @@ func FoodLogLoadingSkeleton() templ.Component {
 			}()
 		}
 		ctx = templ.InitializeContext(ctx)
-		templ_7745c5c3_Var24 := templ.GetChildren(ctx)
-		if templ_7745c5c3_Var24 == nil {
-			templ_7745c5c3_Var24 = templ.NopComponent
+		templ_7745c5c3_Var29 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var29 == nil {
+			templ_7745c5c3_Var29 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"loading\" class=\"htmx-indicator w-full grid grid-cols-1 md:grid-cols-2 md:gap-4 p-6 mx-auto bg-white rounded-lg shadow-md border max-h-[600px] animate-pulse\"><div class=\"col-span-1 md:col-span-2 flex justify-between items-center mb-4\"><div class=\"h-6 w-1/3 bg-gray-200 rounded\"></div><div class=\"h-4 w-1/5 bg-gray-200 rounded\"></div></div><div class=\"col-span-1\"><div class=\"mb-4\"><div class=\"h-5 w-1/4 bg-gray-200 rounded mb-2\"></div><div class=\"flex items-center justify-between mt-2\"><div class=\"h-8 w-1/4 bg-gray-200 rounded\"></div><div class=\"h-4 w-1/6 bg-gray-200 rounded\"></div></div><div class=\"w-full bg-gray-200 rounded-full h-2.5 mt-2\"></div></div><div><div class=\"h-5 w-1/4 bg-gray-200 rounded mb-4\"></div><div class=\"mb-4\"><div class=\"flex justify-between text-sm text-gray-700\"><div class=\"h-4 w-1/5 bg-gray-200 rounded\"></div><div class=\"h-4 w-1/5 bg-gray-200 rounded\"></div></div><div class=\"w-full bg-gray-200 rounded-full h-2.5 mt-1\"></div></div><div class=\"mb-4\"><div class=\"flex justify-between text-sm text-gray-700\"><div class=\"h-4 w-1/5 bg-gray-200 rounded\"></div><div class=\"h-4 w-1/5 bg-gray-200 rounded\"></div></div><div class=\"w-full bg-gray-200 rounded-full h-2.5 mt-1\"></div></div><div><div class=\"flex justify-between text-sm text-gray-700\"><div class=\"h-4 w-1/5 bg-gray-200 rounded\"></div><div class=\"h-4 w-1/5 bg-gray-200 rounded\"></div></div><div class=\"w-full bg-gray-200 rounded-full h-2.5 mt-1\"></div></div></div></div><div class=\"mt-6 col-span-1 overflow-y-scroll relative\"><div class=\"sticky z-50 pb-2 top-0 bg-white rounded-b-md\"><div class=\"h-5 w-1/4 bg-gray-200 rounded mb-2\"></div></div><ul class=\"space-y-4\"><li class=\"flex items-center p-3 bg-gray-100 rounded-lg\"><div class=\"w-full pr-4 flex items-center justify-between\"><div><div class=\"h-4 w-2/3 bg-gray-200 rounded mb-2\"></div><div class=\"h-3 w-1/2 bg-gray-200 rounded\"></div></div><div class=\"h-4 w-1/5 bg-gray-200 rounded\"></div></div></li><li class=\"flex items-center p-3 bg-gray-100 rounded-lg\"><div class=\"w-full pr-4 flex items-center justify-between\"><div><div class=\"h-4 w-2/3 bg-gray-200 rounded mb-2\"></div><div class=\"h-3 w-1/2 bg-gray-200 rounded\"></div></div><div class=\"h-4 w-1/5 bg-gray-200 rounded\"></div></div></li><li class=\"flex items-center p-3 bg-gray-100 rounded-lg\"><div class=\"w-full pr-4 flex items-center justify-between\"><div><div class=\"h-4 w-2/3 bg-gray-200 rounded mb-2\"></div><div class=\"h-3 w-1/2 bg-gray-200 rounded\"></div></div><div class=\"h-4 w-1/5 bg-gray-200 rounded\"></div></div></li><li class=\"flex items-center p-3 bg-gray-100 rounded-lg\"><div class=\"w-full pr-4 flex items-center justify-between\"><div><div class=\"h-4 w-2/3 bg-gray-200 rounded mb-2\"></div><div class=\"h-3 w-1/2 bg-gray-200 rounded\"></div></div><div class=\"h-4 w-1/5 bg-gray-200 rounded\"></div></div></li></ul></div></div>")
