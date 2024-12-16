@@ -189,13 +189,6 @@ templ FoodLogEntry(entry data.FoodLogEntry) {
 			</div>
 			<span class="text-sm font-medium text-gray-600">{ fmt.Sprintf("%.f", entry.Calories) } kcal</span>
 		</div>
-		<button
-			hx-get="/food_log"
-			hx-on-htmx-after-request="alert('Done making a request!')"
-			hx-swap="outerHTML"
-		>
-			X
-		</button>
 		<img
 			hx-delete={ fmt.Sprintf("/food_log/%d", entry.ID) }
 			hx-target={ fmt.Sprintf("#food-entry-%d", entry.ID) }
