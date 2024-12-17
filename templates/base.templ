@@ -34,11 +34,11 @@ templ Base(props TemplateProps) {
 				@props.Head
 			}
 		</head>
-		<body class="min-h-screen flex flex-col pt-4">
-			<main id="main-content" class="flex flex-col flex-1 relative">
+		<body class="min-h-screen flex flex-col pt-4 relative">
+			<main id="main-content" class="flex flex-col flex-1">
 				{ children... }
-				@Nav()
 			</main>
+			@Nav()
 		</body>
 		<script>
 			document.body.addEventListener('htmx:beforeSwap', function(evt) {

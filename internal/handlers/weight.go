@@ -11,7 +11,8 @@ import (
 
 func WeightGETHandler(measurementsRepo *data.MeasurementRepository) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		return render(c, templates.WeightPage())
+		isHTMX := c.Request().Header.Get("HX-Request") != ""
+		return render(c, templates.WeightPage(isHTMX))
 	}
 }
 

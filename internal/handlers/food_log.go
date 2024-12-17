@@ -44,7 +44,9 @@ func FoodLogGETHandler(repo *data.FoodLogRepository, settingsRepo *data.Settings
 		nextDateStr := nextDate.Add(time.Hour * 24).Format("2006-01-02")
 		prevtDateStr := prevDate.Add(-time.Hour * 24).Format("2006-01-02")
 
-		return render(c, templates.FoodLog(foodLogs, totals, dateQueryParam, prevtDateStr, nextDateStr))
+		isHTMX := c.Request().Header.Get("HX-Request") != ""
+
+		return render(c, templates.FoodLogPage(foodLogs, totals, dateQueryParam, prevtDateStr, nextDateStr, isHTMX))
 	}
 }
 

@@ -5,24 +5,32 @@ import (
 	"github.com/dmitkov28/dietapp/internal/data"
 )
 
-templ StatsPage(items []data.WeightCalories, page int, noMoreResults bool) {
-	@Base(TemplateProps{PageTitle: "Stats"}) {
-		<div class="flex flex-col flex-1">
-			<h1 class="font-bold text-2xl py-4 text-center">Stats</h1>
-			<div class="flex flex-col flex-1 overflow-hidden">
-				if len(items) != 0 {
-					<div class="flex-1 h-full overflow-auto px-4">
-						@StatsTable(items)
-					</div>
-					@DataTableControls(page, noMoreResults)
-				} else {
-					<div class="h-full flex flex-1 items-center justify-center">
-						No data.
-					</div>
-				}
-			</div>
-		</div>
+templ StatsPage(items []data.WeightCalories, page int, noMoreResults, isHTMX bool) {
+	if isHTMX {
+		@ContentStatsPage(items, page, noMoreResults)
+	} else {
+		@Base(TemplateProps{PageTitle: "Stats"}) {
+			@ContentStatsPage(items, page, noMoreResults)
+		}
 	}
+}
+
+templ ContentStatsPage(items []data.WeightCalories, page int, noMoreResults bool) {
+	<div class="flex flex-col flex-1">
+		<h1 class="font-bold text-2xl py-4 text-center">Stats</h1>
+		<div class="flex flex-col flex-1 overflow-hidden">
+			if len(items) != 0 {
+				<div class="flex-1 h-full overflow-auto px-4">
+					@StatsTable(items)
+				</div>
+				@DataTableControls(page, noMoreResults)
+			} else {
+				<div class="h-full flex flex-1 items-center justify-center">
+					No data.
+				</div>
+			}
+		</div>
+	</div>
 }
 
 templ StatsTable(items []data.WeightCalories) {

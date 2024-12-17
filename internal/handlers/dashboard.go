@@ -63,6 +63,9 @@ func DashboardGETHandler(measurementsRepo *data.MeasurementRepository, settingsR
 
 		needsAdjustment := diet.CheckNeedsAdjustment(stats)
 
-		return render(c, templates.HomePage(today, currentData, settings, calorieGoal, expectedDuration, chartHtml, hasCurrentWeek, needsAdjustment))
+		isHTMX := c.Request().Header.Get("HX-Request") != ""
+
+		return render(c, templates.HomePage(today, currentData, settings, calorieGoal, expectedDuration, chartHtml, hasCurrentWeek, needsAdjustment, isHTMX))
+
 	}
 }

@@ -32,9 +32,16 @@ templ Nav() {
 		</ul>
 	</nav>
 	<script>
-		function setStyles(){
-			const url = window.location.href.split("/")[window.location.href.split("/").length - 1];
-			const activeLink = document.querySelector(`li[hx-get="/${url}"]`);
+		function setStyles() {
+			console.log("Updating active link styles");
+
+			document.querySelectorAll("li[hx-get]").forEach((link) => {
+				link.style.textDecoration = "none";
+			});
+
+			const currentPath = window.location.pathname;
+			const activeLink = document.querySelector(`li[hx-get="${currentPath}"]`);
+
 			if (activeLink) {
 				activeLink.style.textDecoration = "underline";
 				activeLink.style.textDecorationThickness = "2px";
@@ -42,6 +49,14 @@ templ Nav() {
 				activeLink.style.textUnderlineOffset = "8px";
 			}
 		}
-		setStyles();
-	</script>
+
+		window.addEventListener("DOMContentLoaded", setStyles);
+
+		document.body.addEventListener("htmx:afterOnLoad", setStyles);
+
+		window.addEventListener("popstate", () => {
+			setStyles();
+		});
+
+</script>
 }

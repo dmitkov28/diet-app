@@ -12,7 +12,8 @@ import (
 
 func CaloriesGETHandler(measurementsRepo *data.MeasurementRepository) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		return render(c, templates.CaloriesPage())
+		isHTMX := c.Request().Header.Get("HX-Request") != ""
+		return render(c, templates.CaloriesPage(isHTMX))
 	}
 }
 

@@ -10,7 +10,8 @@ import (
 
 func ScanGETHandler() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		return render(c, templates.ScanPage())
+		isHTMX := c.Request().Header.Get("HX-Request") != ""
+		return render(c, templates.ScanPage(isHTMX))
 	}
 }
 
@@ -26,7 +27,6 @@ func ScanBarCodeGETHandler() echo.HandlerFunc {
 		if err != nil {
 			log.Println(err)
 		}
-
 		return render(c, templates.FoodFacts(data))
 	}
 }

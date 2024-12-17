@@ -31,8 +31,9 @@ func StatsGETHandler(repo *data.MeasurementRepository) echo.HandlerFunc {
 		if len(items) < data.ItemsPerPage {
 			noMoreResults = true
 		}
+		isHTMX := c.Request().Header.Get("HX-Request") != ""
 
-		return render(c, templates.StatsPage(items, int(page), noMoreResults))
+		return render(c, templates.StatsPage(items, int(page), noMoreResults, isHTMX))
 	}
 }
 

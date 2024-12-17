@@ -5,23 +5,32 @@ import (
 	"github.com/dmitkov28/dietapp/internal/diet"
 )
 
-templ ScanPage() {
-	@Base(TemplateProps{PageTitle: "Scan Food"}) {
-		<div class="w-full flex flex-col flex-1 gap-2 justify-center items-center p-8">
-			<div id="reader" class="w-full max-w-lg"></div>
-			<div id="result" class="mt-4 text-md overflow-scroll max-w-full"></div>
-			<button
-				onclick="startCamera()"
-				class="bg-[#2596be] text-white p-3 font-bold rounded-md flex items-center justify-center gap-2 w-full"
-			>
-				<img class="h-5" src="/static/img/scan.svg"/>
-				Scan Food
-			</button>
-			<a hx-replace-url="/search" hx-get="/search" hx-target="#main-content" class="w-full text-white font-semibold bg-blue-500 rounded-md p-3 flex gap-2 justify-center items-center col-span-2">
-				Search Food
-			</a>
-		</div>
-		<script type="module">
+templ ScanPage(isHTMX bool) {
+	if isHTMX {
+		@ContentScanPage()
+	} else {
+		@Base(TemplateProps{PageTitle: "Scan Food"}) {
+			@ContentScanPage()
+		}
+	}
+}
+
+templ ContentScanPage() {
+	<div class="w-full flex flex-col flex-1 gap-2 justify-center items-center p-8">
+		<div id="reader" class="w-full max-w-lg"></div>
+		<div id="result" class="mt-4 text-md overflow-scroll max-w-full"></div>
+		<button
+			onclick="startCamera()"
+			class="bg-[#2596be] text-white p-3 font-bold rounded-md flex items-center justify-center gap-2 w-full"
+		>
+			<img class="h-5" src="/static/img/scan.svg"/>
+			Scan Food
+		</button>
+		<a hx-replace-url="/search" hx-get="/search" hx-target="#main-content" class="w-full text-white font-semibold bg-blue-500 rounded-md p-3 flex gap-2 justify-center items-center col-span-2">
+			Search Food
+		</a>
+	</div>
+	<script type="module">
 	const resultDiv = document.getElementById("result");
 
 	async function fetchFoodFacts(ean) {
@@ -94,7 +103,6 @@ templ ScanPage() {
 
 	window.startCamera = startCamera
 </script>
-	}
 }
 
 templ FoodFacts(data diet.NutritionData) {

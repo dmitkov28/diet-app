@@ -6,30 +6,39 @@ import (
 	"math"
 )
 
-templ HomePage(date string, currentData data.WeeklyStats, settings data.Settings, calorieGoal, expectedDuration float64, weightChart string, hasCurrentWeek, needsAdjustment bool) {
-	@Base(TemplateProps{PageTitle: "Home"}) {
-		<div class="w-full flex flex-col flex-1 justify-center items-center p-8">
-			<div class="w-full grid grid-cols-1 gap-4">
-				<div class="col-span-1 text-center">
-					<h1 class="font-bold text-2xl">{ date }</h1>
-					if !hasCurrentWeek {
-						<span class="text-sm font-light italic text-slate-400">Data for current week not availble</span>
-					}
-				</div>
-				@Card(CardProps{iconSrc: "static/img/trophy.svg", positiveChange: currentData.PercentChange <= settings.Target_weight_loss_rate, changeRate: currentData.PercentChange, value: currentData.AverageWeight, unit: "kg"})
-				@Card(CardProps{iconSrc: "/static/img/calories.svg", value: math.Ceil(calorieGoal), unit: "cal", roundValue: true})
-				if needsAdjustment {
-					<span id="warning" class="text-center text-sm text-red-500 animate-pulse">Progress has slowed down. Consider decreasing calories</span>
+templ HomePage(date string, currentData data.WeeklyStats, settings data.Settings, calorieGoal, expectedDuration float64, weightChart string, hasCurrentWeek, needsAdjustment, isHTMX bool) {
+	if isHTMX {
+		@Content(date, currentData, settings, calorieGoal, expectedDuration, weightChart, hasCurrentWeek, needsAdjustment)
+	} else {
+		@Base(TemplateProps{PageTitle: "Home"}) {
+			@Content(date, currentData, settings, calorieGoal, expectedDuration, weightChart, hasCurrentWeek, needsAdjustment)
+		}
+	}
+}
+
+templ Content(date string, currentData data.WeeklyStats, settings data.Settings, calorieGoal, expectedDuration float64, weightChart string, hasCurrentWeek, needsAdjustment bool) {
+	<div class="w-full flex flex-col flex-1 justify-center items-center p-8">
+		<div class="w-full grid grid-cols-1 gap-4">
+			<div class="col-span-1 text-center">
+				<h1 class="font-bold text-2xl">{ date }</h1>
+				if !hasCurrentWeek {
+					<span class="text-sm font-light italic text-slate-400">Data for current week not availble</span>
 				}
-				if expectedDuration != 0 {
-					@Card(CardProps{iconSrc: "/static/img/calendar.svg", value: math.Abs(math.Ceil(expectedDuration)), unit: "weeks to go", roundValue: true})
-				}
-				<div>
-					@templ.Raw(weightChart)
-				</div>
+			</div>
+			@Card(CardProps{iconSrc: "static/img/trophy.svg", positiveChange: currentData.PercentChange <= settings.Target_weight_loss_rate, changeRate: currentData.PercentChange, value: currentData.AverageWeight, unit: "kg"})
+			@Card(CardProps{iconSrc: "/static/img/calories.svg", value: math.Ceil(calorieGoal), unit: "cal", roundValue: true})
+			if needsAdjustment {
+				<span id="warning" class="text-center text-sm text-red-500 animate-pulse">Progress has slowed down. Consider decreasing calories</span>
+			}
+			if expectedDuration != 0 {
+				@Card(CardProps{iconSrc: "/static/img/calendar.svg", value: math.Abs(math.Ceil(expectedDuration)), unit: "weeks to go", roundValue: true})
+			}
+			<div>
+				@templ.Raw(weightChart)
 			</div>
 		</div>
-		<script>
+	</div>
+	<script>
 			function displayWarning () {
 				const warning = document.getElementById("warning");
 				if (warning) {
@@ -40,7 +49,6 @@ templ HomePage(date string, currentData data.WeeklyStats, settings data.Settings
 				displayWarning();
 			}
 		</script>
-	}
 }
 
 type CardProps struct {

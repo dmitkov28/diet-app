@@ -14,7 +14,8 @@ func LoginGETHandler() echo.HandlerFunc {
 		if auth.IsAuthenticated(c) {
 			return c.Redirect(http.StatusSeeOther, "/dashboard")
 		}
-		return render(c, templates.LoginPage())
+		isHTMX := c.Request().Header.Get("HX-Request") != ""
+		return render(c, templates.LoginPage(false, isHTMX))
 	}
 }
 
@@ -24,9 +25,9 @@ func LoginPOSTHandler(usersRepo *data.UsersRepository, sessionsRepo *data.Sessio
 		password := c.FormValue("password")
 
 		session, err := auth.SignInUser(*usersRepo, *sessionsRepo, email, password)
-
 		if err != nil {
-			return render(c, templates.Login(true))
+			isHTMX := c.Request().Header.Get("HX-Request") != ""
+			return render(c, templates.LoginPage(true, isHTMX))
 		}
 
 		c.SetCookie(&http.Cookie{
