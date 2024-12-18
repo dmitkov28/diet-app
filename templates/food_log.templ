@@ -42,9 +42,12 @@ templ ContentFoodLogPage(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals
 	>
 		<div class="flex-1 min-h-[500px] flex-grow swiper-wrapper">
 			<div class="swiper-slide">
+				@FoodLogLoadingSkeleton()
+			</div>
+			<div class="swiper-slide">
 				<div class="mx-auto w-fit flex items-center justify-between gap-4">
 					<span class="flex w-full h-full">
-						<img hx-get={ fmt.Sprintf("/food_log?date=%s", prevDate) } hx-target="#main-content" class="h-5 cursor-pointer" src="/static/img/chevron-left.svg"/>
+						<img onclick="swiper.slidePrev()" class="h-5 cursor-pointer" src="/static/img/chevron-left.svg"/>
 					</span>
 					<form
 						hx-get="/food_log"
@@ -64,7 +67,7 @@ templ ContentFoodLogPage(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals
 						/>
 					</form>
 					<span class="flex w-full h-full">
-						<img hx-get={ fmt.Sprintf("/food_log?date=%s", nextDate) } hx-target="#main-content" hx-swap="innerHTML" class="h-5 cursor-pointer" src="/static/img/chevron-right.svg"/>
+						<img onclick="swiper.slideNext()" class="h-5 cursor-pointer" src="/static/img/chevron-right.svg"/>
 					</span>
 				</div>
 				if len(foodLogs) != 0 {
@@ -130,38 +133,33 @@ templ ContentFoodLogPage(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals
 		</div>
 	</div>
 	<script type="module">
+		const swipeArea = document.querySelector('.swiper');
+		const prevDate = swipeArea.dataset.prevDate;
+		const nextDate = swipeArea.dataset.nextDate;
+		var swiper = new Swiper(".swiper", {
+			direction: 'horizontal',
+			initialSlide: 1,
+			loop: false,
+			threshold: 90,
+			resistance: true,
+			resistanceRatio: 0.85,
+			speed: 300,
+		});
 
-			const swiper = new Swiper('.swiper', {
-				direction: 'horizontal',
-				loop: true,
-			});
-			const swipeArea = document.querySelector('.swiper');
-    		let startX, startY, endX, endY;
+		window.swiper = swiper;
 
-			swipeArea.addEventListener('touchstart', (e) => {
-				startX = e.touches[0].clientX;
-				startY = e.touches[0].clientY;
-			});
+		swiper.on("slidePrevTransitionEnd", () => {
+			htmx.ajax("GET", `/food_log?date=${prevDate}`, {
+				swap: "innerHTML",
+			})
+		});
 
-			swipeArea.addEventListener('touchend', (e) => {
-				endX = e.changedTouches[0].clientX;
-				endY = e.changedTouches[0].clientY;
-
-				const diffX = endX - startX;
-				const diffY = endY - startY;
-
-				const prevDate = swipeArea.dataset.prevDate;
-    			const nextDate = swipeArea.dataset.nextDate;
-
-				if (Math.abs(diffX) > Math.abs(diffY)) {
-					if (diffX > swipeArea.offsetWidth * 0.5) {
-						// Swipe left
-						htmx.ajax('GET', `/food_log?date=${prevDate}`, { target: '#main-content' });
-					} else if (diffX < -swipeArea.offsetWidth * 0.5) {
-						htmx.ajax('GET', `/food_log?date=${nextDate}`, { target: '#main-content' });
-					}
-				}
-			});
+		swiper.on("slideNextTransitionEnd", () => {
+			htmx.ajax("GET", `/food_log?date=${nextDate}`, {
+				swap: "innerHTML",
+			})
+		});
+					
 		</script>
 }
 
