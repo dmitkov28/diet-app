@@ -38,7 +38,9 @@ templ Base(props TemplateProps) {
 			<main id="main-content" class="flex flex-col flex-1">
 				{ children... }
 			</main>
-			@Nav()
+			if props.PageTitle != "Login" {
+				@Nav()
+			}
 		</body>
 		<script>
 			document.body.addEventListener('htmx:beforeSwap', function(evt) {
