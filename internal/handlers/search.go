@@ -13,7 +13,8 @@ import (
 
 func SearchFoodGETHandler(measurementsRepo *data.MeasurementRepository) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		return render(c, templates.SearchPage())
+		isHTMX := c.Request().Header.Get("HX-Request") != ""
+		return render(c, templates.SearchPage(isHTMX))
 	}
 }
 
