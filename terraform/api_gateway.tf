@@ -4,6 +4,7 @@ resource "aws_api_gateway_rest_api" "api_gateway" {
   endpoint_configuration {
     types = ["REGIONAL"]
   }
+  binary_media_types = ["image/png", "text/css", "*/*"]
 }
 
 resource "aws_api_gateway_method" "root_method" {
