@@ -33,8 +33,6 @@ templ Nav() {
 	</nav>
 	<script>
 		function setStyles() {
-			console.log("Updating active link styles");
-
 			document.querySelectorAll("li[hx-get]").forEach((link) => {
 				link.style.textDecoration = "none";
 			});
