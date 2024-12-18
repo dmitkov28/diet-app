@@ -83,7 +83,7 @@ func ContentLoginPage(err bool) templ.Component {
 			templ_7745c5c3_Var3 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"flex flex-col flex-1 justify-center items-center w-full md:w-1/3\"><h1 class=\"text-2xl font-bold mb-4\">Login</h1>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"flex flex-col flex-1 justify-center items-center w-full\"><h1 class=\"text-2xl font-bold mb-4\">Login</h1>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
