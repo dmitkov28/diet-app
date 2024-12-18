@@ -151,12 +151,15 @@ templ ContentFoodLogPage(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals
 		swiper.on("slidePrevTransitionEnd", () => {
 			htmx.ajax("GET", `/food_log?date=${prevDate}`, {
 				swap: "innerHTML",
+				target: "#main-content"
 			})
 		});
 
 		swiper.on("slideNextTransitionEnd", () => {
 			htmx.ajax("GET", `/food_log?date=${nextDate}`, {
 				swap: "innerHTML",
+				target: "#main-content"
+
 			})
 		});
 					
