@@ -137,13 +137,20 @@ templ ContentFoodLogPage(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals
 		const prevDate = swipeArea.dataset.prevDate;
 		const nextDate = swipeArea.dataset.nextDate;
 		var swiper = new Swiper(".swiper", {
-			direction: 'horizontal',
+		 	direction: 'horizontal',
 			initialSlide: 1,
 			loop: false,
-			threshold: 90,
-			resistance: true,
-			resistanceRatio: 0.85,
-			speed: 300,
+			threshold: 20,           
+			resistance: true,        
+			resistanceRatio: 0.85,   
+			speed: 250,             
+			touchRatio: 1.5,        
+			touchAngle: 45,         
+			longSwipes: true,
+			longSwipesRatio: 0.5,   
+			followFinger: true,     
+			grabCursor: true,       
+			touchStartPreventDefault: false,  
 		});
 
 		window.swiper = swiper;
