@@ -57,3 +57,9 @@ variable "NUTRITIONIX_APP_KEY" {
   type = string
   sensitive = true
 }
+
+variable "S3_ALLOWED_ORIGIN" {
+  description = "S3 CORS Allowed Origin"
+  type = string
+  sensitive = true
+}
