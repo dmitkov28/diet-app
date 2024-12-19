@@ -60,6 +60,7 @@ func main() {
 
 	e.GET("/search", handlers.SearchFoodGETHandler(measurementsRepo), customMiddleware.AuthMiddleware(sessionsRepo))
 	e.GET("/search_food", handlers.SearchFoodGetHandlerWithParams(measurementsRepo), customMiddleware.AuthMiddleware(sessionsRepo))
+	e.GET("/search_food/modal", handlers.SearchFoodModalGETHandler(), customMiddleware.AuthMiddleware(sessionsRepo))
 
 	e.GET("/food_log", handlers.FoodLogGETHandler(foodLogRepo, settingsRepo), customMiddleware.AuthMiddleware(sessionsRepo))
 	e.GET("/refresh_totals", handlers.FoodLogRefreshTotalsGETHandler(foodLogRepo, settingsRepo), customMiddleware.AuthMiddleware(sessionsRepo))
@@ -68,6 +69,8 @@ func main() {
 
 	e.GET("/login", handlers.LoginGETHandler())
 	e.POST("/login", handlers.LoginPOSTHandler(usersRepo, sessionsRepo))
+
+	e.POST("/test", handlers.TestPOSTHandler())
 
 	e.Logger.Fatal(e.Start(":1323"))
 }
