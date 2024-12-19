@@ -263,14 +263,14 @@ func FetchNutritionData(ean string) (NutritionData, error) {
 
 }
 
-type SearchedFoodResponse struct {
-	Products []SearchFoodProduct `json:"products"`
-	Count    int                 `json:"count"`
-	Page     int                 `json:"page"`
-	PageSize int                 `json:"page_size"`
+type OpenFoodFactsSearchResponse struct {
+	Products []OpenFoodFactsSearchResponseItem `json:"products"`
+	Count    int                               `json:"count"`
+	Page     int                               `json:"page"`
+	PageSize int                               `json:"page_size"`
 }
 
-type SearchFoodProduct struct {
+type OpenFoodFactsSearchResponseItem struct {
 	ProductName         string      `json:"product_name,omitempty"`
 	Brands              string      `json:"brands,omitempty"`
 	Fats                float64     `json:"fats,omitempty"`
@@ -352,35 +352,60 @@ type Nutriments struct {
 	SugarsValue             float64 `json:"sugars_value,omitempty"`
 }
 
-func SearchFood(food string, page int) (SearchedFoodResponse, error) {
+func SearchFood(food string, page int) ([]FoodSearchResult, error) {
 	url := fmt.Sprintf("https://world.openfoodfacts.org/cgi/search.pl?search_terms=%s&search_simple=1&page=%daction=process&json=1", food, page)
 	res, err := http.Get(url)
 	if err != nil {
-		return SearchedFoodResponse{}, err
+		return nil, err
 	}
 
 	defer res.Body.Close()
 
-	var result = SearchedFoodResponse{}
+	var offResponse = OpenFoodFactsSearchResponse{}
 	bytes, err := io.ReadAll(res.Body)
 
 	if err != nil {
-		return SearchedFoodResponse{}, err
+		return nil, err
 	}
 
-	if err := json.Unmarshal(bytes, &result); err != nil {
-		return SearchedFoodResponse{}, err
+	if err := json.Unmarshal(bytes, &offResponse); err != nil {
+		return nil, err
 	}
+
+	var result []FoodSearchResult
+	for _, item := range offResponse.Products {
+		var servingQty float64
+
+		switch v := item.ServingQuantity.(type) {
+		case int:
+			servingQty = float64(v)
+		case int64:
+			servingQty = float64(v)
+		case float32:
+			servingQty = float64(v)
+		case float64:
+			servingQty = v
+		default:
+			continue
+		}
+		result = append(result, FoodSearchResult{
+			Name:        item.ProductName,
+			ServingUnit: item.ServingQuantityUnit,
+			ServingQty:  servingQty,
+			Thumbnail: item.ImageURL,
+		})
+	}
+
 	return result, nil
 
 }
 
-func FilterForServingSize(response SearchedFoodResponse) SearchedFoodResponse {
+func FilterForServingSize(response OpenFoodFactsSearchResponse) OpenFoodFactsSearchResponse {
 	if len(response.Products) == 0 {
-		return SearchedFoodResponse{}
+		return OpenFoodFactsSearchResponse{}
 	}
 
-	var result SearchedFoodResponse
+	var result OpenFoodFactsSearchResponse
 	result.Page = response.Page
 
 	for _, item := range response.Products {

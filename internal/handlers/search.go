@@ -27,13 +27,19 @@ func SearchFoodGetHandlerWithParams(measurementsRepo *data.MeasurementRepository
 			page = 0
 		}
 
-		result, err := diet.SearchFood(food, int(page))
+		result, err := diet.GetFoods(food)
 		if err != nil {
 			log.Println(err)
 		}
 
-		filteredResult := diet.FilterForServingSize(result)
-		nextPage := filteredResult.Page + 1
-		return render(c, templates.SearchResultsComponent(filteredResult, food, nextPage))
+		// filteredResult := diet.FilterForServingSize(result)
+		// nextPage := filteredResult.Page + 1
+		return render(c, templates.SearchResultsComponent(result))
+	}
+}
+
+func SearchFoodModalGETHandler() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		return render(c, templates.FoodItemModal())
 	}
 }
