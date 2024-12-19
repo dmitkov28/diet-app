@@ -45,3 +45,15 @@ variable "TURSO_TOKEN" {
   type        = string
   sensitive   = true
 }
+
+variable "NUTRITIONIX_APP_ID" {
+  description = "Nutritionix App Id"
+  type = string
+  sensitive = true
+}
+
+variable "NUTRITIONIX_APP_KEY" {
+  description = "Nutritionix App Key"
+  type = string
+  sensitive = true
+}
