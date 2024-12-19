@@ -2,7 +2,7 @@ resource "aws_lambda_function" "lambda_func" {
   function_name = var.function_name
   package_type  = "Image"
   architectures = [local.architecture]
-  image_uri     = "${data.aws_ecr_image.python_image.registry_id}.dkr.ecr.${data.aws_region.current.name}.amazonaws.com/${data.aws_ecr_image.python_image.repository_name}@${data.aws_ecr_image.python_image.image_digest}"
+  image_uri     = "${data.aws_ecr_image.app_image.registry_id}.dkr.ecr.${data.aws_region.current.name}.amazonaws.com/${data.aws_ecr_image.app_image.repository_name}@${data.aws_ecr_image.app_image.image_digest}"
   role          = aws_iam_role.lambda_role.arn
   timeout       = 60
   memory_size   = 512

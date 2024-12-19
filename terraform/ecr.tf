@@ -3,7 +3,7 @@ resource "aws_ecr_repository" "ecr_repo" {
   force_delete = true
 }
 
-data "aws_ecr_image" "python_image" {
+data "aws_ecr_image" "app_image" {
   repository_name = aws_ecr_repository.ecr_repo.name
   image_tag       = "latest"
 
