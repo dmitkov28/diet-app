@@ -1,7 +1,6 @@
 package templates
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/dmitkov28/dietapp/internal/diet"
 )
@@ -17,12 +16,35 @@ templ SearchPage(isHTMX bool) {
 }
 
 templ ContentSearchPage() {
-	<div class="flex flex-col gap-4 flex-1 p-2">
+	<div class="flex flex-col gap-4 flex-1 p-2 md:p-4">
 		@SearchComponent()
 		<div id="search-results">
 			@SearchResultsLoading()
 		</div>
 	</div>
+	<script>
+		document.body.addEventListener("keyup", (e) => {
+			if (e.key == "Escape"){
+				document.getElementById("modal-container").innerHTML = '';
+			}
+		});
+
+		function handleSuccess(element) {
+            setTimeout(() => {
+               element.innerHTML = `
+			   <div
+					id="addbtn"
+					hx-post="/test"
+					hx-encoding="application/json"
+					hx-on::after-swap="handleSuccess()"
+					class="cursor-pointer"
+				>
+					<img class="h-10" src="/static/img/plus.svg"/>
+				</div>
+			   `
+            }, 2000);
+        }
+	</script>
 }
 
 templ SearchComponent() {
@@ -40,67 +62,31 @@ templ SearchComponent() {
 	</div>
 }
 
-templ SearchResultsComponent(data diet.SearchedFoodResponse, food string, nextPage int) {
+templ SearchResultsComponent(data []diet.FoodSearchResult) {
 	<div>
+		<div id="modal-container"></div>
 		<ul class="space-y-4">
-			for i, item := range data.Products {
-				if i == data.PageSize - 1 {
-					<li
-						hx-get={ fmt.Sprintf("/search_food?query=%s&page=%d", food, nextPage) }
-						hx-trigger="revealed"
-						hx-indicator="#loading"
-						hx-swap="afterend"
-						class="flex items-center justify-between p-4 bg-gray-50 rounded-lg shadow-sm"
-					>
-						<div class="w-full">
-							<a href="#" target="_blank">
-								<h2 class="text-lg font-medium text-blue-700 hover:text-blue-900">
-									{ item.ProductName }
-									if item.Brands != "" {
-										({ item.Brands })
-									}
+			for _, item := range data {
+				<li class="flex p-4 bg-gray-50 rounded-lg shadow-sm">
+					<div class="w-full flex justify-between items-center">
+						<a
+							hx-get="/search_food/modal"
+							hx-target="#modal-container"
+							hx-trigger="click"
+							class="flex flex-col gap-1 w-full h-full cursor-pointer"
+							target="_blank"
+						>
+							<div class="flex gap-2 items-center">
+								<img class="max-h-[60px] max-w-[60px] object-contain" src={ item.Thumbnail }/>
+								<h2 class="text-lg font-medium text-blue-700 hover:text-blue-900 flex flex-col gap-1">
+									{ item.Name }
+									<span class="text-slate-400 font-light">{ fmt.Sprintf("%d", item.Calories) } cal, { fmt.Sprintf("%.0f", item.ServingQty) } { item.ServingUnit }</span>
 								</h2>
-							</a>
-							<div class="grid grid-cols-2 gap-2">
-								<div class="col-span-2 md:col-span-1 mb-2 md:mb-0">
-									<p class="text-sm text-gray-500">Calories: { fmt.Sprintf("%.0f", item.Nutriments.EnergyKcal) } kcal</p>
-									<p class="text-sm text-gray-500">Protein: { fmt.Sprintf("%.0f", item.Nutriments.Proteins) } g</p>
-									<p class="text-sm text-gray-500">Carbs: { fmt.Sprintf("%.0f", item.Nutriments.Carbohydrates) } g</p>
-									<p class="text-sm text-gray-500">Fat: { fmt.Sprintf("%.0f", item.Nutriments.Fat) } g</p>
-								</div>
-								<div class="flex col-span-2 md:col-span-1 justify-center md:justify-end">
-									@AddFoodForm(item.ProductName, item.ServingSize, item.ServingQuantity, item.Nutriments.EnergyKcalServing, item.Nutriments.Proteins, item.Nutriments.CarbohydratesServing, item.Nutriments.FatServing)
-								</div>
 							</div>
-						</div>
-					</li>
-				} else {
-					<li
-						class="flex items-center justify-between p-4 bg-gray-50 rounded-lg shadow-sm"
-					>
-						<div class="w-full">
-							<a href="#" target="_blank">
-								<h2 class="text-lg font-medium text-blue-700 hover:text-blue-900">
-									{ item.ProductName }
-									if item.Brands != "" {
-										({ item.Brands })
-									}
-								</h2>
-							</a>
-							<div class="grid grid-cols-2 gap-2">
-								<div class="col-span-2 md:col-span-1 mb-2 md:mb-0">
-									<p class="text-sm text-gray-500">Calories: { fmt.Sprintf("%.0f", item.Nutriments.EnergyKcal) } kcal</p>
-									<p class="text-sm text-gray-500">Protein: { fmt.Sprintf("%.0f", item.Nutriments.Proteins) } g</p>
-									<p class="text-sm text-gray-500">Carbs: { fmt.Sprintf("%.0f", item.Nutriments.Carbohydrates) } g</p>
-									<p class="text-sm text-gray-500">Fat: { fmt.Sprintf("%.0f", item.Nutriments.Fat) } g</p>
-								</div>
-								<div class="flex col-span-2 md:col-span-1 justify-center md:justify-end">
-									@AddFoodForm(item.ProductName, item.ServingSize, item.ServingQuantity, item.Nutriments.EnergyKcalServing, item.Nutriments.Proteins, item.Nutriments.CarbohydratesServing, item.Nutriments.FatServing)
-								</div>
-							</div>
-						</div>
-					</li>
-				}
+						</a>
+						@AddButton(item)
+					</div>
+				</li>
 			}
 			<div class="my-4">
 				@SearchResultsLoading()
@@ -123,34 +109,76 @@ templ SearchResultsLoading() {
 	</ul>
 }
 
-templ AddFoodForm(productName string, servingSize string, servingQuantity interface{}, calories, protein, carbs, fat float64) {
-	<form hx-post="/food_log" hx-ext="" hx-vals={ templ.JSONString(diet.SearchFoodProduct{ProductName: productName, Nutriments: diet.Nutriments{Proteins: protein, FatServing: fat, CarbohydratesServing: carbs, EnergyKcalServing: calories}}) } hx-encoding="application/json" hx-boost="true" class="w-full md:w-fit flex flex-col items-center gap-2">
-		<input class="hidden p-2 bg-white rounded-md shadow-md pointer-events-none" type="text" name="serving_size" value={ fmt.Sprintf("%v", servingQuantity) }/>
-		<div class="flex flex-col gap-1 w-full md:w-auto">
-			<label class="text-sm text-gray-500" for="serving_size">Serving Size</label>
-			<input disabled class="p-2 bg-white rounded-md shadow-md pointer-events-none" type="text" value={ servingSize }/>
-		</div>
-		<div class="flex flex-col gap-1 w-full md:w-auto">
-			<label for="number_of_servings" class="text-sm text-gray-500">Number of Servings</label>
-			<input class="p-2 bg-white rounded-md shadow-md" type="number" name="number_of_servings"/>
-		</div>
-		<button class="w-full px-3 md:py-1 py-4 text-sm font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300">
-			Add
-		</button>
-	</form>
+templ AddButton(product diet.FoodSearchResult) {
+	<div
+		id="addbtn"
+		hx-post="/test"
+		hx-encoding="application/json"
+		hx-on::after-swap="handleSuccess(this)"
+		class="cursor-pointer"
+	>
+		<img class="h-10" src="/static/img/plus.svg"/>
+	</div>
 }
 
-func PrepareAddFoodForm(item diet.SearchFoodProduct) string {
-	jsonBytes, err := json.Marshal(item)
-	if err != nil {
-		jsonBytes = []byte("{}")
-	}
-	return string(jsonBytes)
-}
+// templ AddFoodForm(productName string, servingSize string, servingQuantity interface{}, calories, protein, carbs, fat float64) {
+// 	<form hx-post="/food_log" hx-ext="" hx-vals={ templ.JSONString(diet.SearchFoodProduct{ProductName: productName, Nutriments: diet.Nutriments{Proteins: protein, FatServing: fat, CarbohydratesServing: carbs, EnergyKcalServing: calories}}) } hx-encoding="application/json" hx-boost="true" class="w-full md:w-fit flex flex-col items-center gap-2">
+// 		<input class="hidden p-2 bg-white rounded-md shadow-md pointer-events-none" type="text" name="serving_size" value={ fmt.Sprintf("%v", servingQuantity) }/>
+// 		<div class="flex flex-col gap-1 w-full md:w-auto">
+// 			<label class="text-sm text-gray-500" for="serving_size">Serving Size</label>
+// 			<input disabled class="p-2 bg-white rounded-md shadow-md pointer-events-none" type="text" value={ servingSize }/>
+// 		</div>
+// 		<div class="flex flex-col gap-1 w-full md:w-auto">
+// 			<label for="number_of_servings" class="text-sm text-gray-500">Number of Servings</label>
+// 			<input class="p-2 bg-white rounded-md shadow-md" type="number" name="number_of_servings"/>
+// 		</div>
+// 		<button class="w-full px-3 md:py-1 py-4 text-sm font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300">
+// 			Add
+// 		</button>
+// 	</form>
+// }
 
+// func PrepareAddFoodForm(item diet.SearchFoodProduct) string {
+// 	jsonBytes, err := json.Marshal(item)
+// 	if err != nil {
+// 		jsonBytes = []byte("{}")
+// 	}
+// 	return string(jsonBytes)
+// }
 templ FoodLogSuccess() {
-	<div class="flex items-center justify-center min-h-[196px]">
-		<img class="block h-20" src="/static/img/check.svg"/>
-		<span></span>
+	<div class="flex items-center justify-center">
+		<img class="block h-10 animate-shake" src="/static/img/check.svg"/>
+		// <span></span>
+	</div>
+}
+
+templ FoodItemModal() {
+	<div
+		class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center"
+		id="modal"
+	>
+		<div class="bg-white border border-slate-300 rounded-lg shadow-lg w-96">
+			<!-- Modal Header -->
+			<div class="flex justify-between items-center rounded-lg">
+				<h3 class="text-lg font-semibold text-gray-700">Modal Title</h3>
+				<button
+					class="text-gray-500 hover:text-gray-700"
+					hx-target="#modal-container"
+					hx-trigger="click"
+					hx-swap="outerHTML"
+				>
+					&times;
+				</button>
+			</div>
+			<div class="p-4">
+				<p class="text-gray-600">This is the modal content loaded via HTMX.</p>
+			</div>
+				<button
+					class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+					onclick="document.getElementById('modal-container').innerHTML =''"
+				>
+					Close
+				</button>
+		</div>
 	</div>
 }
