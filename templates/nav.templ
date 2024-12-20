@@ -1,7 +1,7 @@
 package templates
 
 templ Nav() {
-	<nav class="p-6 pb-12 md:pb-0 bg-white sticky bottom-0 z-50 shadow-[0_-4px_8px_0_rgba(0,0,0,0.2)]">
+	<nav class="p-6 md:pb-0 bg-white sticky bottom-0 z-50 shadow-[0_-4px_8px_0_rgba(0,0,0,0.2)]">
 		<ul class="flex gap-4 justify-between">
 			<li hx-replace-url="/dashboard" hx-get="/dashboard" hx-target="#main-content" class="flex flex-col justify-center items-center cursor-pointer">
 				<img class="h-5" src="/static/img/home.svg"/>
@@ -42,7 +42,7 @@ templ Nav() {
 
 			if (activeLink) {
 				activeLink.style.textDecoration = "underline";
-				activeLink.style.textDecorationThickness = "2px";
+				activeLink.style.textDecorationThickness = "10px";
 				activeLink.style.textDecorationColor = "#2596be";
 				activeLink.style.textUnderlineOffset = "8px";
 			}
