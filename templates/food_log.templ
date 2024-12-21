@@ -112,7 +112,12 @@ templ ContentFoodLogPage(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals
 								</div>
 							</div>
 							<div class="mt-6 col-span-1 overflow-y-scroll relative scrollbar-hide">
-								<h3 class="sticky z-50 pb-2 top-0 bg-white rounded-b-md text-lg font-semibold text-gray-700 mb-2">Logged Food</h3>
+								<h3 class="sticky z-50 pb-2 top-0 bg-white rounded-b-md text-lg font-semibold text-gray-700 mb-2">
+									Logged Food
+									if len(foodLogs) != 0 {
+										{ fmt.Sprintf("(%d items)", len(foodLogs)) }
+									}
+								</h3>
 								<ul class="space-y-4">
 									for _, entry := range foodLogs {
 										@FoodLogEntry(entry)
