@@ -10,7 +10,7 @@ templ Base(props TemplateProps) {
 	<html class="min-h-screen overscroll-none" lang="en">
 		<head>
 			<meta charset="UTF-8"/>
-			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
 			<meta name="theme-color" content="#FFFFFF"/>
 			<link rel="icon" type="image/png" sizes="16x16" href="/static/img/favicon/favicon-16x16.png"/>
 			<link rel="icon" type="image/png" sizes="32x32" href="/static/img/favicon/favicon-32x32.png"/>
@@ -76,7 +76,7 @@ templ Base(props TemplateProps) {
 			<link rel="apple-touch-startup-image" media="screen and (device-width: 820px) and (device-height: 1180px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)" href="/static/img/splash/10.9__iPad_Air_portrait.png"/>
 			<link rel="apple-touch-startup-image" media="screen and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)" href="/static/img/splash/iPhone_11_Pro_Max__iPhone_XS_Max_portrait.png"/>
 		</head>
-		<body class="min-h-screen flex flex-col pt-4 relative">
+		<body class="min-h-screen flex flex-col pt-4 relative select-none">
 			<main id="main-content" class="flex flex-col flex-1">
 				{ children... }
 			</main>
