@@ -99,13 +99,13 @@ func GetFoodLogTotals(entries []FoodLogEntry) (FoodLogTotals, error) {
 	}, nil
 }
 
-func (repo *FoodLogRepository) CreateFoodLogEntry(userId int, entry FoodLogEntry) (FoodLogEntry, error) {
+func (repo *FoodLogRepository) CreateFoodLogEntry(entry FoodLogEntry) (FoodLogEntry, error) {
 	statement := `
         INSERT INTO food_logs(user_id, food_name, serving_size, number_of_servings, calories, protein, carbs, fats)
         VALUES(?, ?, ?, ?, ?, ?, ?, ?)
     `
 	result, err := repo.db.db.Exec(statement,
-		userId,
+		entry.UserID,
 		entry.FoodName,
 		entry.ServingSize,
 		entry.NumberOfServings,
