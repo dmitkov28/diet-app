@@ -3,58 +3,80 @@ package templates
 templ Nav() {
 	<nav class="p-6 bg-white sticky bottom-0 z-50 shadow-[0_-4px_8px_0_rgba(0,0,0,0.2)]">
 		<ul class="flex gap-4 justify-between">
-			<li hx-replace-url="/dashboard" hx-get="/dashboard" hx-target="#main-content" class="flex flex-col justify-center items-center cursor-pointer">
+			<li
+				hx-replace-url="/dashboard"
+				hx-get="/dashboard"
+				hx-target="#main-content"
+				hx-trigger="click[isNewPath('/dashboard')]"
+				class="flex flex-col justify-center items-center cursor-pointer"
+			>
 				<img class="h-5" src="/static/img/home.svg"/>
 				<span>Home</span>
 			</li>
-			<li hx-replace-url="/stats" hx-get="/stats" hx-target="#main-content" class="flex flex-col justify-center items-center cursor-pointer">
+			<li
+				hx-replace-url="/stats"
+				hx-get="/stats"
+				hx-target="#main-content"
+				hx-trigger="click[isNewPath('/stats')]"
+				class="flex flex-col justify-center items-center cursor-pointer"
+			>
 				<img class="h-5" src="/static/img/stats.svg"/>
 				<span>Stats</span>
 			</li>
-			<li hx-replace-url="/weight" hx-get="/weight" hx-target="#main-content" class="flex flex-col justify-center items-center cursor-pointer">
+			<li
+				hx-replace-url="/weight"
+				hx-get="/weight"
+				hx-target="#main-content"
+				hx-trigger="click[isNewPath('/weight')]"
+				class="flex flex-col justify-center items-center cursor-pointer"
+			>
 				<img class="h-5" src="/static/img/scale.svg"/>
-				<span>
-					Weight
-				</span>
+				<span>Weight</span>
 			</li>
-			<li hx-replace-url="/calories" hx-get="/calories" hx-target="#main-content" class="flex flex-col justify-center items-center cursor-pointer">
+			<li
+				hx-replace-url="/calories"
+				hx-get="/calories"
+				hx-target="#main-content"
+				hx-trigger="click[isNewPath('/calories')]"
+				class="flex flex-col justify-center items-center cursor-pointer"
+			>
 				<img class="h-5" src="/static/img/food.svg"/>
-				<span>
-					Calories
-				</span>
+				<span>Calories</span>
 			</li>
-			<li hx-replace-url="/settings" hx-get="/settings" hx-target="#main-content" class="flex flex-col justify-center items-center cursor-pointer">
+			<li
+				hx-replace-url="/settings"
+				hx-get="/settings"
+				hx-target="#main-content"
+				hx-trigger="click[isNewPath('/settings')]"
+				class="flex flex-col justify-center items-center cursor-pointer"
+			>
 				<img class="h-5" src="/static/img/settings.svg"/>
-				<span>
-					Settings
-				</span>
+				<span>Settings</span>
 			</li>
 		</ul>
 	</nav>
 	<script>
-		function setStyles() {
-			document.querySelectorAll("li[hx-get]").forEach((link) => {
-				link.style.textDecoration = "none";
-			});
+    function setStyles() {
+        document.querySelectorAll("li[hx-get]").forEach((link) => {
+            link.style.textDecoration = "none";
+        });
+        
+        const currentPath = window.location.pathname;
+        const activeLink = document.querySelector(`li[hx-get="${currentPath}"]`);
+        if (activeLink) {
+            activeLink.style.textDecoration = "underline";
+            activeLink.style.textDecorationThickness = "3px";
+            activeLink.style.textDecorationColor = "#2596be";
+            activeLink.style.textUnderlineOffset = "8px";
+        }
+    }
 
-			const currentPath = window.location.pathname;
-			const activeLink = document.querySelector(`li[hx-get="${currentPath}"]`);
+    function isNewPath(path) {
+        return window.location.pathname !== path;
+    }
 
-			if (activeLink) {
-				activeLink.style.textDecoration = "underline";
-				activeLink.style.textDecorationThickness = "3px";
-				activeLink.style.textDecorationColor = "#2596be";
-				activeLink.style.textUnderlineOffset = "8px";
-			}
-		}
-
-		window.addEventListener("DOMContentLoaded", setStyles);
-
-		document.body.addEventListener("htmx:afterOnLoad", setStyles);
-
-		window.addEventListener("popstate", () => {
-			setStyles();
-		});
-
+    window.addEventListener("DOMContentLoaded", setStyles);
+    document.body.addEventListener("htmx:afterOnLoad", setStyles);
+    window.addEventListener("popstate", setStyles);
 </script>
 }
