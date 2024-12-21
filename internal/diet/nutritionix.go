@@ -35,7 +35,7 @@ type nutritionixBrandedFoodResponse struct {
 		BrandName           string  `json:"brand_name"`
 		ServingQty          float64 `json:"serving_qty"`
 		ServingUnit         string  `json:"serving_unit"`
-		ServingWeightGrams  any     `json:"serving_weight_grams"`
+		ServingWeightGrams  float64 `json:"serving_weight_grams"`
 		NfMetricQty         float64 `json:"nf_metric_qty"`
 		NfMetricUom         string  `json:"nf_metric_uom"`
 		NfCalories          float64 `json:"nf_calories"`
@@ -295,11 +295,12 @@ func getCommonFood(foodId string) (FoodFacts, error) {
 
 	return FoodFacts{
 		FoodSearchResult: FoodSearchResult{
-			Name:        firstItem.FoodName,
-			ServingUnit: firstItem.ServingUnit,
-			ServingQty:  float64(firstItem.ServingQty),
-			Thumbnail:   firstItem.Photo.Thumb,
-			Calories:    int(firstItem.NfCalories),
+			Name:               firstItem.FoodName,
+			ServingUnit:        firstItem.ServingUnit,
+			ServingQty:         float64(firstItem.ServingQty),
+			Thumbnail:          firstItem.Photo.Thumb,
+			Calories:           int(firstItem.NfCalories),
+			ServingWeightGrams: firstItem.ServingWeightGrams,
 		},
 		Protein: float64(firstItem.NfProtein),
 		Carbs:   float64(firstItem.NfTotalCarbohydrate),

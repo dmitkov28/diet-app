@@ -3,12 +3,13 @@ package diet
 import "fmt"
 
 type FoodSearchResult struct {
-	FoodId      string  `json:"food_id"`
-	Name        string  `json:"food_name"`
-	ServingUnit string  `json:"serving_unit"`
-	ServingQty  float64 `json:"serving_qty"`
-	Thumbnail   string  `json:"thumbnail"`
-	Calories    int     `json:"calories"`
+	FoodId             string  `json:"food_id"`
+	Name               string  `json:"food_name"`
+	ServingUnit        string  `json:"serving_unit"`
+	ServingQty         float64 `json:"serving_qty"`
+	ServingWeightGrams float64 `json:"serving_weight_grams"`
+	Thumbnail          string  `json:"thumbnail"`
+	Calories           int     `json:"calories"`
 }
 
 type FoodFacts struct {
@@ -19,7 +20,7 @@ type FoodFacts struct {
 }
 
 type FoodFactsRequestParams struct {
-	FoodId string
+	FoodId    string
 	IsBranded bool
 }
 
