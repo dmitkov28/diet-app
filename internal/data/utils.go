@@ -14,7 +14,7 @@ func ParseDateString(dateString string) string {
 	return parsed.Format("02 Jan 06")
 }
 
-func ParseWeekYearString(weekYearString string) (int, int) {
+func parseWeekYearString(weekYearString string) (int, int) {
 	splitStr := strings.Split(weekYearString, "-")
 	if len(splitStr) != 2 {
 		return 0, 0
@@ -36,7 +36,7 @@ func ParseWeekYearString(weekYearString string) (int, int) {
 
 func HasCurrentWeek(v WeeklyStats) bool {
 	currentYear, currentWeek := time.Now().ISOWeek()
-	year, week := ParseWeekYearString(v.YearWeek)
+	year, week := parseWeekYearString(v.YearWeek)
 	if currentYear != year || currentWeek != week {
 		return false
 	}
