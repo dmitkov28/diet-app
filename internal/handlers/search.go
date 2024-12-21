@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"log"
 	"net/url"
 	"strconv"
@@ -18,7 +19,7 @@ func SearchFoodGETHandler(measurementsRepo *data.MeasurementRepository) echo.Han
 	}
 }
 
-func SearchFoodGetHandlerWithParams(measurementsRepo *data.MeasurementRepository) echo.HandlerFunc {
+func SearchFoodGetHandlerWithParams(apiClient diet.APIClient) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		food := url.QueryEscape(c.QueryParam("query"))
 		page, err := strconv.ParseInt(c.QueryParam("page"), 10, 64)
@@ -27,7 +28,7 @@ func SearchFoodGetHandlerWithParams(measurementsRepo *data.MeasurementRepository
 			page = 0
 		}
 
-		result, err := diet.GetFoods(food)
+		result, err := apiClient.SearchFood(food)
 		if err != nil {
 			log.Println(err)
 		}
@@ -38,8 +39,18 @@ func SearchFoodGetHandlerWithParams(measurementsRepo *data.MeasurementRepository
 	}
 }
 
-func SearchFoodModalGETHandler() echo.HandlerFunc {
+func SearchFoodModalGETHandler(apiClient diet.APIClient) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		return render(c, templates.FoodItemModal())
+
+		foodId := c.QueryParam("food_id")
+		branded := c.QueryParam("branded") == "true"
+
+		food, err := apiClient.GetFoodFacts(diet.FoodFactsRequestParams{FoodId: foodId, IsBranded: branded})
+
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		return render(c, templates.FoodItemModal(food))
 	}
 }
