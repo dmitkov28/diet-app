@@ -33,7 +33,7 @@ deploy:
 
 sync:
 	@echo "Syncing S3 bucket..."
-	aws s3 sync "${S3_URI}" static/ --delete
+	aws s3 sync static/ "${S3_URI}" --delete
 
 stop:
 	pkill -f "air" || true
