@@ -54,6 +54,7 @@ templ SearchComponent() {
 			hx-trigger="input changed delay:500ms, search"
 			hx-target="#search-results"
 			hx-indicator="#loading"
+			hx-on:input="document.getElementById('search-results').textNode = ''"
 			name="query"
 			type="search"
 			placeholder="Type in a food"
@@ -87,7 +88,11 @@ templ SearchResultsItem(item diet.FoodSearchResult) {
 				}
 				hx-target="#modal-container"
 				hx-trigger="click"
-				hx-indicator={ fmt.Sprintf("#loading-slider-%s", item.FoodId) }
+				if item.FoodId !="" {
+					hx-indicator={ fmt.Sprintf("#loading-slider-%s", item.FoodId) }
+				} else {
+					hx-indicator={ fmt.Sprintf("#loading-slider-%s", item.Name) }
+				}
 				class="flex flex-col gap-1 w-full h-full cursor-pointer"
 			>
 				<div class="flex gap-2 items-center">
@@ -106,7 +111,11 @@ templ SearchResultsItem(item diet.FoodSearchResult) {
 			</a>
 			@AddButton(item)
 		</div>
-		@LoadingSlider(item.FoodId)
+		if item.FoodId != "" {
+			@LoadingSlider(item.FoodId)
+		} else {
+			@LoadingSlider(item.Name)
+		}
 	</li>
 }
 
@@ -139,7 +148,6 @@ templ AddButton(product diet.FoodSearchResult) {
 templ FoodLogSuccess() {
 	<div class="flex items-center justify-center">
 		<img class="block h-10 animate-shake" src="/static/img/check.svg"/>
-		// <span></span>
 	</div>
 }
 
