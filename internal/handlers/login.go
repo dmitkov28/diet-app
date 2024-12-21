@@ -26,8 +26,7 @@ func LoginPOSTHandler(usersRepo *data.UsersRepository, sessionsRepo *data.Sessio
 
 		session, err := auth.SignInUser(*usersRepo, *sessionsRepo, email, password)
 		if err != nil {
-			isHTMX := c.Request().Header.Get("HX-Request") != ""
-			return render(c, templates.LoginPage(true, isHTMX))
+			return render(c, templates.LoginForm(true))
 		}
 
 		c.SetCookie(&http.Cookie{
