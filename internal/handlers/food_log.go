@@ -75,7 +75,59 @@ func FoodLogRefreshTotalsGETHandler(repo *data.FoodLogRepository, settingsRepo *
 func FoodLogPOSTHandler(repo *data.FoodLogRepository, settingsRepo *data.SettingsRepository) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		userId := c.Get("user_id").(int)
-		fmt.Println(userId)
+		foodName := c.FormValue("food_name")
+		calories, err := strconv.ParseFloat(c.FormValue("calories"), 64)
+
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		servingQty, err := strconv.ParseFloat(c.FormValue("serving_qty"), 64)
+
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		numServings, err := strconv.ParseFloat(c.FormValue("number_of_servings"), 64)
+
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		protein, err := strconv.ParseFloat(c.FormValue("Protein"), 64)
+
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		carbs, err := strconv.ParseFloat(c.FormValue("Carbs"), 64)
+
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		fat, err := strconv.ParseFloat(c.FormValue("Fat"), 64)
+
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		entry := data.FoodLogEntry{
+			UserID:           userId,
+			FoodName:         foodName,
+			Calories:         calories,
+			Protein:          protein,
+			Carbs:            carbs,
+			Fats:             fat,
+			NumberOfServings: numServings,
+			ServingSize:      servingQty,
+		}
+
+		_, err = repo.CreateFoodLogEntry(entry)
+		if err != nil {
+			fmt.Println(err)
+		}
+
 		return render(c, templates.FoodLogSuccess())
 	}
 }
