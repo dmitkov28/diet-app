@@ -22,6 +22,11 @@
   scrollbar-width: none; /* Firefox */
 }
 
-nav {
-  padding-bottom: env(safe-area-inset-bottom);
+@keyframes slide {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
 }
