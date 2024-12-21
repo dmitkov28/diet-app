@@ -9,13 +9,18 @@ import (
 )
 
 type openFoodFactsSearchResponse struct {
-	Products []openFoodFactsSearchResponseItem `json:"products"`
-	Count    int                               `json:"count"`
-	Page     int                               `json:"page"`
-	PageSize int                               `json:"page_size"`
+	Products []openFoodFactsResponseItem `json:"products"`
+	Count    int                         `json:"count"`
+	Page     int                         `json:"page"`
+	PageSize int                         `json:"page_size"`
 }
 
-type openFoodFactsSearchResponseItem struct {
+type openFoodFactsFoodFactsResponse struct {
+	Product openFoodFactsResponseItem `json:"product"`
+}
+
+type openFoodFactsResponseItem struct {
+	Id                  string      `json:"_id"`
 	ProductName         string      `json:"product_name,omitempty"`
 	Brands              string      `json:"brands,omitempty"`
 	Fats                float64     `json:"fats,omitempty"`
@@ -99,10 +104,11 @@ type nutriments struct {
 
 type OpenFoodFactsAPIClient struct{}
 
-const openfoodFactsSearchEndpoint = "https://world.openfoodfacts.org/cgi/search.pl"
+const openFoodFactsSearchEndpoint = "https://world.openfoodfacts.org/cgi/search.pl"
+const openFoodFactsFoodFactsEndpoint = "https://world.openfoodfacts.org/api/v3/product"
 
 func (apiClient OpenFoodFactsAPIClient) SearchFood(food string) ([]FoodSearchResult, error) {
-	baseURL, err := url.Parse(openfoodFactsSearchEndpoint)
+	baseURL, err := url.Parse(openFoodFactsSearchEndpoint)
 
 	if err != nil {
 		return nil, fmt.Errorf("invalid base URL: %w", err)
@@ -158,6 +164,7 @@ func (apiClient OpenFoodFactsAPIClient) SearchFood(food string) ([]FoodSearchRes
 			continue
 		}
 		result = append(result, FoodSearchResult{
+			FoodId:      item.Id,
 			Name:        item.ProductName,
 			ServingUnit: item.ServingQuantityUnit,
 			ServingQty:  servingQty,
@@ -194,6 +201,57 @@ func FilterForServingSize(response openFoodFactsSearchResponse) openFoodFactsSea
 	return result
 }
 
-func (apiClient OpenFoodFactsAPIClient) GetFoodFacts(foodId string) (FoodFacts, error) {
-	return FoodFacts{}, nil
+func (apiClient OpenFoodFactsAPIClient) GetFoodFacts(food FoodFactsRequestParams) (FoodFacts, error) {
+	url := fmt.Sprintf("%s/%s.json", openFoodFactsFoodFactsEndpoint, food.FoodId)
+	client := &http.Client{}
+	req, err := http.NewRequest("GET", url, nil)
+
+	if err != nil {
+		return FoodFacts{}, err
+	}
+	res, err := client.Do(req)
+
+	if err != nil {
+		return FoodFacts{}, err
+	}
+
+	defer res.Body.Close()
+
+	bytes, err := io.ReadAll(res.Body)
+
+	if err != nil {
+		return FoodFacts{}, err
+	}
+
+	var offResponse = openFoodFactsFoodFactsResponse{}
+	if err := json.Unmarshal(bytes, &offResponse); err != nil {
+		return FoodFacts{}, err
+	}
+
+	var servingQty float64
+
+	switch v := offResponse.Product.ServingQuantity.(type) {
+	case int:
+		servingQty = float64(v)
+	case int64:
+		servingQty = float64(v)
+	case float32:
+		servingQty = float64(v)
+	case float64:
+		servingQty = v
+	}
+
+	return FoodFacts{
+		FoodSearchResult: FoodSearchResult{
+			FoodId: offResponse.Product.Id,
+			Name:   fmt.Sprintf("%s (%s)", offResponse.Product.ProductName, offResponse.Product.Brands),
+			ServingQty: servingQty,
+			ServingUnit: offResponse.Product.ServingQuantityUnit,
+			Calories: int(offResponse.Product.Nutriments.EnergyKcal),
+			Thumbnail: offResponse.Product.ImageURL,
+		},
+		Protein: offResponse.Product.Nutriments.ProteinsServing,
+		Carbs: offResponse.Product.Nutriments.CarbohydratesServing,
+		Fat: offResponse.Product.Nutriments.FatServing,
+	}, nil
 }

@@ -1,6 +1,7 @@
 package diet
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -8,6 +9,8 @@ import (
 	"net/url"
 	"os"
 	"time"
+
+
 )
 
 type nutritionixSearchResponse struct {
@@ -16,7 +19,7 @@ type nutritionixSearchResponse struct {
 }
 
 type nutritionixSearchResponseItem struct {
-	Id          string  `json:"nix_item_id"`
+	Id          string  `json:"nix_item_id,omitempty"`
 	FoodName    string  `json:"food_name"`
 	ServingUnit string  `json:"serving_unit"`
 	ServingQty  float64 `json:"serving_qty"`
@@ -30,7 +33,7 @@ type nutritionixBrandedFoodResponse struct {
 	Foods []struct {
 		FoodName            string  `json:"food_name"`
 		BrandName           string  `json:"brand_name"`
-		ServingQty          int     `json:"serving_qty"`
+		ServingQty          float64 `json:"serving_qty"`
 		ServingUnit         string  `json:"serving_unit"`
 		ServingWeightGrams  any     `json:"serving_weight_grams"`
 		NfMetricQty         float64 `json:"nf_metric_qty"`
@@ -79,8 +82,7 @@ type NutritionixAPIClient struct{}
 
 const nutritionixSearchEndpoint = "https://trackapi.nutritionix.com/v2/search/instant/"
 const nutritionixBrandFoodFactsEndpoint = "https://trackapi.nutritionix.com/v2/search/item"
-
-// const nutritionixCommonFoodFactsEndpoint = "https://trackapi.nutritionix.com/v2/natural/nutrients"
+const nutritionixCommonFoodFactsEndpoint = "https://trackapi.nutritionix.com/v2/natural/nutrients"
 
 func (apiClient NutritionixAPIClient) SearchFood(query string) ([]FoodSearchResult, error) {
 	baseURL, err := url.Parse(nutritionixSearchEndpoint)
@@ -132,6 +134,18 @@ func (apiClient NutritionixAPIClient) SearchFood(query string) ([]FoodSearchResu
 	}
 
 	var result []FoodSearchResult
+
+	for _, item := range nutritionixResponse.Common {
+		searchResultItem := FoodSearchResult{
+			FoodId:      item.Id,
+			Name:        item.FoodName,
+			ServingQty:  item.ServingQty,
+			ServingUnit: item.ServingUnit,
+			Thumbnail:   item.Photo.Thumb,
+			Calories:    int(item.NfCalories),
+		}
+		result = append(result, searchResultItem)
+	}
 
 	for _, item := range nutritionixResponse.Branded {
 		searchResultItem := FoodSearchResult{
@@ -219,6 +233,87 @@ func getBrandedFood(foodId string) (FoodFacts, error) {
 
 }
 
-func (apiClient NutritionixAPIClient) GetFoodFacts(foodId string) (FoodFacts, error) {
-	return getBrandedFood(foodId)
+func getCommonFood(foodId string) (FoodFacts, error) {
+	baseURL, err := url.Parse(nutritionixCommonFoodFactsEndpoint)
+	if err != nil {
+		return FoodFacts{}, fmt.Errorf("invalid base URL: %w", err)
+	}
+	url := baseURL.String()
+
+	payload := map[string]interface{}{
+		"query": foodId,
+	}
+
+	data, err := json.Marshal(payload)
+	if err != nil {
+		return FoodFacts{}, err
+	}
+
+	client := &http.Client{}
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(data))
+
+	if err != nil {
+		return FoodFacts{}, nil
+	}
+
+	nutritionixAppId := os.Getenv("NUTRITIONIX_APP_ID")
+	nutritionixAppKey := os.Getenv("NUTRITIONIX_APP_KEY")
+
+	if nutritionixAppId == "" || nutritionixAppKey == "" {
+		return FoodFacts{}, fmt.Errorf("missing api credentials")
+	}
+
+	req.Header.Set("x-app-id", nutritionixAppId)
+	req.Header.Set("x-app-key", nutritionixAppKey)
+
+	res, err := client.Do(req)
+
+	if err != nil {
+		return FoodFacts{}, nil
+	}
+
+	defer res.Body.Close()
+
+	bytes, err := io.ReadAll(res.Body)
+
+	if err != nil {
+		return FoodFacts{}, nil
+	}
+
+	var nutritionixResponse nutritionixBrandedFoodResponse
+
+	if err := json.Unmarshal(bytes, &nutritionixResponse); err != nil {
+		return FoodFacts{}, err
+	}
+
+	if len(nutritionixResponse.Foods) == 0 {
+		fmt.Println("no response")
+		return FoodFacts{}, nil
+	}
+
+	firstItem := nutritionixResponse.Foods[0]
+
+	return FoodFacts{
+		FoodSearchResult: FoodSearchResult{
+			Name:        firstItem.FoodName,
+			ServingUnit: firstItem.ServingUnit,
+			ServingQty:  float64(firstItem.ServingQty),
+			Thumbnail:   firstItem.Photo.Thumb,
+			Calories:    int(firstItem.NfCalories),
+		},
+		Protein: float64(firstItem.NfProtein),
+		Carbs:   float64(firstItem.NfTotalCarbohydrate),
+		Fat:     float64(firstItem.NfTotalFat),
+	}, nil
+
+}
+
+func (apiClient NutritionixAPIClient) GetFoodFacts(food FoodFactsRequestParams) (FoodFacts, error) {
+
+	if food.IsBranded {
+		return getBrandedFood(food.FoodId)
+	}
+
+	return getCommonFood(food.FoodId)
+
 }

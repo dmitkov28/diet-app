@@ -18,9 +18,14 @@ type FoodFacts struct {
 	Fat     float64
 }
 
+type FoodFactsRequestParams struct {
+	FoodId string
+	IsBranded bool
+}
+
 type APIClient interface {
 	SearchFood(food string) ([]FoodSearchResult, error)
-	GetFoodFacts(foodId string) (FoodFacts, error)
+	GetFoodFacts(food FoodFactsRequestParams) (FoodFacts, error)
 }
 
 func NewAPIClient(provider string) (APIClient, error) {
