@@ -9,8 +9,6 @@ import (
 	"net/url"
 	"os"
 	"time"
-
-
 )
 
 type nutritionixSearchResponse struct {

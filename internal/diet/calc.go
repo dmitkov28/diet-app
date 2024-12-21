@@ -262,4 +262,3 @@ func FetchNutritionData(ean string) (NutritionData, error) {
 	return result, nil
 
 }
-

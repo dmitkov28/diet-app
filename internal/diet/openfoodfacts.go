@@ -243,15 +243,15 @@ func (apiClient OpenFoodFactsAPIClient) GetFoodFacts(food FoodFactsRequestParams
 
 	return FoodFacts{
 		FoodSearchResult: FoodSearchResult{
-			FoodId: offResponse.Product.Id,
-			Name:   fmt.Sprintf("%s (%s)", offResponse.Product.ProductName, offResponse.Product.Brands),
-			ServingQty: servingQty,
+			FoodId:      offResponse.Product.Id,
+			Name:        fmt.Sprintf("%s (%s)", offResponse.Product.ProductName, offResponse.Product.Brands),
+			ServingQty:  servingQty,
 			ServingUnit: offResponse.Product.ServingQuantityUnit,
-			Calories: int(offResponse.Product.Nutriments.EnergyKcal),
-			Thumbnail: offResponse.Product.ImageURL,
+			Calories:    int(offResponse.Product.Nutriments.EnergyKcal),
+			Thumbnail:   offResponse.Product.ImageURL,
 		},
 		Protein: offResponse.Product.Nutriments.ProteinsServing,
-		Carbs: offResponse.Product.Nutriments.CarbohydratesServing,
-		Fat: offResponse.Product.Nutriments.FatServing,
+		Carbs:   offResponse.Product.Nutriments.CarbohydratesServing,
+		Fat:     offResponse.Product.Nutriments.FatServing,
 	}, nil
 }
