@@ -187,12 +187,10 @@ templ FoodItemModal(food diet.FoodFacts) {
 					</div>
 					<div>
 						<label class="block text-sm text-gray-500 mb-1">Serving Size</label>
-						<input
-							class="w-full px-3 py-2 border bg-gray-100 text-gray-500 rounded-md focus:outline-none"
-							type="text"
-							disabled
-							value={ food.ServingUnit }
-						/>
+						<select class="w-full bg-white px-3 py-2 border rounded-md text-gray-700">
+							<option value={ food.ServingUnit }>{ food.ServingUnit }</option>
+							<option value={ fmt.Sprintf("%.1f", food.ServingWeightGrams) }>{ fmt.Sprintf("%.1f", food.ServingWeightGrams) }g</option>
+						</select>
 					</div>
 					<button
 						class="w-full bg-blue-500 text-white font-medium px-4 py-2 rounded-md transition duration-200 focus:outline-none"
