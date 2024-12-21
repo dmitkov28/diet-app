@@ -169,6 +169,16 @@ templ ContentFoodLogPage(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals
 
 			})
 		});
+
+		document.body.addEventListener("keyup", (e) => {
+			if (e.key === "ArrowLeft"){
+				swiper.slidePrev()
+			}
+
+			if (e.key === "ArrowRight"){
+				swiper.slideNext()
+			}
+		})
 					
 		</script>
 }
