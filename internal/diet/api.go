@@ -1,7 +1,5 @@
 package diet
 
-import "fmt"
-
 type FoodSearchResult struct {
 	FoodId             string  `json:"food_id"`
 	Name               string  `json:"food_name"`
@@ -27,15 +25,4 @@ type FoodFactsRequestParams struct {
 type APIClient interface {
 	SearchFood(food string) ([]FoodSearchResult, error)
 	GetFoodFacts(food FoodFactsRequestParams) (FoodFacts, error)
-}
-
-func NewAPIClient(provider string) (APIClient, error) {
-	switch provider {
-	case "nutritionix":
-		return NutritionixAPIClient{}, nil
-
-	case "openfoodfacts":
-		return OpenFoodFactsAPIClient{}, nil
-	}
-	return nil, fmt.Errorf("invalid provider")
 }

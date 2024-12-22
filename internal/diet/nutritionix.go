@@ -1,14 +1,12 @@
 package diet
 
 import (
-	"bytes"
-	"encoding/json"
 	"fmt"
-	"io"
-	"net/http"
 	"net/url"
 	"os"
 	"time"
+
+	"github.com/dmitkov28/dietapp/internal/httputils"
 )
 
 type nutritionixSearchResponse struct {
@@ -76,58 +74,52 @@ type nutritionixBrandedFoodResponse struct {
 	} `json:"foods"`
 }
 
-type NutritionixAPIClient struct{}
+type NutritionixAPIClient struct {
+	*httputils.APIClient
+	appKey string
+	appId  string
+}
+
+func NewNutritionixAPIClient(httpClient *httputils.APIClient) (*NutritionixAPIClient, error) {
+	nutritionixAppId := os.Getenv("NUTRITIONIX_APP_ID")
+	nutritionixAppKey := os.Getenv("NUTRITIONIX_APP_KEY")
+
+	if nutritionixAppId == "" || nutritionixAppKey == "" {
+		return &NutritionixAPIClient{}, fmt.Errorf("missing api credentials")
+	}
+	return &NutritionixAPIClient{
+		APIClient: httpClient,
+		appKey:    nutritionixAppKey,
+		appId:     nutritionixAppId,
+	}, nil
+}
 
 const nutritionixSearchEndpoint = "https://trackapi.nutritionix.com/v2/search/instant/"
 const nutritionixBrandFoodFactsEndpoint = "https://trackapi.nutritionix.com/v2/search/item"
 const nutritionixCommonFoodFactsEndpoint = "https://trackapi.nutritionix.com/v2/natural/nutrients"
 
-func (apiClient NutritionixAPIClient) SearchFood(query string) ([]FoodSearchResult, error) {
+func (c *NutritionixAPIClient) SearchFood(query string) ([]FoodSearchResult, error) {
 	baseURL, err := url.Parse(nutritionixSearchEndpoint)
 
 	if err != nil {
 		return nil, fmt.Errorf("invalid base URL: %w", err)
 	}
-
 	params := url.Values{}
 	params.Add("query", query)
 	baseURL.RawQuery = params.Encode()
 	url := baseURL.String()
-
-	client := &http.Client{}
-	req, err := http.NewRequest("GET", url, nil)
-
-	if err != nil {
-		return nil, err
-	}
-
-	nutritionixAppId := os.Getenv("NUTRITIONIX_APP_ID")
-	nutritionixAppKey := os.Getenv("NUTRITIONIX_APP_KEY")
-
-	if nutritionixAppId == "" || nutritionixAppKey == "" {
-		return nil, fmt.Errorf("missing api credentials")
-	}
-
-	req.Header.Set("x-app-id", nutritionixAppId)
-	req.Header.Set("x-app-key", nutritionixAppKey)
-
-	res, err := client.Do(req)
+	req, err := c.NewRequest("GET", url, nil)
+	req.Header.Set("x-app-id", c.appId)
+	req.Header.Set("x-app-key", c.appKey)
 
 	if err != nil {
 		return nil, err
 	}
-
-	defer res.Body.Close()
 
 	var nutritionixResponse nutritionixSearchResponse
-
-	bytes, err := io.ReadAll(res.Body)
+	err = c.Do(req, &nutritionixResponse)
 
 	if err != nil {
-		return nil, err
-	}
-
-	if err := json.Unmarshal(bytes, &nutritionixResponse); err != nil {
 		return nil, err
 	}
 
@@ -161,7 +153,7 @@ func (apiClient NutritionixAPIClient) SearchFood(query string) ([]FoodSearchResu
 
 }
 
-func getBrandedFood(foodId string) (FoodFacts, error) {
+func (c *NutritionixAPIClient) getBrandedFood(foodId string) (FoodFacts, error) {
 	baseURL, err := url.Parse(nutritionixBrandFoodFactsEndpoint)
 	if err != nil {
 		return FoodFacts{}, fmt.Errorf("invalid base URL: %w", err)
@@ -172,45 +164,22 @@ func getBrandedFood(foodId string) (FoodFacts, error) {
 	baseURL.RawQuery = params.Encode()
 	url := baseURL.String()
 
-	client := &http.Client{}
-	req, err := http.NewRequest("GET", url, nil)
+	req, err := c.NewRequest("GET", url, nil)
+	req.Header.Set("x-app-id", c.appId)
+	req.Header.Set("x-app-key", c.appKey)
 
 	if err != nil {
-		return FoodFacts{}, nil
-	}
-
-	nutritionixAppId := os.Getenv("NUTRITIONIX_APP_ID")
-	nutritionixAppKey := os.Getenv("NUTRITIONIX_APP_KEY")
-
-	if nutritionixAppId == "" || nutritionixAppKey == "" {
-		return FoodFacts{}, fmt.Errorf("missing api credentials")
-	}
-
-	req.Header.Set("x-app-id", nutritionixAppId)
-	req.Header.Set("x-app-key", nutritionixAppKey)
-
-	res, err := client.Do(req)
-
-	if err != nil {
-		return FoodFacts{}, nil
-	}
-
-	defer res.Body.Close()
-
-	bytes, err := io.ReadAll(res.Body)
-
-	if err != nil {
-		return FoodFacts{}, nil
+		return FoodFacts{}, err
 	}
 
 	var nutritionixResponse nutritionixBrandedFoodResponse
+	err = c.Do(req, &nutritionixResponse)
 
-	if err := json.Unmarshal(bytes, &nutritionixResponse); err != nil {
+	if err != nil {
 		return FoodFacts{}, err
 	}
 
 	if len(nutritionixResponse.Foods) == 0 {
-		fmt.Println("no response")
 		return FoodFacts{}, nil
 	}
 
@@ -231,7 +200,7 @@ func getBrandedFood(foodId string) (FoodFacts, error) {
 
 }
 
-func getCommonFood(foodId string) (FoodFacts, error) {
+func (c *NutritionixAPIClient) getCommonFood(foodId string) (FoodFacts, error) {
 	baseURL, err := url.Parse(nutritionixCommonFoodFactsEndpoint)
 	if err != nil {
 		return FoodFacts{}, fmt.Errorf("invalid base URL: %w", err)
@@ -242,45 +211,19 @@ func getCommonFood(foodId string) (FoodFacts, error) {
 		"query": foodId,
 	}
 
-	data, err := json.Marshal(payload)
+	req, err := c.NewRequest("POST", url, payload)
+
 	if err != nil {
 		return FoodFacts{}, err
 	}
 
-	client := &http.Client{}
-	req, err := http.NewRequest("POST", url, bytes.NewBuffer(data))
-
-	if err != nil {
-		return FoodFacts{}, nil
-	}
-
-	nutritionixAppId := os.Getenv("NUTRITIONIX_APP_ID")
-	nutritionixAppKey := os.Getenv("NUTRITIONIX_APP_KEY")
-
-	if nutritionixAppId == "" || nutritionixAppKey == "" {
-		return FoodFacts{}, fmt.Errorf("missing api credentials")
-	}
-
-	req.Header.Set("x-app-id", nutritionixAppId)
-	req.Header.Set("x-app-key", nutritionixAppKey)
-
-	res, err := client.Do(req)
-
-	if err != nil {
-		return FoodFacts{}, nil
-	}
-
-	defer res.Body.Close()
-
-	bytes, err := io.ReadAll(res.Body)
-
-	if err != nil {
-		return FoodFacts{}, nil
-	}
+	req.Header.Set("x-app-id", c.appId)
+	req.Header.Set("x-app-key", c.appKey)
 
 	var nutritionixResponse nutritionixBrandedFoodResponse
+	err = c.Do(req, &nutritionixResponse)
 
-	if err := json.Unmarshal(bytes, &nutritionixResponse); err != nil {
+	if err != nil {
 		return FoodFacts{}, err
 	}
 
@@ -310,9 +253,9 @@ func getCommonFood(foodId string) (FoodFacts, error) {
 func (apiClient NutritionixAPIClient) GetFoodFacts(food FoodFactsRequestParams) (FoodFacts, error) {
 
 	if food.IsBranded {
-		return getBrandedFood(food.FoodId)
+		return apiClient.getBrandedFood(food.FoodId)
 	}
 
-	return getCommonFood(food.FoodId)
+	return apiClient.getCommonFood(food.FoodId)
 
 }

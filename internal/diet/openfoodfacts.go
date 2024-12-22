@@ -1,11 +1,11 @@
 package diet
 
 import (
-	"encoding/json"
 	"fmt"
-	"io"
-	"net/http"
 	"net/url"
+	"strconv"
+
+	"github.com/dmitkov28/dietapp/internal/httputils"
 )
 
 type openFoodFactsSearchResponse struct {
@@ -102,12 +102,18 @@ type nutriments struct {
 	SugarsValue             float64 `json:"sugars_value,omitempty"`
 }
 
-type OpenFoodFactsAPIClient struct{}
+type OpenFoodFactsAPIClient struct {
+	*httputils.APIClient
+}
+
+func NewOpenFoodFactsAPIClient(httpClient *httputils.APIClient) (*OpenFoodFactsAPIClient, error) {
+	return &OpenFoodFactsAPIClient{APIClient: httpClient}, nil
+}
 
 const openFoodFactsSearchEndpoint = "https://world.openfoodfacts.org/cgi/search.pl"
 const openFoodFactsFoodFactsEndpoint = "https://world.openfoodfacts.org/api/v3/product"
 
-func (apiClient OpenFoodFactsAPIClient) SearchFood(food string) ([]FoodSearchResult, error) {
+func (c *OpenFoodFactsAPIClient) SearchFood(food string) ([]FoodSearchResult, error) {
 	baseURL, err := url.Parse(openFoodFactsSearchEndpoint)
 
 	if err != nil {
@@ -122,47 +128,31 @@ func (apiClient OpenFoodFactsAPIClient) SearchFood(food string) ([]FoodSearchRes
 	baseURL.RawQuery = params.Encode()
 	url := baseURL.String()
 
-	client := &http.Client{}
-	req, err := http.NewRequest("GET", url, nil)
+	req, err := c.NewRequest("GET", url, nil)
 
 	if err != nil {
 		return nil, err
 	}
-	res, err := client.Do(req)
-
-	if err != nil {
-		return nil, err
-	}
-
-	defer res.Body.Close()
 
 	var offResponse = openFoodFactsSearchResponse{}
-	bytes, err := io.ReadAll(res.Body)
+	err = c.Do(req, &offResponse)
 
 	if err != nil {
 		return nil, err
 	}
 
-	if err := json.Unmarshal(bytes, &offResponse); err != nil {
-		return nil, err
-	}
+	filteredResults := filterServingSize(offResponse)
 
 	var result []FoodSearchResult
-	for _, item := range offResponse.Products {
-		var servingQty float64
+	for _, item := range filteredResults.Products {
 
-		switch v := item.ServingQuantity.(type) {
-		case int:
-			servingQty = float64(v)
-		case int64:
-			servingQty = float64(v)
-		case float32:
-			servingQty = float64(v)
-		case float64:
-			servingQty = v
-		default:
-			continue
+		servingQty, err := convertServingQuantityToFloat(item.ServingQuantity)
+
+		if err != nil {
+			servingQty = 0
+			fmt.Println(err)
 		}
+
 		result = append(result, FoodSearchResult{
 			FoodId:      item.Id,
 			Name:        item.ProductName,
@@ -177,68 +167,25 @@ func (apiClient OpenFoodFactsAPIClient) SearchFood(food string) ([]FoodSearchRes
 
 }
 
-func FilterForServingSize(response openFoodFactsSearchResponse) openFoodFactsSearchResponse {
-	if len(response.Products) == 0 {
-		return openFoodFactsSearchResponse{}
-	}
-
-	var result openFoodFactsSearchResponse
-	result.Page = response.Page
-
-	for _, item := range response.Products {
-		if item.ServingSize != "" &&
-			item.ServingQuantity != nil &&
-			item.ServingQuantityUnit != "" &&
-			item.Nutriments.EnergyKcalServing != 0 &&
-			item.Nutriments.ProteinsServing != 0 &&
-			item.Nutriments.FatServing != 0 &&
-			item.Nutriments.CarbohydratesServing != 0 {
-			result.Products = append(result.Products, item)
-		}
-	}
-	result.PageSize = len(result.Products)
-	result.Count = len(result.Products)
-	return result
-}
-
-func (apiClient OpenFoodFactsAPIClient) GetFoodFacts(food FoodFactsRequestParams) (FoodFacts, error) {
+func (c *OpenFoodFactsAPIClient) GetFoodFacts(food FoodFactsRequestParams) (FoodFacts, error) {
 	url := fmt.Sprintf("%s/%s.json", openFoodFactsFoodFactsEndpoint, food.FoodId)
-	client := &http.Client{}
-	req, err := http.NewRequest("GET", url, nil)
+	req, err := c.NewRequest("GET", url, nil)
 
 	if err != nil {
 		return FoodFacts{}, err
 	}
-	res, err := client.Do(req)
-
-	if err != nil {
-		return FoodFacts{}, err
-	}
-
-	defer res.Body.Close()
-
-	bytes, err := io.ReadAll(res.Body)
-
-	if err != nil {
-		return FoodFacts{}, err
-	}
-
 	var offResponse = openFoodFactsFoodFactsResponse{}
-	if err := json.Unmarshal(bytes, &offResponse); err != nil {
+	err = c.Do(req, &offResponse)
+
+	if err != nil {
 		return FoodFacts{}, err
 	}
 
-	var servingQty float64
+	servingQty, err := convertServingQuantityToFloat(offResponse.Product.ServingQuantity)
 
-	switch v := offResponse.Product.ServingQuantity.(type) {
-	case int:
-		servingQty = float64(v)
-	case int64:
-		servingQty = float64(v)
-	case float32:
-		servingQty = float64(v)
-	case float64:
-		servingQty = v
+	if err != nil {
+		servingQty = 0
+		fmt.Println(err)
 	}
 
 	return FoodFacts{
@@ -254,4 +201,57 @@ func (apiClient OpenFoodFactsAPIClient) GetFoodFacts(food FoodFactsRequestParams
 		Carbs:   offResponse.Product.Nutriments.CarbohydratesServing,
 		Fat:     offResponse.Product.Nutriments.FatServing,
 	}, nil
+}
+
+func filterServingSize(response openFoodFactsSearchResponse) openFoodFactsSearchResponse {
+	if len(response.Products) == 0 {
+		return openFoodFactsSearchResponse{}
+	}
+
+	var result openFoodFactsSearchResponse
+	result.Page = response.Page
+
+	for _, item := range response.Products {
+		if item.ServingSize != "" &&
+			item.ServingQuantity != "" &&
+			item.ServingQuantityUnit != "" &&
+			item.Nutriments.EnergyKcalServing != 0 &&
+			item.Nutriments.ProteinsServing != 0 &&
+			item.Nutriments.FatServing != 0 &&
+			item.Nutriments.CarbohydratesServing != 0 {
+			result.Products = append(result.Products, item)
+		}
+	}
+	result.PageSize = len(result.Products)
+	result.Count = len(result.Products)
+	return result
+}
+
+func convertServingQuantityToFloat(servingQuantity interface{}) (float64, error) {
+	if servingQuantity == nil {
+		return 0, fmt.Errorf("serving quantity is nil")
+	}
+
+	switch v := servingQuantity.(type) {
+	case float64:
+		return v, nil
+	case float32:
+		return float64(v), nil
+	case int:
+		return float64(v), nil
+	case int64:
+		return float64(v), nil
+	case string:
+		// Try parsing the string as a float
+		if v == "" {
+			return 0, fmt.Errorf("empty string serving quantity")
+		}
+		f, err := strconv.ParseFloat(v, 64)
+		if err != nil {
+			return 0, fmt.Errorf("failed to parse string serving quantity: %v", err)
+		}
+		return f, nil
+	default:
+		return 0, fmt.Errorf("unsupported serving quantity type: %T", servingQuantity)
+	}
 }

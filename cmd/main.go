@@ -8,6 +8,7 @@ import (
 	"github.com/dmitkov28/dietapp/internal/data"
 	"github.com/dmitkov28/dietapp/internal/diet"
 	"github.com/dmitkov28/dietapp/internal/handlers"
+	"github.com/dmitkov28/dietapp/internal/httputils"
 	customMiddleware "github.com/dmitkov28/dietapp/internal/middleware"
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
@@ -31,10 +32,19 @@ func main() {
 	measurementsRepo := data.NewMeasurementsRepository(db)
 	foodLogRepo := data.NewFoodLogsRepository(db)
 
-	apiClient, err := diet.NewAPIClient("nutritionix")
+	httpClient := http.Client{}
+	apiClient := httputils.NewAPIClient(&httpClient)
+	nutritionixAPIClient, err := diet.NewNutritionixAPIClient(apiClient)
+
 	if err != nil {
 		fmt.Println(err)
 	}
+
+	// offAPIClient, err := diet.NewOpenFoodFactsAPIClient(apiClient)
+
+	// if err != nil {
+	// 	fmt.Println(err)
+	// }
 
 	e := echo.New()
 	e.Static("/static", "static")
@@ -66,8 +76,8 @@ func main() {
 	e.GET("/scan/:ean", handlers.ScanBarCodeGETHandler(), customMiddleware.AuthMiddleware(sessionsRepo))
 
 	e.GET("/search", handlers.SearchFoodGETHandler(measurementsRepo), customMiddleware.AuthMiddleware(sessionsRepo))
-	e.GET("/search_food", handlers.SearchFoodGetHandlerWithParams(apiClient), customMiddleware.AuthMiddleware(sessionsRepo))
-	e.GET("/search_food/modal", handlers.SearchFoodModalGETHandler(apiClient), customMiddleware.AuthMiddleware(sessionsRepo))
+	e.GET("/search_food", handlers.SearchFoodGetHandlerWithParams(nutritionixAPIClient), customMiddleware.AuthMiddleware(sessionsRepo))
+	e.GET("/search_food/modal", handlers.SearchFoodModalGETHandler(nutritionixAPIClient), customMiddleware.AuthMiddleware(sessionsRepo))
 
 	e.GET("/food_log", handlers.FoodLogGETHandler(foodLogRepo, settingsRepo), customMiddleware.AuthMiddleware(sessionsRepo))
 	e.GET("/refresh_totals", handlers.FoodLogRefreshTotalsGETHandler(foodLogRepo, settingsRepo), customMiddleware.AuthMiddleware(sessionsRepo))
