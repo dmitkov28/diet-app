@@ -6,17 +6,27 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
+	"strings"
 )
 
 type APIClient struct {
 	HTTPClient *http.Client
 }
 
-func NewAPIClient(httpClient *http.Client)*APIClient{
+func NewAPIClient(httpClient *http.Client) *APIClient {
 	return &APIClient{HTTPClient: httpClient}
 }
 
 func (c *APIClient) NewRequest(method, endpoint string, body interface{}) (*http.Request, error) {
+
+	if _, err := url.Parse(endpoint); err != nil {
+		return nil, fmt.Errorf("failed to parse URL: %w", err)
+	}
+
+	if !strings.HasPrefix(endpoint, "https://") && !strings.HasPrefix(endpoint, "http://") {
+		return nil, fmt.Errorf("invalid URL: %s", endpoint)
+	}
 
 	var bodyReader io.Reader
 	if body != nil {
