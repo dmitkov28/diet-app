@@ -3,7 +3,6 @@ package data
 import (
 	"database/sql"
 	"fmt"
-	"log"
 )
 
 type Settings struct {
@@ -48,24 +47,6 @@ func (repo *SettingsRepository) CreateSettings(s Settings) (Settings, error) {
 	}
 	return newSettings, nil
 
-}
-
-func (repo *SettingsRepository) ListSettings() []Settings {
-	rows, err := repo.db.db.Query("SELECT id, current_weight, target_weight, target_weight_loss_rate, age, height, sex, activity_level FROM settings")
-	if err != nil {
-		log.Fatalf("Failed to query the table: %v", err)
-	}
-	defer rows.Close()
-	var data []Settings
-	for rows.Next() {
-		var m Settings
-		err := rows.Scan(&m.ID, &m.Current_weight, &m.Target_weight, &m.Target_weight_loss_rate, &m.Age, &m.Height, &m.Sex, &m.Activity_level)
-		if err != nil {
-			log.Fatalf("Failed to scan row: %v", err)
-		}
-		data = append(data, m)
-	}
-	return data
 }
 
 func (repo *SettingsRepository) GetSettingsByUserID(userId int) (Settings, error) {
