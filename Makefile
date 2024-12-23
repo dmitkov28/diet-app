@@ -1,7 +1,7 @@
 include .env
 export 
 
-.PHONY: dev css templates air stop db goose bootstrap deploy ngrok sync
+.PHONY: dev css templates air stop db goose bootstrap deploy ngrok sync test
 
 ngrok:
 	docker run -it -e NGROK_AUTHTOKEN="${NGROK_TOKEN}" ngrok/ngrok:latest http host.docker.internal:1323
@@ -34,6 +34,9 @@ deploy:
 sync:
 	@echo "Syncing S3 bucket..."
 	aws s3 sync static/ "${S3_URI}" --delete
+
+test:
+	go test ./... -v
 
 stop:
 	pkill -f "air" || true
