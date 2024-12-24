@@ -6,18 +6,19 @@ import (
 	"strconv"
 
 	"github.com/dmitkov28/dietapp/internal/data"
+	"github.com/dmitkov28/dietapp/internal/services"
 	"github.com/dmitkov28/dietapp/templates"
 	"github.com/labstack/echo/v4"
 )
 
-func CaloriesGETHandler(measurementsRepo *data.MeasurementRepository) echo.HandlerFunc {
+func CaloriesGETHandler() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		isHTMX := c.Request().Header.Get("HX-Request") != ""
 		return render(c, templates.CaloriesPage(isHTMX))
 	}
 }
 
-func CaloriesPOSTHandler(measurementsRepo *data.MeasurementRepository) echo.HandlerFunc {
+func CaloriesPOSTHandler(measurementsService services.IMeasurementsService) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		userId := c.Get("user_id").(int)
 		calories, err := strconv.ParseInt(c.FormValue("calories"), 10, 64)
@@ -36,7 +37,7 @@ func CaloriesPOSTHandler(measurementsRepo *data.MeasurementRepository) echo.Hand
 			Date:     date,
 		}
 
-		_, err = measurementsRepo.CreateCalories(formData)
+		_, err = measurementsService.CreateCalories(formData)
 
 		if err != nil {
 			fmt.Println(err)

@@ -44,6 +44,7 @@ func main() {
 
 	// services
 	authService := services.NewAuthService(usersRepo, sessionsRepo)
+	measurementsService := services.NewMeasurementsService(measurementsRepo)
 
 	
 
@@ -64,19 +65,19 @@ func main() {
 	e.GET("/settings", handlers.SettingsGETHandler(settingsRepo), customMiddleware.AuthMiddleware(sessionsRepo))
 	e.POST("/settings", handlers.SettingsPOSTHandler(settingsRepo), customMiddleware.AuthMiddleware(sessionsRepo))
 
-	e.GET("/weight", handlers.WeightGETHandler(measurementsRepo), customMiddleware.AuthMiddleware(sessionsRepo))
-	e.POST("/weight", handlers.WeightPOSTHandler(measurementsRepo), customMiddleware.AuthMiddleware(sessionsRepo))
+	e.GET("/weight", handlers.WeightGETHandler(), customMiddleware.AuthMiddleware(sessionsRepo))
+	e.POST("/weight", handlers.WeightPOSTHandler(measurementsService), customMiddleware.AuthMiddleware(sessionsRepo))
 
-	e.GET("/stats", handlers.StatsGETHandler(measurementsRepo), customMiddleware.AuthMiddleware(sessionsRepo))
-	e.DELETE("/stats/:id", handlers.StatsDELETEHandler(measurementsRepo), customMiddleware.AuthMiddleware(sessionsRepo))
+	e.GET("/stats", handlers.StatsGETHandler(measurementsService), customMiddleware.AuthMiddleware(sessionsRepo))
+	e.DELETE("/stats/:id", handlers.StatsDELETEHandler(measurementsService), customMiddleware.AuthMiddleware(sessionsRepo))
 
-	e.GET("/calories", handlers.CaloriesGETHandler(measurementsRepo), customMiddleware.AuthMiddleware(sessionsRepo))
-	e.POST("/calories", handlers.CaloriesPOSTHandler(measurementsRepo), customMiddleware.AuthMiddleware(sessionsRepo))
+	e.GET("/calories", handlers.CaloriesGETHandler(), customMiddleware.AuthMiddleware(sessionsRepo))
+	e.POST("/calories", handlers.CaloriesPOSTHandler(measurementsService), customMiddleware.AuthMiddleware(sessionsRepo))
 
 	e.GET("/scan", handlers.ScanGETHandler(), customMiddleware.AuthMiddleware(sessionsRepo))
 	e.GET("/scan/:ean", handlers.ScanBarCodeGETHandler(), customMiddleware.AuthMiddleware(sessionsRepo))
 
-	e.GET("/search", handlers.SearchFoodGETHandler(measurementsRepo), customMiddleware.AuthMiddleware(sessionsRepo))
+	e.GET("/search", handlers.SearchFoodGETHandler(), customMiddleware.AuthMiddleware(sessionsRepo))
 	e.GET("/search_food", handlers.SearchFoodGetHandlerWithParams(nutritionixAPIClient), customMiddleware.AuthMiddleware(sessionsRepo))
 	e.GET("/search_food/modal", handlers.SearchFoodModalGETHandler(nutritionixAPIClient), customMiddleware.AuthMiddleware(sessionsRepo))
 

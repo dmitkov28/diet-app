@@ -5,11 +5,12 @@ import (
 	"strconv"
 
 	"github.com/dmitkov28/dietapp/internal/data"
+	"github.com/dmitkov28/dietapp/internal/services"
 	"github.com/dmitkov28/dietapp/templates"
 	"github.com/labstack/echo/v4"
 )
 
-func StatsGETHandler(repo *data.MeasurementRepository) echo.HandlerFunc {
+func StatsGETHandler(measurementsService services.IMeasurementsService) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		userId := c.Get("user_id").(int)
 		page := int64(1)
@@ -24,7 +25,8 @@ func StatsGETHandler(repo *data.MeasurementRepository) echo.HandlerFunc {
 
 		offset := (int(page) - 1) * data.ItemsPerPage
 		noMoreResults := false
-		items, err := repo.GetMeasurementsByUserId(userId, offset)
+		items, err := measurementsService.GetMeasurementsByUserId(userId, offset)
+		
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -37,10 +39,10 @@ func StatsGETHandler(repo *data.MeasurementRepository) echo.HandlerFunc {
 	}
 }
 
-func StatsDELETEHandler(repo *data.MeasurementRepository) echo.HandlerFunc {
+func StatsDELETEHandler(measurementsService services.IMeasurementsService) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		id := c.Param("id")
-		err := repo.DeleteWeightAndCaloriesByWeightID(id)
+		err := measurementsService.DeleteWeightAndCaloriesByWeightID(id)
 		if err != nil {
 			fmt.Println(err)
 		}
