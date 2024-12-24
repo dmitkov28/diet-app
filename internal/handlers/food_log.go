@@ -6,11 +6,12 @@ import (
 	"time"
 
 	"github.com/dmitkov28/dietapp/internal/data"
+	"github.com/dmitkov28/dietapp/internal/services"
 	"github.com/dmitkov28/dietapp/templates"
 	"github.com/labstack/echo/v4"
 )
 
-func FoodLogGETHandler(repo *data.FoodLogRepository, settingsRepo *data.SettingsRepository) echo.HandlerFunc {
+func FoodLogGETHandler(foodLogService services.IFoodLogService, settingsRepo *data.SettingsRepository) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		userId := c.Get("user_id").(int)
 		dateQueryParam := c.QueryParam("date")
@@ -18,7 +19,7 @@ func FoodLogGETHandler(repo *data.FoodLogRepository, settingsRepo *data.Settings
 			dateQueryParam = time.Now().Format("2006-01-02")
 		}
 		params := data.GetFoodLogEntriesParams{UserID: userId, Date: dateQueryParam}
-		foodLogs, err := repo.GetFoodLogEntriesByUserID(params)
+		foodLogs, err := foodLogService.GetFoodLogEntriesByUserID(params)
 
 		if err != nil {
 			fmt.Println(err)
@@ -48,7 +49,7 @@ func FoodLogGETHandler(repo *data.FoodLogRepository, settingsRepo *data.Settings
 	}
 }
 
-func FoodLogRefreshTotalsGETHandler(repo *data.FoodLogRepository, settingsRepo *data.SettingsRepository) echo.HandlerFunc {
+func FoodLogRefreshTotalsGETHandler(foodLogService services.IFoodLogService, settingsRepo *data.SettingsRepository) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		userId := c.Get("user_id").(int)
 		dateQueryParam := c.QueryParam("date")
@@ -57,7 +58,7 @@ func FoodLogRefreshTotalsGETHandler(repo *data.FoodLogRepository, settingsRepo *
 		}
 
 		params := data.GetFoodLogEntriesParams{UserID: userId, Date: dateQueryParam}
-		foodLogs, err := repo.GetFoodLogEntriesByUserID(params)
+		foodLogs, err := foodLogService.GetFoodLogEntriesByUserID(params)
 
 		if err != nil {
 			fmt.Println(err)
@@ -72,7 +73,7 @@ func FoodLogRefreshTotalsGETHandler(repo *data.FoodLogRepository, settingsRepo *
 	}
 }
 
-func FoodLogPOSTHandler(repo *data.FoodLogRepository, settingsRepo *data.SettingsRepository) echo.HandlerFunc {
+func FoodLogPOSTHandler(foodLogService services.IFoodLogService, settingsRepo *data.SettingsRepository) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		userId := c.Get("user_id").(int)
 		foodName := c.FormValue("food_name")
@@ -112,6 +113,8 @@ func FoodLogPOSTHandler(repo *data.FoodLogRepository, settingsRepo *data.Setting
 			fmt.Println(err)
 		}
 
+		servingUnit := c.FormValue("serving_unit")
+
 		entry := data.FoodLogEntry{
 			UserID:           userId,
 			FoodName:         foodName,
@@ -121,9 +124,10 @@ func FoodLogPOSTHandler(repo *data.FoodLogRepository, settingsRepo *data.Setting
 			Fats:             fat,
 			NumberOfServings: numServings,
 			ServingSize:      servingQty,
+			ServingUnit:      servingUnit,
 		}
 
-		_, err = repo.CreateFoodLogEntry(entry)
+		_, err = foodLogService.CreateFoodLogEntry(entry)
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -132,14 +136,14 @@ func FoodLogPOSTHandler(repo *data.FoodLogRepository, settingsRepo *data.Setting
 	}
 }
 
-func FoodLogDELETEHandler(repo *data.FoodLogRepository) echo.HandlerFunc {
+func FoodLogDELETEHandler(foodLogService services.IFoodLogService) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		entryId, err := strconv.ParseInt(c.Param("id"), 10, 0)
 		if err != nil {
 			fmt.Println(err)
 		}
 
-		err = repo.DeleteFoodLogEntry(int(entryId))
+		err = foodLogService.DeleteFoodLogEntry(int(entryId))
 		if err != nil {
 			fmt.Println(err)
 		}

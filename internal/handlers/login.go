@@ -11,7 +11,7 @@ import (
 func LoginGETHandler(authService services.IAuthService) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		token, _ := c.Cookie("session_token")
-	
+
 		if authService.IsAuthenticated(token) {
 			return c.Redirect(http.StatusSeeOther, "/dashboard")
 		}

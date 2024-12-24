@@ -7,14 +7,21 @@ import (
 	"strconv"
 
 	"github.com/dmitkov28/dietapp/internal/diet"
+	"github.com/dmitkov28/dietapp/internal/services"
 	"github.com/dmitkov28/dietapp/templates"
 	"github.com/labstack/echo/v4"
 )
 
-func SearchFoodGETHandler() echo.HandlerFunc {
+func SearchFoodGETHandler(foodLogService services.IFoodLogService) echo.HandlerFunc {
 	return func(c echo.Context) error {
+		userId := c.Get("user_id").(int)
+		recents, err := foodLogService.GetRecentlyAdded(userId, 20)
+		if err != nil {
+			fmt.Println(err)
+		}
+
 		isHTMX := c.Request().Header.Get("HX-Request") != ""
-		return render(c, templates.SearchPage(isHTMX))
+		return render(c, templates.SearchPage(recents, isHTMX))
 	}
 }
 

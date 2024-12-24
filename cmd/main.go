@@ -45,8 +45,7 @@ func main() {
 	// services
 	authService := services.NewAuthService(usersRepo, sessionsRepo)
 	measurementsService := services.NewMeasurementsService(measurementsRepo)
-
-	
+	foodLogService := services.NewFoodLogService(foodLogRepo)
 
 	e := echo.New()
 	e.Static("/static", "static")
@@ -77,14 +76,14 @@ func main() {
 	e.GET("/scan", handlers.ScanGETHandler(), customMiddleware.AuthMiddleware(sessionsRepo))
 	e.GET("/scan/:ean", handlers.ScanBarCodeGETHandler(), customMiddleware.AuthMiddleware(sessionsRepo))
 
-	e.GET("/search", handlers.SearchFoodGETHandler(), customMiddleware.AuthMiddleware(sessionsRepo))
+	e.GET("/search", handlers.SearchFoodGETHandler(foodLogService), customMiddleware.AuthMiddleware(sessionsRepo))
 	e.GET("/search_food", handlers.SearchFoodGetHandlerWithParams(nutritionixAPIClient), customMiddleware.AuthMiddleware(sessionsRepo))
 	e.GET("/search_food/modal", handlers.SearchFoodModalGETHandler(nutritionixAPIClient), customMiddleware.AuthMiddleware(sessionsRepo))
 
-	e.GET("/food_log", handlers.FoodLogGETHandler(foodLogRepo, settingsRepo), customMiddleware.AuthMiddleware(sessionsRepo))
-	e.GET("/refresh_totals", handlers.FoodLogRefreshTotalsGETHandler(foodLogRepo, settingsRepo), customMiddleware.AuthMiddleware(sessionsRepo))
-	e.POST("/food_log", handlers.FoodLogPOSTHandler(foodLogRepo, settingsRepo), customMiddleware.AuthMiddleware(sessionsRepo))
-	e.DELETE("/food_log/:id", handlers.FoodLogDELETEHandler(foodLogRepo), customMiddleware.AuthMiddleware(sessionsRepo))
+	e.GET("/food_log", handlers.FoodLogGETHandler(foodLogService, settingsRepo), customMiddleware.AuthMiddleware(sessionsRepo))
+	e.GET("/refresh_totals", handlers.FoodLogRefreshTotalsGETHandler(foodLogService, settingsRepo), customMiddleware.AuthMiddleware(sessionsRepo))
+	e.POST("/food_log", handlers.FoodLogPOSTHandler(foodLogService, settingsRepo), customMiddleware.AuthMiddleware(sessionsRepo))
+	e.DELETE("/food_log/:id", handlers.FoodLogDELETEHandler(foodLogService), customMiddleware.AuthMiddleware(sessionsRepo))
 
 	e.GET("/login", handlers.LoginGETHandler(authService))
 	e.POST("/login", handlers.LoginPOSTHandler(authService))

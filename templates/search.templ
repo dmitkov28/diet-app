@@ -2,23 +2,36 @@ package templates
 
 import (
 	"fmt"
+	"github.com/dmitkov28/dietapp/internal/data"
 	"github.com/dmitkov28/dietapp/internal/diet"
 )
 
-templ SearchPage(isHTMX bool) {
+templ SearchPage(recentlyAdded []data.FoodLogEntry, isHTMX bool) {
 	if isHTMX {
-		@ContentSearchPage()
+		@ContentSearchPage(recentlyAdded)
 	} else {
 		@Base(TemplateProps{PageTitle: "Search Food"}) {
-			@ContentSearchPage()
+			@ContentSearchPage(recentlyAdded)
 		}
 	}
 }
 
-templ ContentSearchPage() {
+templ ContentSearchPage(recentlyAdded []data.FoodLogEntry) {
 	<div class="flex flex-col gap-4 flex-1 p-2 md:p-4">
+		<div id="modal-container"></div>
 		@SearchComponent()
 		<div id="search-results">
+			<h2 class="text-slate-400 italic my-2 text-center">Recently Added</h2>
+			<ul class="space-y-4">
+				for _, item := range recentlyAdded {
+					@SearchResultsItem(diet.FoodSearchResult{
+						Name:        item.FoodName,
+						Calories:    int(item.Calories),
+						ServingUnit: item.ServingUnit,
+						ServingQty:  item.NumberOfServings,
+					})
+				}
+			</ul>
 			@SearchResultsLoading()
 		</div>
 	</div>
@@ -96,7 +109,9 @@ templ SearchResultsItem(item diet.FoodSearchResult) {
 				class="flex flex-col gap-1 w-full h-full cursor-pointer"
 			>
 				<div class="flex gap-2 items-center">
-					<img alt="food thumbnail" class="max-h-[60px] max-w-[60px] object-contain" src={ item.Thumbnail }/>
+					if item.Thumbnail != "" {
+						<img alt="food thumbnail" class="max-h-[60px] max-w-[60px] object-contain" src={ item.Thumbnail }/>
+					}
 					<h2 class="text-lg font-medium text-blue-700 hover:text-blue-900 flex flex-col gap-1">
 						{ item.Name }
 						<span class="text-slate-400 font-light">

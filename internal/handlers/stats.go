@@ -26,7 +26,7 @@ func StatsGETHandler(measurementsService services.IMeasurementsService) echo.Han
 		offset := (int(page) - 1) * data.ItemsPerPage
 		noMoreResults := false
 		items, err := measurementsService.GetMeasurementsByUserId(userId, offset)
-		
+
 		if err != nil {
 			fmt.Println(err)
 		}

@@ -21,11 +21,11 @@ func WeightPOSTHandler(measurementsService services.IMeasurementsService) echo.H
 	return func(c echo.Context) error {
 		userId := c.Get("user_id").(int)
 		weight, err := strconv.ParseFloat(c.FormValue("weight"), 64)
-		
+
 		if err != nil {
 			return err
 		}
-		
+
 		date := c.FormValue("date")
 
 		newWeight := data.Weight{
