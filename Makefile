@@ -43,3 +43,4 @@ stop:
 	pkill -f "templ" || true
 	pkill -f "tailwindcss" || true
 	docker compose down
+	templ generate
