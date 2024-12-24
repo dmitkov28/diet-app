@@ -3,15 +3,16 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/dmitkov28/dietapp/internal/auth"
-	"github.com/dmitkov28/dietapp/internal/data"
+	"github.com/dmitkov28/dietapp/internal/services"
 	"github.com/dmitkov28/dietapp/templates"
 	"github.com/labstack/echo/v4"
 )
 
-func LoginGETHandler() echo.HandlerFunc {
+func LoginGETHandler(authService services.IAuthService) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		if auth.IsAuthenticated(c) {
+		token, _ := c.Cookie("session_token")
+	
+		if authService.IsAuthenticated(token) {
 			return c.Redirect(http.StatusSeeOther, "/dashboard")
 		}
 		isHTMX := c.Request().Header.Get("HX-Request") != ""
@@ -19,12 +20,12 @@ func LoginGETHandler() echo.HandlerFunc {
 	}
 }
 
-func LoginPOSTHandler(usersRepo *data.UsersRepository, sessionsRepo *data.SessionsRepository) echo.HandlerFunc {
+func LoginPOSTHandler(authService services.IAuthService) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		email := c.FormValue("email")
 		password := c.FormValue("password")
 
-		session, err := auth.SignInUser(*usersRepo, *sessionsRepo, email, password)
+		session, err := authService.SignInUser(email, password)
 		if err != nil {
 			return render(c, templates.LoginForm(true))
 		}

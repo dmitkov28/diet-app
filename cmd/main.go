@@ -10,6 +10,7 @@ import (
 	"github.com/dmitkov28/dietapp/internal/handlers"
 	"github.com/dmitkov28/dietapp/internal/httputils"
 	customMiddleware "github.com/dmitkov28/dietapp/internal/middleware"
+	"github.com/dmitkov28/dietapp/internal/services"
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -26,6 +27,7 @@ func main() {
 		log.Fatal(err)
 	}
 
+	// repositories
 	usersRepo := data.NewUsersRepository(db)
 	sessionsRepo := data.NewSessionsRepository(db)
 	settingsRepo := data.NewSettingsRepository(db)
@@ -40,11 +42,10 @@ func main() {
 		fmt.Println(err)
 	}
 
-	// offAPIClient, err := diet.NewOpenFoodFactsAPIClient(apiClient)
+	// services
+	authService := services.NewAuthService(usersRepo, sessionsRepo)
 
-	// if err != nil {
-	// 	fmt.Println(err)
-	// }
+	
 
 	e := echo.New()
 	e.Static("/static", "static")
@@ -84,8 +85,8 @@ func main() {
 	e.POST("/food_log", handlers.FoodLogPOSTHandler(foodLogRepo, settingsRepo), customMiddleware.AuthMiddleware(sessionsRepo))
 	e.DELETE("/food_log/:id", handlers.FoodLogDELETEHandler(foodLogRepo), customMiddleware.AuthMiddleware(sessionsRepo))
 
-	e.GET("/login", handlers.LoginGETHandler())
-	e.POST("/login", handlers.LoginPOSTHandler(usersRepo, sessionsRepo))
+	e.GET("/login", handlers.LoginGETHandler(authService))
+	e.POST("/login", handlers.LoginPOSTHandler(authService))
 
 	e.POST("/test", handlers.TestPOSTHandler())
 
