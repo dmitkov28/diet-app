@@ -11,7 +11,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func FoodLogGETHandler(foodLogService services.IFoodLogService, settingsRepo *data.SettingsRepository) echo.HandlerFunc {
+func FoodLogGETHandler(foodLogService services.IFoodLogService) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		userId := c.Get("user_id").(int)
 		dateQueryParam := c.QueryParam("date")
@@ -49,7 +49,7 @@ func FoodLogGETHandler(foodLogService services.IFoodLogService, settingsRepo *da
 	}
 }
 
-func FoodLogRefreshTotalsGETHandler(foodLogService services.IFoodLogService, settingsRepo *data.SettingsRepository) echo.HandlerFunc {
+func FoodLogRefreshTotalsGETHandler(foodLogService services.IFoodLogService) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		userId := c.Get("user_id").(int)
 		dateQueryParam := c.QueryParam("date")
@@ -73,44 +73,44 @@ func FoodLogRefreshTotalsGETHandler(foodLogService services.IFoodLogService, set
 	}
 }
 
-func FoodLogPOSTHandler(foodLogService services.IFoodLogService, settingsRepo *data.SettingsRepository) echo.HandlerFunc {
+func FoodLogPOSTHandler(foodLogService services.IFoodLogService) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		userId := c.Get("user_id").(int)
 		foodName := c.FormValue("food_name")
 		calories, err := strconv.ParseFloat(c.FormValue("calories"), 64)
 
 		if err != nil {
-			fmt.Println(err)
+			calories = 0
 		}
 
 		servingQty, err := strconv.ParseFloat(c.FormValue("serving_qty"), 64)
 
 		if err != nil {
-			fmt.Println(err)
+			servingQty = 0
 		}
 
 		numServings, err := strconv.ParseFloat(c.FormValue("number_of_servings"), 64)
 
 		if err != nil {
-			fmt.Println(err)
+			numServings = 0
 		}
 
 		protein, err := strconv.ParseFloat(c.FormValue("Protein"), 64)
 
 		if err != nil {
-			fmt.Println(err)
+			protein = 0
 		}
 
 		carbs, err := strconv.ParseFloat(c.FormValue("Carbs"), 64)
 
 		if err != nil {
-			fmt.Println(err)
+			carbs = 0
 		}
 
 		fat, err := strconv.ParseFloat(c.FormValue("Fat"), 64)
 
 		if err != nil {
-			fmt.Println(err)
+			fat = 0
 		}
 
 		servingUnit := c.FormValue("serving_unit")

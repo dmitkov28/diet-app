@@ -46,6 +46,7 @@ func main() {
 	authService := services.NewAuthService(usersRepo, sessionsRepo)
 	measurementsService := services.NewMeasurementsService(measurementsRepo)
 	foodLogService := services.NewFoodLogService(foodLogRepo)
+	settingsService := services.NewSettingsService(settingsRepo)
 
 	e := echo.New()
 	e.Static("/static", "static")
@@ -59,10 +60,10 @@ func main() {
 		return c.Redirect(http.StatusSeeOther, "/dashboard")
 	}, customMiddleware.AuthMiddleware(sessionsRepo))
 
-	e.GET("/dashboard", handlers.DashboardGETHandler(measurementsRepo, settingsRepo), customMiddleware.AuthMiddleware(sessionsRepo))
+	e.GET("/dashboard", handlers.DashboardGETHandler(measurementsService, settingsService), customMiddleware.AuthMiddleware(sessionsRepo))
 
-	e.GET("/settings", handlers.SettingsGETHandler(settingsRepo), customMiddleware.AuthMiddleware(sessionsRepo))
-	e.POST("/settings", handlers.SettingsPOSTHandler(settingsRepo), customMiddleware.AuthMiddleware(sessionsRepo))
+	e.GET("/settings", handlers.SettingsGETHandler(settingsService), customMiddleware.AuthMiddleware(sessionsRepo))
+	e.POST("/settings", handlers.SettingsPOSTHandler(settingsService), customMiddleware.AuthMiddleware(sessionsRepo))
 
 	e.GET("/weight", handlers.WeightGETHandler(), customMiddleware.AuthMiddleware(sessionsRepo))
 	e.POST("/weight", handlers.WeightPOSTHandler(measurementsService), customMiddleware.AuthMiddleware(sessionsRepo))
@@ -80,9 +81,9 @@ func main() {
 	e.GET("/search_food", handlers.SearchFoodGetHandlerWithParams(nutritionixAPIClient), customMiddleware.AuthMiddleware(sessionsRepo))
 	e.GET("/search_food/modal", handlers.SearchFoodModalGETHandler(nutritionixAPIClient), customMiddleware.AuthMiddleware(sessionsRepo))
 
-	e.GET("/food_log", handlers.FoodLogGETHandler(foodLogService, settingsRepo), customMiddleware.AuthMiddleware(sessionsRepo))
-	e.GET("/refresh_totals", handlers.FoodLogRefreshTotalsGETHandler(foodLogService, settingsRepo), customMiddleware.AuthMiddleware(sessionsRepo))
-	e.POST("/food_log", handlers.FoodLogPOSTHandler(foodLogService, settingsRepo), customMiddleware.AuthMiddleware(sessionsRepo))
+	e.GET("/food_log", handlers.FoodLogGETHandler(foodLogService), customMiddleware.AuthMiddleware(sessionsRepo))
+	e.GET("/refresh_totals", handlers.FoodLogRefreshTotalsGETHandler(foodLogService), customMiddleware.AuthMiddleware(sessionsRepo))
+	e.POST("/food_log", handlers.FoodLogPOSTHandler(foodLogService), customMiddleware.AuthMiddleware(sessionsRepo))
 	e.DELETE("/food_log/:id", handlers.FoodLogDELETEHandler(foodLogService), customMiddleware.AuthMiddleware(sessionsRepo))
 
 	e.GET("/login", handlers.LoginGETHandler(authService))

@@ -6,14 +6,15 @@ import (
 
 	"github.com/dmitkov28/dietapp/internal/data"
 	"github.com/dmitkov28/dietapp/internal/diet"
+	"github.com/dmitkov28/dietapp/internal/services"
 	"github.com/dmitkov28/dietapp/templates"
 	"github.com/labstack/echo/v4"
 )
 
-func SettingsGETHandler(settingsRepo *data.SettingsRepository) echo.HandlerFunc {
+func SettingsGETHandler(settingsService services.ISettingsService) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		userId := c.Get("user_id").(int)
-		settings, err := settingsRepo.GetSettingsByUserID(userId)
+		settings, err := settingsService.GetSettingsByUserID(userId)
 		if err != nil {
 			return render(c, templates.SettingsForm(data.Settings{}, templates.SettingsErrors{}))
 		}
@@ -26,7 +27,7 @@ func SettingsGETHandler(settingsRepo *data.SettingsRepository) echo.HandlerFunc 
 	}
 }
 
-func SettingsPOSTHandler(settingsRepo *data.SettingsRepository) echo.HandlerFunc {
+func SettingsPOSTHandler(settingsService services.ISettingsService) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		userId := c.Get("user_id").(int)
 		var formErrors templates.SettingsErrors
@@ -94,7 +95,7 @@ func SettingsPOSTHandler(settingsRepo *data.SettingsRepository) echo.HandlerFunc
 			Activity_level:          activity_level,
 		}
 
-		settings, err := settingsRepo.CreateSettings(formSettings)
+		settings, err := settingsService.CreateSettings(formSettings)
 		if err != nil {
 			fmt.Println(err)
 		}

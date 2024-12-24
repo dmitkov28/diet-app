@@ -8,16 +8,17 @@ import (
 	"github.com/dmitkov28/dietapp/internal/charts"
 	"github.com/dmitkov28/dietapp/internal/data"
 	"github.com/dmitkov28/dietapp/internal/diet"
+	"github.com/dmitkov28/dietapp/internal/services"
 	"github.com/dmitkov28/dietapp/templates"
 	"github.com/go-echarts/go-echarts/v2/opts"
 	"github.com/labstack/echo/v4"
 )
 
-func DashboardGETHandler(measurementsRepo *data.MeasurementRepository, settingsRepo *data.SettingsRepository) echo.HandlerFunc {
+func DashboardGETHandler(measurementsService services.IMeasurementsService, settingsService services.ISettingsService) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		today := time.Now().Format("Jan 2, 2006")
 		userId := c.Get("user_id").(int)
-		stats, err := measurementsRepo.GetWeeklyStats(userId, 3)
+		stats, err := measurementsService.GetWeeklyStats(userId, 3)
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -31,7 +32,7 @@ func DashboardGETHandler(measurementsRepo *data.MeasurementRepository, settingsR
 
 		hasCurrentWeek := data.HasCurrentWeek(currentData)
 
-		settings, err := settingsRepo.GetSettingsByUserID(userId)
+		settings, err := settingsService.GetSettingsByUserID(userId)
 
 		if err != nil {
 			fmt.Println(err)
