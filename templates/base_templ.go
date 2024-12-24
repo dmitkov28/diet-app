@@ -35,6 +35,8 @@ func Base(props TemplateProps) templ.Component {
 		}
 		ctx = templ.ClearChildren(ctx)
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<!doctype html><html class=\"min-h-screen overscroll-none\" lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=no\"><meta name=\"theme-color\" content=\"#FFFFFF\"><link rel=\"icon\" type=\"image/png\" sizes=\"16x16\" href=\"/static/img/favicon/favicon-16x16.png\"><link rel=\"icon\" type=\"image/png\" sizes=\"32x32\" href=\"/static/img/favicon/favicon-32x32.png\"><meta name=\"htmx-config\" content=\"{&#34;includeIndicatorStyles&#34;: false}\"><meta name=\"apple-mobile-web-app-capable\" content=\"yes\"><meta name=\"mobile-web-app-capable\" content=\"yes\"><meta name=\"apple-mobile-web-app-status-bar-style\" content=\"default\"><meta name=\"apple-mobile-web-app-title\" content=\"Diet App\"><title>")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 1)
+ 		22f522c (lazy load unused scripts)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -47,7 +49,11 @@ func Base(props TemplateProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
+<<<<<<< HEAD
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</title><link rel=\"stylesheet\" href=\"/static/css/main.css\"><link rel=\"manifest\" href=\"/static/manifest.json\"><link rel=\"apple-touch-icon\" href=\"/static/img/favicon/apple-touch-icon.png\"><script async src=\"https://unpkg.com/htmx.org@1.9.10\"></script><script src=\"https://go-echarts.github.io/go-echarts-assets/assets/echarts.min.js\"></script>")
+=======
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 2)
+>>>>>>> 22f522c (lazy load unused scripts)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -61,7 +67,7 @@ func Base(props TemplateProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</head><body class=\"min-h-screen flex flex-col pt-4 relative select-none\"><main id=\"main-content\" class=\"flex flex-col flex-1\">")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 3)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -69,7 +75,7 @@ func Base(props TemplateProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</main>")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 4)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -79,7 +85,11 @@ func Base(props TemplateProps) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
+<<<<<<< HEAD
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</body><script>\n\t\t\tdocument.body.addEventListener('htmx:beforeSwap', function(evt) {\n\t\t\tif (evt.detail.pathInfo.finalRequestPath == \"/food_log\") {\n\t\t\t\tappendScript(\"https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js\");\n\t\t\t\tappendStyles(\"https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css\");\n\t\t\t};\n\n\t\t\tif (evt.detail.pathInfo.finalRequestPath == \"/scan\") {\n\t\t\t\tappendScript(\"https://unpkg.com/html5-qrcode\");\n\t\t\t};\n\t\t\t\n\n\t\t\tif(evt.detail.xhr.status === 404){\n\t\t\t\talert(\"Error: Could Not Find Resource\");\n\t\t\t} else if(evt.detail.xhr.status === 400){\n\t\t\t\t// allow 422 responses to swap as we are using this as a signal that\n\t\t\t\t// a form was submitted with bad data and want to rerender with the\n\t\t\t\t// errors\n\t\t\t\t//\n\t\t\t\t// set isError to false to avoid error logging in console\n\t\t\t\tevt.detail.shouldSwap = true;\n\t\t\t\tevt.detail.isError = false;\n\t\t\t} else if(evt.detail.xhr.status === 418){\n\t\t\t\t// if the response code 418 (I'm a teapot) is returned, retarget the\n\t\t\t\t// content of the response to the element with the id `teapot`\n\t\t\t\tevt.detail.shouldSwap = true;\n\t\t\t\tevt.detail.target = htmx.find(\"#teapot\");\n\t\t\t}\n\t\t});\n\n\t\tfunction appendScript(src){\n\t\t\tconst script = document.createElement(\"script\");\n\t\t\tscript.src = src;\n\t\t\tdocument.head.appendChild(script);\n\t\t}\n\n\t\tfunction appendStyles(src){\n\t\t\tconst link = document.createElement(\"link\")\n\t\t\tlink.rel = \"stylesheet\";\n\t\t\tlink.href = src\n\t\t\tdocument.head.appendChild(link);\n\t\t}\n\t\t</script></html>")
+=======
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 5)
+>>>>>>> 22f522c (lazy load unused scripts)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

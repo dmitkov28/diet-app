@@ -44,7 +44,7 @@ func FoodLogScripts() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css\"><script src=\"https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js\"></script>")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 1)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -127,7 +127,7 @@ func ContentFoodLogPage(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals,
 			templ_7745c5c3_Var4 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"swiper flex flex-1 flex-col w-full\" data-prev-date=\"")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 2)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -140,7 +140,7 @@ func ContentFoodLogPage(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals,
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" data-next-date=\"")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 3)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -153,7 +153,7 @@ func ContentFoodLogPage(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals,
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" data-current-date=\"")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 4)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -166,7 +166,7 @@ func ContentFoodLogPage(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals,
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"><div class=\"flex-1 min-h-[500px] flex-grow swiper-wrapper\"><div class=\"swiper-slide\">")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 5)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -174,12 +174,12 @@ func ContentFoodLogPage(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals,
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div class=\"swiper-slide\"><div class=\"mx-auto w-fit flex items-center justify-between gap-4\"><span class=\"flex w-full h-full\"><img onclick=\"swiper.slidePrev()\" class=\"h-5 cursor-pointer\" src=\"/static/img/chevron-left.svg\"></span><form hx-get=\"/food_log\" hx-trigger=\"change delay:1s\" hx-target=\"#main-content\" hx-indicator=\"#loading\" class=\"w-full flex justify-center\"><input type=\"date\" name=\"date\"")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 6)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if date != "" {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" value=\"")
+			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 7)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -192,12 +192,12 @@ func ContentFoodLogPage(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals,
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"")
+			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 8)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" value=\"")
+			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 9)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -210,12 +210,12 @@ func ContentFoodLogPage(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals,
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"")
+			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 10)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("></form><span class=\"flex w-full h-full\"><img onclick=\"swiper.slideNext()\" class=\"h-5 cursor-pointer\" src=\"/static/img/chevron-right.svg\"></span></div>")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 11)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -224,7 +224,7 @@ func ContentFoodLogPage(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals,
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" <div class=\"w-full flex flex-col flex-1 justify-center items-center p-8\"><div class=\"w-full grid grid-cols-1 md:grid-cols-2 md:gap-4 p-6 mx-auto bg-white rounded-lg shadow-md border  max-h-[600px]\"><div class=\"col-span-1 md:col-span-2 flex justify-between items-center mb-4\"><h2 class=\"text-xl font-bold text-gray-800\">Food Log</h2><span class=\"text-sm text-gray-500\">")
+			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 12)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -237,7 +237,7 @@ func ContentFoodLogPage(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals,
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span></div><div class=\"col-span-1\"><div>")
+			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 13)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -245,7 +245,7 @@ func ContentFoodLogPage(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals,
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<h3 class=\"text-lg font-semibold text-gray-700 mb-2\">Macros</h3><div class=\"mb-4\"><div class=\"flex justify-between text-sm text-gray-700\"><span>Protein</span> <span>")
+			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 14)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -258,7 +258,7 @@ func ContentFoodLogPage(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals,
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("g of 150g</span></div><div class=\"w-full bg-gray-200 rounded-full h-2.5 mt-1\"><div class=\"bg-blue-500 h-2.5 rounded-full\" style=\"width: 80%;\"></div></div></div><div class=\"mb-4\"><div class=\"flex justify-between text-sm text-gray-700\"><span>Carbs</span> <span>")
+			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 15)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -271,7 +271,7 @@ func ContentFoodLogPage(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals,
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("g of 250g</span></div><div class=\"w-full bg-gray-200 rounded-full h-2.5 mt-1\"><div class=\"bg-yellow-500 h-2.5 rounded-full\" style=\"width: 80%;\"></div></div></div><div><div class=\"flex justify-between text-sm text-gray-700\"><span>Fat</span> <span>")
+			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 16)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -284,7 +284,7 @@ func ContentFoodLogPage(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals,
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("g of 70g</span></div><div class=\"w-full bg-gray-200 rounded-full h-2.5 mt-1\"><div class=\"bg-red-500 h-2.5 rounded-full\" style=\"width: 71%;\"></div></div></div></div></div><div class=\"mt-6 col-span-1 overflow-y-scroll relative scrollbar-hide\"><h3 class=\"sticky z-50 pb-2 top-0 bg-white rounded-b-md text-lg font-semibold text-gray-700 mb-2\">Logged Food ")
+			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 17)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -299,7 +299,7 @@ func ContentFoodLogPage(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals,
 					return templ_7745c5c3_Err
 				}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</h3><ul class=\"space-y-4\">")
+			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 18)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -309,17 +309,17 @@ func ContentFoodLogPage(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals,
 					return templ_7745c5c3_Err
 				}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</ul></div></div></div>")
+			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 19)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"w-full h-full flex flex-col flex-1 justify-center items-center p-8  min-h-[500px]\"><div class=\"flex flex-1 w-full items-center justify-center bg-white rounded-lg shadow-md border\">No entries.</div></div>")
+			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 20)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"flex justify-center items-center\"><img hx-get=\"/scan\" hx-target=\"#main-content\" class=\"h-10 cursor-pointer\" src=\"/static/img/plus.svg\"></div></div><div class=\"swiper-slide\">")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 21)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -327,7 +327,7 @@ func ContentFoodLogPage(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals,
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div></div></div><script type=\"module\">\n\t\tconst swipeArea = document.querySelector('.swiper');\n\t\tconst prevDate = swipeArea.dataset.prevDate;\n\t\tconst nextDate = swipeArea.dataset.nextDate;\n\t\tvar swiper = new Swiper(\".swiper\", {\n\t\t \tdirection: 'horizontal',\n\t\t\tinitialSlide: 1,\n\t\t\tloop: false,\n\t\t\tthreshold: 20,           \n\t\t\tresistance: true,        \n\t\t\tresistanceRatio: 0.85,   \n\t\t\tspeed: 250,             \n\t\t\ttouchRatio: 1.5,        \n\t\t\ttouchAngle: 45,         \n\t\t\tlongSwipes: true,\n\t\t\tlongSwipesRatio: 0.5,   \n\t\t\tfollowFinger: true,     \n\t\t\tgrabCursor: true,       \n\t\t\ttouchStartPreventDefault: false,  \n\t\t});\n\n\t\twindow.swiper = swiper;\n\n\t\tswiper.on(\"slidePrevTransitionEnd\", () => {\n\t\t\thtmx.ajax(\"GET\", `/food_log?date=${prevDate}`, {\n\t\t\t\tswap: \"innerHTML\",\n\t\t\t\ttarget: \"#main-content\"\n\t\t\t})\n\t\t});\n\n\t\tswiper.on(\"slideNextTransitionEnd\", () => {\n\t\t\thtmx.ajax(\"GET\", `/food_log?date=${nextDate}`, {\n\t\t\t\tswap: \"innerHTML\",\n\t\t\t\ttarget: \"#main-content\"\n\n\t\t\t})\n\t\t});\n\n\t\tdocument.body.addEventListener(\"keyup\", (e) => {\n\t\t\tif (e.key === \"ArrowLeft\"){\n\t\t\t\tswiper.slidePrev()\n\t\t\t}\n\n\t\t\tif (e.key === \"ArrowRight\"){\n\t\t\t\tswiper.slideNext()\n\t\t\t}\n\t\t})\n\t\t\t\t\t\n\t\t</script>")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 22)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -356,7 +356,7 @@ func FoodLogTotals(totals data.FoodLogTotals, date string) templ.Component {
 			templ_7745c5c3_Var15 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"totals\" hx-get=\"")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 23)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -369,7 +369,7 @@ func FoodLogTotals(totals data.FoodLogTotals, date string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-trigger=\"refreshTotals from:body\" hx-swap=\"innerHTML\" class=\"mb-4\"><h3 class=\"text-lg font-semibold text-gray-700\">Total Calories</h3><div class=\"flex items-center justify-between mt-2\"><span class=\"text-2xl font-bold text-gray-800\">")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 24)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -382,7 +382,7 @@ func FoodLogTotals(totals data.FoodLogTotals, date string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span> <span class=\"text-sm text-gray-500\">of ")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 25)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -395,7 +395,7 @@ func FoodLogTotals(totals data.FoodLogTotals, date string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" kcal</span></div><div class=\"w-full bg-gray-200 rounded-full h-2.5 mt-2\">")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 26)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -408,7 +408,7 @@ func FoodLogTotals(totals data.FoodLogTotals, date string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 27)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -421,7 +421,7 @@ func FoodLogTotals(totals data.FoodLogTotals, date string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\"></div></div></div>")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 28)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -450,7 +450,7 @@ func FoodLogEntry(entry data.FoodLogEntry) templ.Component {
 			templ_7745c5c3_Var21 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<li id=\"")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 29)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -463,7 +463,7 @@ func FoodLogEntry(entry data.FoodLogEntry) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"group relative flex items-center p-3 bg-gray-100 rounded-lg\"><div class=\"w-full pr-4 flex items-center justify-between\"><div><h4 class=\"text-md font-medium text-gray-800\">")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 30)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -476,7 +476,7 @@ func FoodLogEntry(entry data.FoodLogEntry) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" <span class=\"font-extrabold\">x ")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 31)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -489,7 +489,7 @@ func FoodLogEntry(entry data.FoodLogEntry) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span></h4><p class=\"text-sm text-gray-500\">Protein: ")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 32)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -502,7 +502,7 @@ func FoodLogEntry(entry data.FoodLogEntry) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("g, Carbs: ")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 33)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -515,7 +515,7 @@ func FoodLogEntry(entry data.FoodLogEntry) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("g,  Fat: ")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 34)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -528,7 +528,7 @@ func FoodLogEntry(entry data.FoodLogEntry) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("g</p></div><span class=\"text-sm font-medium text-gray-600\">")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 35)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -541,7 +541,7 @@ func FoodLogEntry(entry data.FoodLogEntry) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" kcal</span></div><img hx-delete=\"")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 36)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -554,7 +554,7 @@ func FoodLogEntry(entry data.FoodLogEntry) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-target=\"")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 37)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -567,7 +567,7 @@ func FoodLogEntry(entry data.FoodLogEntry) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-swap=\"outerHTML\" hx-confirm=\"Are you sure you want to delete this entry?\" hx-on-htmx-after-request=\"alert(&#39;Done making a request!&#39;)\" class=\"h-5 group-hover:flex absolute right-1 cursor-pointer\" src=\"/static/img/bin.svg\"></li>")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 38)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -596,7 +596,7 @@ func FoodLogLoadingSkeleton() templ.Component {
 			templ_7745c5c3_Var31 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"loading\" class=\"htmx-indicator w-full grid grid-cols-1 md:grid-cols-2 md:gap-4 p-6 mx-auto bg-white rounded-lg shadow-md border max-h-[600px] animate-pulse\"><div class=\"col-span-1 md:col-span-2 flex justify-between items-center mb-4\"><div class=\"h-6 w-1/3 bg-gray-200 rounded\"></div><div class=\"h-4 w-1/5 bg-gray-200 rounded\"></div></div><div class=\"col-span-1\"><div class=\"mb-4\"><div class=\"h-5 w-1/4 bg-gray-200 rounded mb-2\"></div><div class=\"flex items-center justify-between mt-2\"><div class=\"h-8 w-1/4 bg-gray-200 rounded\"></div><div class=\"h-4 w-1/6 bg-gray-200 rounded\"></div></div><div class=\"w-full bg-gray-200 rounded-full h-2.5 mt-2\"></div></div><div><div class=\"h-5 w-1/4 bg-gray-200 rounded mb-4\"></div><div class=\"mb-4\"><div class=\"flex justify-between text-sm text-gray-700\"><div class=\"h-4 w-1/5 bg-gray-200 rounded\"></div><div class=\"h-4 w-1/5 bg-gray-200 rounded\"></div></div><div class=\"w-full bg-gray-200 rounded-full h-2.5 mt-1\"></div></div><div class=\"mb-4\"><div class=\"flex justify-between text-sm text-gray-700\"><div class=\"h-4 w-1/5 bg-gray-200 rounded\"></div><div class=\"h-4 w-1/5 bg-gray-200 rounded\"></div></div><div class=\"w-full bg-gray-200 rounded-full h-2.5 mt-1\"></div></div><div><div class=\"flex justify-between text-sm text-gray-700\"><div class=\"h-4 w-1/5 bg-gray-200 rounded\"></div><div class=\"h-4 w-1/5 bg-gray-200 rounded\"></div></div><div class=\"w-full bg-gray-200 rounded-full h-2.5 mt-1\"></div></div></div></div><div class=\"mt-6 col-span-1 overflow-y-scroll relative\"><div class=\"sticky z-50 pb-2 top-0 bg-white rounded-b-md\"><div class=\"h-5 w-1/4 bg-gray-200 rounded mb-2\"></div></div><ul class=\"space-y-4\"><li class=\"flex items-center p-3 bg-gray-100 rounded-lg\"><div class=\"w-full pr-4 flex items-center justify-between\"><div><div class=\"h-4 w-2/3 bg-gray-200 rounded mb-2\"></div><div class=\"h-3 w-1/2 bg-gray-200 rounded\"></div></div><div class=\"h-4 w-1/5 bg-gray-200 rounded\"></div></div></li><li class=\"flex items-center p-3 bg-gray-100 rounded-lg\"><div class=\"w-full pr-4 flex items-center justify-between\"><div><div class=\"h-4 w-2/3 bg-gray-200 rounded mb-2\"></div><div class=\"h-3 w-1/2 bg-gray-200 rounded\"></div></div><div class=\"h-4 w-1/5 bg-gray-200 rounded\"></div></div></li><li class=\"flex items-center p-3 bg-gray-100 rounded-lg\"><div class=\"w-full pr-4 flex items-center justify-between\"><div><div class=\"h-4 w-2/3 bg-gray-200 rounded mb-2\"></div><div class=\"h-3 w-1/2 bg-gray-200 rounded\"></div></div><div class=\"h-4 w-1/5 bg-gray-200 rounded\"></div></div></li><li class=\"flex items-center p-3 bg-gray-100 rounded-lg\"><div class=\"w-full pr-4 flex items-center justify-between\"><div><div class=\"h-4 w-2/3 bg-gray-200 rounded mb-2\"></div><div class=\"h-3 w-1/2 bg-gray-200 rounded\"></div></div><div class=\"h-4 w-1/5 bg-gray-200 rounded\"></div></div></li></ul></div></div>")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 39)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
