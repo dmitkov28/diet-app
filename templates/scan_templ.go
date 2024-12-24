@@ -88,7 +88,7 @@ func ContentScanPage() templ.Component {
 			templ_7745c5c3_Var3 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 1)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"w-full flex flex-col flex-1 gap-2 justify-center items-center p-8\"><div id=\"reader\" class=\"w-full max-w-lg\"></div><div id=\"result\" class=\"mt-4 text-md overflow-scroll max-w-full\"></div><div class=\"w-1/2 flex flex-col gap-2\"><button onclick=\"startCamera()\" class=\"bg-[#2596be] text-white p-3 font-bold rounded-md flex items-center justify-center gap-2 w-full\"><img alt=\"barcode icon\" class=\"h-5\" src=\"/static/img/scan.svg\"> Scan Food</button> <a hx-replace-url=\"/search\" hx-get=\"/search\" hx-target=\"#main-content\" class=\"cursor-pointer w-full text-white font-semibold bg-blue-500 rounded-md p-3 flex gap-2 justify-center items-center col-span-2\">Search Food</a></div></div><script type=\"module\">\n\tconst resultDiv = document.getElementById(\"result\");\n\n\tasync function fetchFoodFacts(ean) {\n\t\tconst url = `/scan/${ean}`;\n\t\tconst res = await fetch(url);\n\t\tconst data = await res.text();\n\t\treturn data;\n\t};\n\n\tlet isProcessing = false;\n\tasync function onScanSuccess(decodedText, decodedResult) {\n\n\t\tif (isProcessing) return;\n\n\t\ttry {\n\t\t\tisProcessing = true;\n\t\t\tconst data = await fetchFoodFacts(decodedText);\n\t\t\tresultDiv.innerHTML = data;\n\n\t\t\tif (window.html5QrCode) {\n\t\t\t\ttry {\n\t\t\t\t\tawait window.html5QrCode.stop();\n\t\t\t\t\twindow.html5QrCode.clear();\n\t\t\t\t} catch (err) {\n\t\t\t\t\tconsole.error(`Failed to close scanner: ${err}`)\n\t\t\t\t}\n\t\t\t}\n\t\t} catch (err) {\n\t\t\tresultDiv.textContent = JSON.stringify(err)\n\t\t} finally {\n\t\t\tisProcessing = false;\n\t\t}\n\t}\n\n\tfunction onScanError(errorMessage) {\n\t}\n\n\tasync function startCamera() {\n\t\tresultDiv.innerHTML = \"\";\n\n\t\ttry {\n\t\t\tconst devices = await Html5Qrcode.getCameras();\n\t\t\tif (devices && devices.length) {\n\t\t\t\twindow.html5QrCode = new Html5Qrcode(\"reader\");\n\t\t\t\tconst config = {\n\t\t\t\t\tfps: 10,\n\t\t\t\t\tqrbox: { width: 250, height: 250 },\n\t\t\t\t\taspectRatio: 1.0\n\t\t\t\t};\n\n\t\t\t\ttry {\n\t\t\t\t\tawait window.html5QrCode.start(\n\t\t\t\t\t\t{ facingMode: \"environment\" },\n\t\t\t\t\t\tconfig,\n\t\t\t\t\t\tonScanSuccess,\n\t\t\t\t\t\tonScanError\n\t\t\t\t\t);\n\t\t\t\t} catch (startError) {\n\t\t\t\t\tconsole.error(\"Failed to start scanner:\", startError);\n\t\t\t\t}\n\t\t\t} else {\n\t\t\t\tconsole.error(\"No cameras found\");\n\t\t\t\tresultDiv.textContent = \"No cameras found\";\n\t\t\t}\n\t\t} catch (cameraError) {\n\t\t\tconsole.error(\"Error getting cameras:\", cameraError);\n\t\t\tresultDiv.textContent = \"Error accessing camera\";\n\t\t}\n\t}\n\n\twindow.startCamera = startCamera\n</script>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -117,17 +117,17 @@ func FoodFacts(data diet.NutritionData) templ.Component {
 			templ_7745c5c3_Var4 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 2)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"rounded-md border-slate-200 shadow-md p-4\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if data.Status == "failure" {
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 3)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<h2>Unknown product 😞</h2>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 4)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<h2 class=\"font-bold text-xl mb-2 text-center\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -140,7 +140,7 @@ func FoodFacts(data diet.NutritionData) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 5)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" (")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -153,7 +153,7 @@ func FoodFacts(data diet.NutritionData) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 6)
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(")</h2>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -162,7 +162,7 @@ func FoodFacts(data diet.NutritionData) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 7)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -191,7 +191,7 @@ func NutritionTable(data diet.NutritionData) templ.Component {
 			templ_7745c5c3_Var7 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 8)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden\"><table class=\"w-full border-collapse border border-gray-300\"><thead class=\"bg-gray-100\"><tr><th class=\"text-left px-4 py-2 border-b border-gray-300 font-semibold\">Nutrient</th><th class=\"text-right px-4 py-2 border-b border-gray-300 font-semibold\">Amount</th></tr></thead> <tbody><tr><td class=\"text-left px-4 py-2 border-b border-gray-300\">Calories</td><td class=\"text-right px-4 py-2 border-b border-gray-300\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -205,7 +205,7 @@ func NutritionTable(data diet.NutritionData) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 9)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</td></tr><tr class=\"bg-gray-50\"><td class=\"text-left px-4 py-2 border-b border-gray-300\">Total Fat</td><td class=\"text-right px-4 py-2 border-b border-gray-300\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -219,7 +219,7 @@ func NutritionTable(data diet.NutritionData) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 10)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("g</td></tr><tr><td class=\"text-left px-4 py-2 border-b border-gray-300\">Saturated Fat</td><td class=\"text-right px-4 py-2 border-b border-gray-300\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -233,7 +233,7 @@ func NutritionTable(data diet.NutritionData) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 11)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("g</td></tr><tr><td class=\"text-left px-4 py-2 border-b border-gray-300\">Sodium</td><td class=\"text-right px-4 py-2 border-b border-gray-300\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -247,7 +247,7 @@ func NutritionTable(data diet.NutritionData) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 12)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("mg</td></tr><tr class=\"bg-gray-50\"><td class=\"text-left px-4 py-2 border-b border-gray-300\">Total Carbohydrate</td><td class=\"text-right px-4 py-2 border-b border-gray-300\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -261,7 +261,7 @@ func NutritionTable(data diet.NutritionData) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 13)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("g</td></tr><tr><td class=\"text-left px-4 py-2 border-b border-gray-300\">Dietary Fiber</td><td class=\"text-right px-4 py-2 border-b border-gray-300\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -275,7 +275,7 @@ func NutritionTable(data diet.NutritionData) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 14)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("g</td></tr><tr class=\"bg-gray-50\"><td class=\"text-left px-4 py-2 border-b border-gray-300\">Sugars</td><td class=\"text-right px-4 py-2 border-b border-gray-300\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -289,7 +289,7 @@ func NutritionTable(data diet.NutritionData) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 15)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("g</td></tr><tr><td class=\"text-left px-4 py-2\">Protein</td><td class=\"text-right px-4 py-2\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -303,7 +303,7 @@ func NutritionTable(data diet.NutritionData) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 16)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("g</td></tr></tbody></table></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
