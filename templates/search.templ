@@ -39,7 +39,7 @@ templ ContentSearchPage() {
 					hx-on::after-swap="handleSuccess()"
 					class="cursor-pointer"
 				>
-					<img class="h-10" src="/static/img/plus.svg"/>
+					<img alt="plus icon" class="h-10" src="/static/img/plus.svg"/>
 				</div>
 			   `
             }, 2000);
@@ -96,7 +96,7 @@ templ SearchResultsItem(item diet.FoodSearchResult) {
 				class="flex flex-col gap-1 w-full h-full cursor-pointer"
 			>
 				<div class="flex gap-2 items-center">
-					<img class="max-h-[60px] max-w-[60px] object-contain" src={ item.Thumbnail }/>
+					<img alt="food thumbnail" class="max-h-[60px] max-w-[60px] object-contain" src={ item.Thumbnail }/>
 					<h2 class="text-lg font-medium text-blue-700 hover:text-blue-900 flex flex-col gap-1">
 						{ item.Name }
 						<span class="text-slate-400 font-light">
@@ -141,13 +141,13 @@ templ AddButton(product diet.FoodSearchResult) {
 		hx-on::after-swap="handleSuccess(this)"
 		class="cursor-pointer"
 	>
-		<img class="h-10" src="/static/img/plus.svg"/>
+		<img alt="plus icon" class="h-10" src="/static/img/plus.svg"/>
 	</div>
 }
 
 templ FoodLogSuccess() {
 	<div class="flex items-center justify-center">
-		<img class="block h-10 animate-shake" src="/static/img/check.svg"/>
+		<img alt="check icon" class="block h-10 animate-shake" src="/static/img/check.svg"/>
 	</div>
 }
 

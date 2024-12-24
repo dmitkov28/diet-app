@@ -47,7 +47,7 @@ templ ContentFoodLogPage(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals
 			<div class="swiper-slide">
 				<div class="mx-auto w-fit flex items-center justify-between gap-4">
 					<span class="flex w-full h-full">
-						<img onclick="swiper.slidePrev()" class="h-5 cursor-pointer" src="/static/img/chevron-left.svg"/>
+						<img alt="chevron left icon" onclick="swiper.slidePrev()" class="h-5 cursor-pointer" src="/static/img/chevron-left.svg"/>
 					</span>
 					<form
 						hx-get="/food_log"
@@ -67,7 +67,7 @@ templ ContentFoodLogPage(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals
 						/>
 					</form>
 					<span class="flex w-full h-full">
-						<img onclick="swiper.slideNext()" class="h-5 cursor-pointer" src="/static/img/chevron-right.svg"/>
+						<img alt="chevron right icon" onclick="swiper.slideNext()" class="h-5 cursor-pointer" src="/static/img/chevron-right.svg"/>
 					</span>
 				</div>
 				if len(foodLogs) != 0 {
@@ -132,7 +132,7 @@ templ ContentFoodLogPage(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals
 					</div>
 				}
 				<div class="flex justify-center items-center">
-					<img hx-get="/scan" hx-target="#main-content" class="h-10 cursor-pointer" src="/static/img/plus.svg"/>
+					<img alt="plus icon" hx-get="/scan" hx-target="#main-content" class="h-10 cursor-pointer" src="/static/img/plus.svg"/>
 				</div>
 			</div>
 			<div class="swiper-slide">
@@ -233,6 +233,7 @@ templ FoodLogEntry(entry data.FoodLogEntry) {
 			<span class="text-sm font-medium text-gray-600">{ fmt.Sprintf("%.f", entry.Calories) } kcal</span>
 		</div>
 		<img
+			alt="bin icon"
 			hx-delete={ fmt.Sprintf("/food_log/%d", entry.ID) }
 			hx-target={ fmt.Sprintf("#food-entry-%d", entry.ID) }
 			hx-swap="outerHTML"

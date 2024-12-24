@@ -65,7 +65,7 @@ templ Card(props CardProps) {
 		class="md:col-span-1 text-center col-span-2 flex gap-4 justify-center items-center rounded-md border border-slate-200 shadow-md p-3"
 	>
 		if  props.iconSrc != "" {
-			<img src={ props.iconSrc } class="h-5"/>
+			<img alt="trendline icon" g src={ props.iconSrc } class="h-5"/>
 		}
 		if !(props.value > 0) {
 			<span class="text-xl font-bold text-center">N/A</span>
@@ -84,9 +84,9 @@ templ Card(props CardProps) {
 					}
 				>
 					if props.positiveChange {
-						<img class="h-4" src="/static/img/arrow-down.svg"/>
+						<img alt="arrow down icon" class="h-4" src="/static/img/arrow-down.svg"/>
 					} else {
-						<img class="h-4" src="/static/img/arrow-up.svg"/>
+						<img alt="arrow up icon" class="h-4" src="/static/img/arrow-up.svg"/>
 					}
 					<span>
 						{ fmt.Sprintf("%.2f", props.changeRate) } %

@@ -31,7 +31,7 @@ func CaloriesForm() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"w-full p-8\"><form hx-indicator=\"#spinner\" hx-post=\"/calories\" hx-replace-url=\"/stats\" class=\"grid grid-cols-1 md:grid-cols-2 gap-4 my-4\"><div class=\"flex flex-col gap-1 col-span-2 md:col-span-1\"><label>Calories</label> <input name=\"calories\" class=\"w-full border shadow-md px-3 py-1 rounded-md\" type=\"number\" placeholder=\"Calories\" required></div><div class=\"flex flex-col gap-1 col-span-2 md:col-span-1\"><label>Date</label> <input name=\"date\" value=\"")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 1)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -44,7 +44,7 @@ func CaloriesForm() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"w-full border shadow-md px-3 py-1 rounded-md text-slate-400\" type=\"date\" required></div><button type=\"submit\" class=\"text-white font-semibold bg-blue-500 rounded-md p-3 flex gap-2 justify-center items-center col-span-2\">")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 2)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -52,7 +52,7 @@ func CaloriesForm() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("Log Calories</button></form><a hx-replace-url=\"/scan\" hx-get=\"/scan\" hx-target=\"#main-content\" hx-push-url=\"true\" class=\"my-4 cursor-pointer w-full text-white font-semibold bg-blue-500 rounded-md p-3 flex gap-2 justify-center items-center col-span-2\">Add Food</a> <a hx-replace-url=\"/food_log\" hx-get=\"/food_log\" hx-target=\"#main-content\" hx-push-url=\"true\" class=\"my-4 cursor-pointer w-full text-white font-semibold bg-yellow-500 rounded-md p-3 flex gap-2 justify-center items-center col-span-2\">Food Log</a></div>")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 3)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -135,7 +135,7 @@ func ContentCaloriesPage() templ.Component {
 			templ_7745c5c3_Var5 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"w-full flex flex-col flex-1 items-center justify-center\"><h1 class=\"font-bold text-2xl text-center\">Calorie Log</h1><div class=\"stats\">")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 4)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -143,7 +143,7 @@ func ContentCaloriesPage() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div></div>")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 5)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
