@@ -141,53 +141,52 @@ templ ContentFoodLogPage(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals
 		</div>
 	</div>
 	<script type="module">
-		const swipeArea = document.querySelector('.swiper');
-		const prevDate = swipeArea.dataset.prevDate;
-		const nextDate = swipeArea.dataset.nextDate;
-		var swiper = new Swiper(".swiper", {
-		 	direction: 'horizontal',
-			initialSlide: 1,
-			loop: false,
-			threshold: 20,           
-			resistance: true,        
-			resistanceRatio: 0.85,   
-			speed: 250,             
-			touchRatio: 1.5,        
-			touchAngle: 45,         
-			longSwipes: true,
-			longSwipesRatio: 0.5,   
-			followFinger: true,     
-			grabCursor: true,       
-			touchStartPreventDefault: false,  
-		});
+			const swipeArea = document.querySelector('.swiper');
+			const prevDate = swipeArea.dataset.prevDate;
+			const nextDate = swipeArea.dataset.nextDate;
+			var swiper = new Swiper(".swiper", {
+				direction: 'horizontal',
+				initialSlide: 1,
+				loop: false,
+				threshold: 20,           
+				resistance: true,        
+				resistanceRatio: 0.85,   
+				speed: 250,             
+				touchRatio: 1.5,        
+				touchAngle: 45,         
+				longSwipes: true,
+				longSwipesRatio: 0.5,   
+				followFinger: true,     
+				grabCursor: true,       
+				touchStartPreventDefault: false,  
+			});
 
-		window.swiper = swiper;
+			window.swiper = swiper;
 
-		swiper.on("slidePrevTransitionEnd", () => {
-			htmx.ajax("GET", `/food_log?date=${prevDate}`, {
-				swap: "innerHTML",
-				target: "#main-content"
-			})
-		});
+			swiper.on("slidePrevTransitionEnd", () => {
+				htmx.ajax("GET", `/food_log?date=${prevDate}`, {
+					swap: "innerHTML",
+					target: "#main-content"
+				})
+			});
 
-		swiper.on("slideNextTransitionEnd", () => {
-			htmx.ajax("GET", `/food_log?date=${nextDate}`, {
-				swap: "innerHTML",
-				target: "#main-content"
+			swiper.on("slideNextTransitionEnd", () => {
+				htmx.ajax("GET", `/food_log?date=${nextDate}`, {
+					swap: "innerHTML",
+					target: "#main-content"
 
-			})
-		});
+				})
+			});
 
-		document.body.addEventListener("keyup", (e) => {
-			if (e.key === "ArrowLeft"){
-				swiper.slidePrev()
-			}
+			document.body.addEventListener("keyup", (e) => {
+				if (e.key === "ArrowLeft"){
+					swiper.slidePrev()
+				}
 
-			if (e.key === "ArrowRight"){
-				swiper.slideNext()
-			}
-		})
-					
+				if (e.key === "ArrowRight"){
+					swiper.slideNext()
+				}
+			});	
 		</script>
 }
 
