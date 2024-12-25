@@ -7,10 +7,10 @@ import (
 
 templ ScanPage(isHTMX bool) {
 	if isHTMX {
-		@ContentScanPage()
+		@Scan2()
 	} else {
 		@Base(TemplateProps{PageTitle: "Scan Food"}) {
-			@ContentScanPage()
+			@Scan2()
 		}
 	}
 }
@@ -20,99 +20,27 @@ templ ContentScanPage() {
 		<div id="reader" class="w-full max-w-lg"></div>
 		<div id="result" class="mt-4 text-md overflow-scroll max-w-full"></div>
 		<div class="w-1/2 flex flex-col gap-2">
-		<button
-			onclick="startCamera()"
-			class="bg-[#2596be] text-white p-3 font-bold rounded-md flex items-center justify-center gap-2 w-full"
-		>
-			<img alt="barcode icon" class="h-5" src="/static/img/scan.svg"/>
-			Scan Food
-		</button>
-		<a hx-replace-url="/search" hx-get="/search" hx-target="#main-content" class="cursor-pointer w-full text-white font-semibold bg-blue-500 rounded-md p-3 flex gap-2 justify-center items-center col-span-2">
-			Search Food
-		</a>
+			<button
+				onclick="scan()"
+				class="bg-[#2596be] text-white p-3 font-bold rounded-md flex items-center justify-center gap-2 w-full"
+			>
+				<img alt="barcode icon" class="h-5" src="/static/img/scan.svg"/>
+				Scan Food
+			</button>
+			<a hx-replace-url="/search" hx-get="/search" hx-target="#main-content" class="cursor-pointer w-full text-white font-semibold bg-blue-500 rounded-md p-3 flex gap-2 justify-center items-center col-span-2">
+				Search Food
+			</a>
 		</div>
 	</div>
-	<script type="module">
-	const resultDiv = document.getElementById("result");
-
-	async function fetchFoodFacts(ean) {
-		const url = `/scan/${ean}`;
-		const res = await fetch(url);
-		const data = await res.text();
-		return data;
-	};
-
-	let isProcessing = false;
-	async function onScanSuccess(decodedText, decodedResult) {
-
-		if (isProcessing) return;
-
-		try {
-			isProcessing = true;
-			const data = await fetchFoodFacts(decodedText);
-			resultDiv.innerHTML = data;
-
-			if (window.html5QrCode) {
-				try {
-					await window.html5QrCode.stop();
-					window.html5QrCode.clear();
-				} catch (err) {
-					console.error(`Failed to close scanner: ${err}`)
-				}
-			}
-		} catch (err) {
-			resultDiv.textContent = JSON.stringify(err)
-		} finally {
-			isProcessing = false;
-		}
-	}
-
-	function onScanError(errorMessage) {
-	}
-
-	async function startCamera() {
-		resultDiv.innerHTML = "";
-
-		try {
-			const devices = await Html5Qrcode.getCameras();
-			if (devices && devices.length) {
-				window.html5QrCode = new Html5Qrcode("reader");
-				const config = {
-					fps: 10,
-					qrbox: { width: 250, height: 250 },
-					aspectRatio: 1.0
-				};
-
-				try {
-					await window.html5QrCode.start(
-						{ facingMode: "environment" },
-						config,
-						onScanSuccess,
-						onScanError
-					);
-				} catch (startError) {
-					console.error("Failed to start scanner:", startError);
-				}
-			} else {
-				console.error("No cameras found");
-				resultDiv.textContent = "No cameras found";
-			}
-		} catch (cameraError) {
-			console.error("Error getting cameras:", cameraError);
-			resultDiv.textContent = "Error accessing camera";
-		}
-	}
-
-	window.startCamera = startCamera
-</script>
 }
 
 templ FoodFacts(data diet.NutritionData) {
 	<div class="rounded-md border-slate-200 shadow-md p-4">
 		if data.Status == "failure" {
 			<h2>Unknown product 😞</h2>
+			<a hx-replace-url="/scan" hx-get="/scan" hx-target="#main-content" hx-push-url="true">Try again</a>
 		} else {
-			<h2 class="font-bold text-xl mb-2 text-center">{ data.Product.ProductNameEn } ({ data.Product.Brands })</h2>
+			<h2 class="font-bold text-xl mb-2 text-center">{ data.Product.ProductName } ({ data.Product.Brands })</h2>
 			@NutritionTable(data)
 		}
 	</div>
@@ -131,14 +59,14 @@ templ NutritionTable(data diet.NutritionData) {
 				<tr>
 					<td class="text-left px-4 py-2 border-b border-gray-300">Calories</td>
 					<td class="text-right px-4 py-2 border-b border-gray-300">
-						{ fmt.Sprintf("%d",
+						{ fmt.Sprintf("%.1f",
 					data.Product.Nutriments.EnergyKcal) }
 					</td>
 				</tr>
 				<tr class="bg-gray-50">
 					<td class="text-left px-4 py-2 border-b border-gray-300">Total Fat</td>
 					<td class="text-right px-4 py-2 border-b border-gray-300">
-						{ fmt.Sprintf("%d",
+						{ fmt.Sprintf("%.1f",
 					data.Product.Nutriments.Fat) }g
 					</td>
 				</tr>
@@ -159,7 +87,7 @@ templ NutritionTable(data diet.NutritionData) {
 				<tr class="bg-gray-50">
 					<td class="text-left px-4 py-2 border-b border-gray-300">Total Carbohydrate</td>
 					<td class="text-right px-4 py-2 border-b border-gray-300">
-						{ fmt.Sprintf("%d",
+						{ fmt.Sprintf("%.1f",
 					data.Product.Nutriments.Carbohydrates) }g
 					</td>
 				</tr>
@@ -180,11 +108,65 @@ templ NutritionTable(data diet.NutritionData) {
 				<tr>
 					<td class="text-left px-4 py-2">Protein</td>
 					<td class="text-right px-4 py-2">
-						{ fmt.Sprintf("%d",
+						{ fmt.Sprintf("%.1f",
 					data.Product.Nutriments.Proteins) }g
 					</td>
 				</tr>
 			</tbody>
 		</table>
 	</div>
+}
+
+templ Scan2() {
+	<div id="modal-container"></div>
+	<div id="quagga"></div>
+	<script src="https://www.unpkg.com/quagga@0.12.1/dist/quagga.min.js"></script>
+	<script type="module">
+			async function fetchFoodFacts(ean) {
+						const url = `/scan/${ean}`;
+						const res = await fetch(url);
+						const data = await res.text();
+						return data;
+					};
+
+			Quagga.init({
+			inputStream: {
+				name: "Live",
+				type: "LiveStream",
+				target: document.querySelector('#quagga'),
+				constraints: {
+					width: 1280, // High resolution for better accuracy
+					height: 720,
+					facingMode: "environment", // Use the back camera
+					focusMode: "continuous" // Ensure continuous focus
+				}
+			},
+			decoder: {
+				readers: ["ean_reader", "ean_8_reader"],
+				multiple: false, // Only decode one barcode at a time
+			},
+			locator: {
+				patchSize: "medium", // Medium size for balance between speed and accuracy
+				halfSample: true // Improves performance on high-res devices
+			},
+			locate: true, // Enable locating feature for better scanning
+			frequency: 1 // Process images every 10 frames for better accuracy
+		}, function (err) {
+			if (err) {
+				console.log(err);
+				return;
+			}
+			console.log("Initialization finished. Ready to start");
+			Quagga.start();
+		});
+
+			Quagga.onDetected(async function (data) {
+				const code = data.codeResult.code;
+				const output = document.getElementById("quagga");
+				if (output) {
+					await htmx.ajax("GET", `/scan/${code}`, "#modal-content");
+				}
+				Quagga.stop();
+			});
+	</script>
 }

@@ -35,7 +35,7 @@ func ScanPage(isHTMX bool) templ.Component {
 		}
 		ctx = templ.ClearChildren(ctx)
 		if isHTMX {
-			templ_7745c5c3_Err = ContentScanPage().Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = Scan2().Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -52,7 +52,7 @@ func ScanPage(isHTMX bool) templ.Component {
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = ContentScanPage().Render(ctx, templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = Scan2().Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -88,7 +88,7 @@ func ContentScanPage() templ.Component {
 			templ_7745c5c3_Var3 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"w-full flex flex-col flex-1 gap-2 justify-center items-center p-8\"><div id=\"reader\" class=\"w-full max-w-lg\"></div><div id=\"result\" class=\"mt-4 text-md overflow-scroll max-w-full\"></div><div class=\"w-1/2 flex flex-col gap-2\"><button onclick=\"startCamera()\" class=\"bg-[#2596be] text-white p-3 font-bold rounded-md flex items-center justify-center gap-2 w-full\"><img alt=\"barcode icon\" class=\"h-5\" src=\"/static/img/scan.svg\"> Scan Food</button> <a hx-replace-url=\"/search\" hx-get=\"/search\" hx-target=\"#main-content\" class=\"cursor-pointer w-full text-white font-semibold bg-blue-500 rounded-md p-3 flex gap-2 justify-center items-center col-span-2\">Search Food</a></div></div><script type=\"module\">\n\tconst resultDiv = document.getElementById(\"result\");\n\n\tasync function fetchFoodFacts(ean) {\n\t\tconst url = `/scan/${ean}`;\n\t\tconst res = await fetch(url);\n\t\tconst data = await res.text();\n\t\treturn data;\n\t};\n\n\tlet isProcessing = false;\n\tasync function onScanSuccess(decodedText, decodedResult) {\n\n\t\tif (isProcessing) return;\n\n\t\ttry {\n\t\t\tisProcessing = true;\n\t\t\tconst data = await fetchFoodFacts(decodedText);\n\t\t\tresultDiv.innerHTML = data;\n\n\t\t\tif (window.html5QrCode) {\n\t\t\t\ttry {\n\t\t\t\t\tawait window.html5QrCode.stop();\n\t\t\t\t\twindow.html5QrCode.clear();\n\t\t\t\t} catch (err) {\n\t\t\t\t\tconsole.error(`Failed to close scanner: ${err}`)\n\t\t\t\t}\n\t\t\t}\n\t\t} catch (err) {\n\t\t\tresultDiv.textContent = JSON.stringify(err)\n\t\t} finally {\n\t\t\tisProcessing = false;\n\t\t}\n\t}\n\n\tfunction onScanError(errorMessage) {\n\t}\n\n\tasync function startCamera() {\n\t\tresultDiv.innerHTML = \"\";\n\n\t\ttry {\n\t\t\tconst devices = await Html5Qrcode.getCameras();\n\t\t\tif (devices && devices.length) {\n\t\t\t\twindow.html5QrCode = new Html5Qrcode(\"reader\");\n\t\t\t\tconst config = {\n\t\t\t\t\tfps: 10,\n\t\t\t\t\tqrbox: { width: 250, height: 250 },\n\t\t\t\t\taspectRatio: 1.0\n\t\t\t\t};\n\n\t\t\t\ttry {\n\t\t\t\t\tawait window.html5QrCode.start(\n\t\t\t\t\t\t{ facingMode: \"environment\" },\n\t\t\t\t\t\tconfig,\n\t\t\t\t\t\tonScanSuccess,\n\t\t\t\t\t\tonScanError\n\t\t\t\t\t);\n\t\t\t\t} catch (startError) {\n\t\t\t\t\tconsole.error(\"Failed to start scanner:\", startError);\n\t\t\t\t}\n\t\t\t} else {\n\t\t\t\tconsole.error(\"No cameras found\");\n\t\t\t\tresultDiv.textContent = \"No cameras found\";\n\t\t\t}\n\t\t} catch (cameraError) {\n\t\t\tconsole.error(\"Error getting cameras:\", cameraError);\n\t\t\tresultDiv.textContent = \"Error accessing camera\";\n\t\t}\n\t}\n\n\twindow.startCamera = startCamera\n</script>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"w-full flex flex-col flex-1 gap-2 justify-center items-center p-8\"><div id=\"reader\" class=\"w-full max-w-lg\"></div><div id=\"result\" class=\"mt-4 text-md overflow-scroll max-w-full\"></div><div class=\"w-1/2 flex flex-col gap-2\"><button onclick=\"scan()\" class=\"bg-[#2596be] text-white p-3 font-bold rounded-md flex items-center justify-center gap-2 w-full\"><img alt=\"barcode icon\" class=\"h-5\" src=\"/static/img/scan.svg\"> Scan Food</button> <a hx-replace-url=\"/search\" hx-get=\"/search\" hx-target=\"#main-content\" class=\"cursor-pointer w-full text-white font-semibold bg-blue-500 rounded-md p-3 flex gap-2 justify-center items-center col-span-2\">Search Food</a></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -122,7 +122,7 @@ func FoodFacts(data diet.NutritionData) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		if data.Status == "failure" {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<h2>Unknown product 😞</h2>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<h2>Unknown product 😞</h2><a hx-replace-url=\"/scan\" hx-get=\"/scan\" hx-target=\"#main-content\" hx-push-url=\"true\">Try again</a>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -132,9 +132,9 @@ func FoodFacts(data diet.NutritionData) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var5 string
-			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(data.Product.ProductNameEn)
+			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(data.Product.ProductName)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/scan.templ`, Line: 115, Col: 78}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/scan.templ`, Line: 43, Col: 76}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
@@ -147,7 +147,7 @@ func FoodFacts(data diet.NutritionData) templ.Component {
 			var templ_7745c5c3_Var6 string
 			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(data.Product.Brands)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/scan.templ`, Line: 115, Col: 103}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/scan.templ`, Line: 43, Col: 101}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 			if templ_7745c5c3_Err != nil {
@@ -196,10 +196,10 @@ func NutritionTable(data diet.NutritionData) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var8 string
-		templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d",
+		templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.1f",
 			data.Product.Nutriments.EnergyKcal))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/scan.templ`, Line: 135, Col: 40}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/scan.templ`, Line: 63, Col: 40}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 		if templ_7745c5c3_Err != nil {
@@ -210,10 +210,10 @@ func NutritionTable(data diet.NutritionData) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var9 string
-		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d",
+		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.1f",
 			data.Product.Nutriments.Fat))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/scan.templ`, Line: 142, Col: 33}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/scan.templ`, Line: 70, Col: 33}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 		if templ_7745c5c3_Err != nil {
@@ -227,7 +227,7 @@ func NutritionTable(data diet.NutritionData) templ.Component {
 		templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.1f",
 			data.Product.Nutriments.SaturatedFat))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/scan.templ`, Line: 149, Col: 42}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/scan.templ`, Line: 77, Col: 42}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 		if templ_7745c5c3_Err != nil {
@@ -241,7 +241,7 @@ func NutritionTable(data diet.NutritionData) templ.Component {
 		templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.1f",
 			data.Product.Nutriments.Sodium))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/scan.templ`, Line: 156, Col: 36}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/scan.templ`, Line: 84, Col: 36}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 		if templ_7745c5c3_Err != nil {
@@ -252,10 +252,10 @@ func NutritionTable(data diet.NutritionData) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var12 string
-		templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d",
+		templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.1f",
 			data.Product.Nutriments.Carbohydrates))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/scan.templ`, Line: 163, Col: 43}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/scan.templ`, Line: 91, Col: 43}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 		if templ_7745c5c3_Err != nil {
@@ -269,7 +269,7 @@ func NutritionTable(data diet.NutritionData) templ.Component {
 		templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.1f",
 			data.Product.Nutriments.Fiber))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/scan.templ`, Line: 170, Col: 35}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/scan.templ`, Line: 98, Col: 35}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 		if templ_7745c5c3_Err != nil {
@@ -283,7 +283,7 @@ func NutritionTable(data diet.NutritionData) templ.Component {
 		templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.1f",
 			data.Product.Nutriments.Sugars))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/scan.templ`, Line: 177, Col: 36}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/scan.templ`, Line: 105, Col: 36}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 		if templ_7745c5c3_Err != nil {
@@ -294,16 +294,45 @@ func NutritionTable(data diet.NutritionData) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var15 string
-		templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d",
+		templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.1f",
 			data.Product.Nutriments.Proteins))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/scan.templ`, Line: 184, Col: 38}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/scan.templ`, Line: 112, Col: 38}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("g</td></tr></tbody></table></div>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		return templ_7745c5c3_Err
+	})
+}
+
+func Scan2() templ.Component {
+	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
+			return templ_7745c5c3_CtxErr
+		}
+		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+		if !templ_7745c5c3_IsBuffer {
+			defer func() {
+				templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err == nil {
+					templ_7745c5c3_Err = templ_7745c5c3_BufErr
+				}
+			}()
+		}
+		ctx = templ.InitializeContext(ctx)
+		templ_7745c5c3_Var16 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var16 == nil {
+			templ_7745c5c3_Var16 = templ.NopComponent
+		}
+		ctx = templ.ClearChildren(ctx)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div id=\"modal-container\"></div><div id=\"quagga\"></div><script src=\"https://www.unpkg.com/quagga@0.12.1/dist/quagga.min.js\"></script><script type=\"module\">\n\t\t\tasync function fetchFoodFacts(ean) {\n\t\t\t\t\t\tconst url = `/scan/${ean}`;\n\t\t\t\t\t\tconst res = await fetch(url);\n\t\t\t\t\t\tconst data = await res.text();\n\t\t\t\t\t\treturn data;\n\t\t\t\t\t};\n\n\t\t\tQuagga.init({\n\t\t\tinputStream: {\n\t\t\t\tname: \"Live\",\n\t\t\t\ttype: \"LiveStream\",\n\t\t\t\ttarget: document.querySelector('#quagga'),\n\t\t\t\tconstraints: {\n\t\t\t\t\twidth: 1280, // High resolution for better accuracy\n\t\t\t\t\theight: 720,\n\t\t\t\t\tfacingMode: \"environment\", // Use the back camera\n\t\t\t\t\tfocusMode: \"continuous\" // Ensure continuous focus\n\t\t\t\t}\n\t\t\t},\n\t\t\tdecoder: {\n\t\t\t\treaders: [\"ean_reader\", \"ean_8_reader\"],\n\t\t\t\tmultiple: false, // Only decode one barcode at a time\n\t\t\t},\n\t\t\tlocator: {\n\t\t\t\tpatchSize: \"medium\", // Medium size for balance between speed and accuracy\n\t\t\t\thalfSample: true // Improves performance on high-res devices\n\t\t\t},\n\t\t\tlocate: true, // Enable locating feature for better scanning\n\t\t\tfrequency: 1 // Process images every 10 frames for better accuracy\n\t\t}, function (err) {\n\t\t\tif (err) {\n\t\t\t\tconsole.log(err);\n\t\t\t\treturn;\n\t\t\t}\n\t\t\tconsole.log(\"Initialization finished. Ready to start\");\n\t\t\tQuagga.start();\n\t\t});\n\n\t\t\tQuagga.onDetected(async function (data) {\n\t\t\t\tconst code = data.codeResult.code;\n\t\t\t\tconst output = document.getElementById(\"quagga\");\n\t\t\t\tif (output) {\n\t\t\t\t\tawait htmx.ajax(\"GET\", `/scan/${code}`, \"#modal-content\");\n\t\t\t\t}\n\t\t\t\tQuagga.stop();\n\t\t\t});\n\t</script>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
