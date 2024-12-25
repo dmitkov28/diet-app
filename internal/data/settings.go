@@ -17,6 +17,11 @@ type Settings struct {
 	User_id                 int
 }
 
+type ISettingsRepository interface {
+	CreateSettings(s Settings) (Settings, error)
+	GetSettingsByUserID(userId int) (Settings, error)
+}
+
 type SettingsRepository struct {
 	db *DB
 }

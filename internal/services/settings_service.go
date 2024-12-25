@@ -8,10 +8,10 @@ type ISettingsService interface {
 }
 
 type SettingsService struct {
-	repo *data.SettingsRepository
+	repo data.ISettingsRepository
 }
 
-func NewSettingsService(repo *data.SettingsRepository) ISettingsService {
+func NewSettingsService(repo data.ISettingsRepository) ISettingsService {
 	return &SettingsService{repo: repo}
 }
 
