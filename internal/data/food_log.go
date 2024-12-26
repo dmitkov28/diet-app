@@ -101,7 +101,6 @@ type FoodLogTotals struct {
 }
 
 func GetFoodLogTotals(entries []FoodLogEntry) (FoodLogTotals, error) {
-
 	if len(entries) == 0 {
 		return FoodLogTotals{0, 0, 0, 0}, nil
 	}
@@ -191,6 +190,7 @@ func (repo *FoodLogRepository) GetRecentlyAdded(userId, n int) ([]FoodLogEntry, 
 			carbs
 		FROM food_logs
 		WHERE user_id = ?
+		GROUP BY food_name
 		ORDER BY created_at DESC
 		LIMIT ?
 	`
