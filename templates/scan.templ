@@ -5,33 +5,18 @@ import (
 	"github.com/dmitkov28/dietapp/internal/diet"
 )
 
-templ ScanPage(isHTMX bool) {
-	if isHTMX {
-		@Scan2()
-	} else {
-		@Base(TemplateProps{PageTitle: "Scan Food"}) {
-			@Scan2()
-		}
-	}
+templ Scripts() {
+	<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 }
 
-templ ContentScanPage() {
-	<div class="w-full flex flex-col flex-1 gap-2 justify-center items-center p-8">
-		<div id="reader" class="w-full max-w-lg"></div>
-		<div id="result" class="mt-4 text-md overflow-scroll max-w-full"></div>
-		<div class="w-1/2 flex flex-col gap-2">
-			<button
-				onclick="scan()"
-				class="bg-[#2596be] text-white p-3 font-bold rounded-md flex items-center justify-center gap-2 w-full"
-			>
-				<img alt="barcode icon" class="h-5" src="/static/img/scan.svg"/>
-				Scan Food
-			</button>
-			<a hx-replace-url="/search" hx-get="/search" hx-target="#main-content" class="cursor-pointer w-full text-white font-semibold bg-blue-500 rounded-md p-3 flex gap-2 justify-center items-center col-span-2">
-				Search Food
-			</a>
-		</div>
-	</div>
+templ ScanPage(isHTMX bool) {
+	if isHTMX {
+		@ContentScanPage()
+	} else {
+		@Base(TemplateProps{PageTitle: "Scan Food", Head: Scripts()}) {
+			@ContentScanPage()
+		}
+	}
 }
 
 templ FoodFacts(data diet.NutritionData) {
@@ -117,18 +102,16 @@ templ NutritionTable(data diet.NutritionData) {
 	</div>
 }
 
-templ Scan2() {
+templ ContentScanPage() {
 	<div id="modal-container"></div>
-	<div id="quagga"></div>
-	<script src="https://www.unpkg.com/quagga@0.12.1/dist/quagga.min.js"></script>
-	<script type="module">
-			async function fetchFoodFacts(ean) {
-						const url = `/scan/${ean}`;
-						const res = await fetch(url);
-						const data = await res.text();
-						return data;
-					};
-
+	<div class="w-full h-screen max-h-screen relative" id="quagga">
+		<video class="w-full h-full object-cover" autoplay="true" preload="auto" src="" muted="true" playsinline="true"></video>
+		<canvas class="drawingBuffer absolute top-0 left-0 w-full h-full" width="1280" height="720"></canvas>
+	</div>
+	<script>
+		//TODO: deal with duplicate code
+		window.addEventListener("load", initializeQuagga);
+		function initializeQuagga(){
 			Quagga.init({
 			inputStream: {
 				name: "Live",
@@ -164,9 +147,10 @@ templ Scan2() {
 				const code = data.codeResult.code;
 				const output = document.getElementById("quagga");
 				if (output) {
-					await htmx.ajax("GET", `/scan/${code}`, "#modal-content");
+					await htmx.ajax("GET", `/scan/${code}`, "#modal-container");
 				}
 				Quagga.stop();
 			});
+		}
 	</script>
 }

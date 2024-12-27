@@ -52,7 +52,7 @@ func CaloriesForm() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("Log Calories</button></form><a hx-replace-url=\"/scan\" hx-get=\"/scan\" hx-target=\"#main-content\" hx-push-url=\"true\" class=\"my-4 cursor-pointer w-full text-white font-semibold bg-blue-500 rounded-md p-3 flex gap-2 justify-center items-center col-span-2\">Add Food</a> <a hx-replace-url=\"/food_log\" hx-get=\"/food_log\" hx-target=\"#main-content\" hx-push-url=\"true\" class=\"my-4 cursor-pointer w-full text-white font-semibold bg-yellow-500 rounded-md p-3 flex gap-2 justify-center items-center col-span-2\">Food Log</a></div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("Log Calories</button></form><a hx-replace-url=\"/scan\" hx-get=\"/scan\" hx-target=\"#main-content\" hx-push-url=\"true\" class=\"my-4 cursor-pointer w-full text-white font-semibold bg-blue-500 rounded-md p-3 flex gap-2 justify-center items-center col-span-2\"><img alt=\"barcode icon\" class=\"h-5\" src=\"/static/img/scan.svg\"> Scan Food</a> <a hx-replace-url=\"/search\" hx-get=\"/search\" hx-target=\"#main-content\" hx-push-url=\"true\" class=\"my-4 cursor-pointer w-full text-white font-semibold bg-blue-500 rounded-md p-3 flex gap-2 justify-center items-center col-span-2\">Search Food</a> <a hx-replace-url=\"/food_log\" hx-get=\"/food_log\" hx-target=\"#main-content\" hx-push-url=\"true\" class=\"my-4 cursor-pointer w-full text-white font-semibold bg-yellow-500 rounded-md p-3 flex gap-2 justify-center items-center col-span-2\">Food Log</a></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
