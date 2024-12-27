@@ -101,11 +101,7 @@ templ SearchResultsItem(item diet.FoodSearchResult) {
 				}
 				hx-target="#modal-container"
 				hx-trigger="click"
-				if item.FoodId !="" {
-					hx-indicator={ fmt.Sprintf("#loading-slider-%s", item.FoodId) }
-				} else {
-					hx-indicator={ fmt.Sprintf("#loading-slider-%s", item.Name) }
-				}
+				hx-indicator={ fmt.Sprintf("#loading-slider-%s", HashStr(item.Name+item.FoodId)) }
 				class="flex flex-col gap-1 w-full h-full cursor-pointer"
 			>
 				<div class="flex gap-2 items-center">
@@ -126,11 +122,7 @@ templ SearchResultsItem(item diet.FoodSearchResult) {
 			</a>
 			@AddButton(item)
 		</div>
-		if item.FoodId != "" {
-			@LoadingSlider(item.FoodId)
-		} else {
-			@LoadingSlider(item.Name)
-		}
+		@LoadingSlider(HashStr(item.FoodId + item.Name))
 	</li>
 }
 
@@ -151,8 +143,9 @@ templ SearchResultsLoading() {
 templ AddButton(product diet.FoodSearchResult) {
 	<div
 		id="addbtn"
-		hx-post="/test"
-		hx-encoding="application/json"
+		hx-post="/food_log"
+		hx-vals={ templ.JSONString(product) }
+		hx-ext="json-enc"
 		hx-on::after-swap="handleSuccess(this)"
 		class="cursor-pointer"
 	>
