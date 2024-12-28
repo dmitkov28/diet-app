@@ -123,7 +123,8 @@ templ Base(props TemplateProps) {
 				const code = data.codeResult.code;
 				const output = document.getElementById("quagga");
 				if (output) {
-					await htmx.ajax("GET", `/scan/${code}`, "#modal-content");
+					await htmx.ajax("GET", `/scan/${code}`, {target: "#modal-container", swap: "innerHTML"});
+
 				}
 				Quagga.stop();
 			});
