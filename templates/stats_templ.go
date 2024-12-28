@@ -10,10 +10,10 @@ import templruntime "github.com/a-h/templ/runtime"
 
 import (
 	"fmt"
-	"github.com/dmitkov28/dietapp/internal/data"
+	"github.com/dmitkov28/dietapp/internal/repositories"
 )
 
-func StatsPage(items []data.WeightCalories, page int, noMoreResults, isHTMX bool) templ.Component {
+func StatsPage(items []repositories.WeightCalories, page int, noMoreResults, isHTMX bool) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -67,7 +67,7 @@ func StatsPage(items []data.WeightCalories, page int, noMoreResults, isHTMX bool
 	})
 }
 
-func ContentStatsPage(items []data.WeightCalories, page int, noMoreResults bool) templ.Component {
+func ContentStatsPage(items []repositories.WeightCalories, page int, noMoreResults bool) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -123,7 +123,7 @@ func ContentStatsPage(items []data.WeightCalories, page int, noMoreResults bool)
 	})
 }
 
-func StatsTable(items []data.WeightCalories) templ.Component {
+func StatsTable(items []repositories.WeightCalories) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -155,7 +155,7 @@ func StatsTable(items []data.WeightCalories) templ.Component {
 					return templ_7745c5c3_Err
 				}
 			} else {
-				templ_7745c5c3_Err = DataTableRow(items[i], false, data.CalculatePercentageDifference(items[i+1].Weight, items[i].Weight)).Render(ctx, templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = DataTableRow(items[i], false, repositories.CalculatePercentageDifference(items[i+1].Weight, items[i].Weight)).Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -169,7 +169,7 @@ func StatsTable(items []data.WeightCalories) templ.Component {
 	})
 }
 
-func DataTableRow(item data.WeightCalories, isFirst bool, diff float64) templ.Component {
+func DataTableRow(item repositories.WeightCalories, isFirst bool, diff float64) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -208,9 +208,9 @@ func DataTableRow(item data.WeightCalories, isFirst bool, diff float64) templ.Co
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var7 string
-		templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(data.ParseDateString(item.WeightDate))
+		templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(repositories.ParseDateString(item.WeightDate))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/stats.templ`, Line: 61, Col: 63}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/stats.templ`, Line: 61, Col: 71}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 		if templ_7745c5c3_Err != nil {

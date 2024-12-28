@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/dmitkov28/dietapp/internal/data"
 	"github.com/dmitkov28/dietapp/internal/diet"
+	"github.com/dmitkov28/dietapp/internal/repositories"
 	"github.com/dmitkov28/dietapp/internal/services"
 	"github.com/dmitkov28/dietapp/templates"
 	"github.com/labstack/echo/v4"
@@ -16,7 +16,7 @@ func SettingsGETHandler(settingsService services.ISettingsService) echo.HandlerF
 		userId := c.Get("user_id").(int)
 		settings, err := settingsService.GetSettingsByUserID(userId)
 		if err != nil {
-			return render(c, templates.SettingsForm(data.Settings{}, templates.SettingsErrors{}))
+			return render(c, templates.SettingsForm(repositories.Settings{}, templates.SettingsErrors{}))
 		}
 
 		bmr := diet.CalculateBMR(settings.Current_weight, settings.Height, settings.Age, settings.Sex)
@@ -81,10 +81,10 @@ func SettingsPOSTHandler(settingsService services.ISettingsService) echo.Handler
 		}
 
 		if !formValid {
-			return render(c, templates.SettingsForm(data.Settings{Current_weight: currentWeight, Target_weight: targetWeight, Target_weight_loss_rate: targetWeightLossRate, Sex: sex, Activity_level: activity_level}, formErrors))
+			return render(c, templates.SettingsForm(repositories.Settings{Current_weight: currentWeight, Target_weight: targetWeight, Target_weight_loss_rate: targetWeightLossRate, Sex: sex, Activity_level: activity_level}, formErrors))
 		}
 
-		formSettings := data.Settings{
+		formSettings := repositories.Settings{
 			User_id:                 userId,
 			Current_weight:          currentWeight,
 			Target_weight:           targetWeight,

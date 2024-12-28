@@ -7,19 +7,19 @@ import (
 	"log"
 	"os"
 
-	"github.com/dmitkov28/dietapp/internal/data"
+	"github.com/dmitkov28/dietapp/internal/repositories"
 )
 
 func main() {
 
-	db, err := data.NewDB()
+	db, err := repositories.NewDB()
 
 	if err != nil {
 		fmt.Println("couldn't connect to db")
 		os.Exit(1)
 	}
 
-	usersRepo := data.NewUsersRepository(db)
+	usersRepo := repositories.NewUsersRepository(db)
 
 	// Command line flags
 	createUserCmd := flag.NewFlagSet("create-user", flag.ExitOnError)

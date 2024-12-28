@@ -2,7 +2,7 @@ package templates
 
 import (
 	"fmt"
-	"github.com/dmitkov28/dietapp/internal/data"
+	"github.com/dmitkov28/dietapp/internal/repositories"
 	"time"
 )
 
@@ -23,7 +23,7 @@ templ FoodLogScripts() {
 	<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 }
 
-templ FoodLogPage(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals, date, prevDate, nextDate string, isHTMX bool) {
+templ FoodLogPage(foodLogs []repositories.FoodLogEntry, totals repositories.FoodLogTotals, date, prevDate, nextDate string, isHTMX bool) {
 	if isHTMX {
 		@ContentFoodLogPage(foodLogs, totals, date, prevDate, nextDate)
 	} else {
@@ -33,7 +33,7 @@ templ FoodLogPage(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals, date,
 	}
 }
 
-templ ContentFoodLogPage(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals, date, prevDate, nextDate string) {
+templ ContentFoodLogPage(foodLogs []repositories.FoodLogEntry, totals repositories.FoodLogTotals, date, prevDate, nextDate string) {
 	<div
 		class="swiper flex flex-1 flex-col w-full"
 		data-prev-date={ prevDate }
@@ -190,7 +190,7 @@ templ ContentFoodLogPage(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals
 		</script>
 }
 
-templ FoodLogTotals(totals data.FoodLogTotals, date string) {
+templ FoodLogTotals(totals repositories.FoodLogTotals, date string) {
 	<div
 		id="totals"
 		hx-get={ fmt.Sprintf("/refresh_totals?date=%s", date) }
@@ -215,7 +215,7 @@ templ FoodLogTotals(totals data.FoodLogTotals, date string) {
 	</div>
 }
 
-templ FoodLogEntry(entry data.FoodLogEntry) {
+templ FoodLogEntry(entry repositories.FoodLogEntry) {
 	<li
 		id={ fmt.Sprintf("food-entry-%d", entry.ID) }
 		class="group relative flex items-center p-3 bg-gray-100 rounded-lg"

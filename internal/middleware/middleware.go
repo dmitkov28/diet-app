@@ -4,11 +4,11 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/dmitkov28/dietapp/internal/data"
+	"github.com/dmitkov28/dietapp/internal/repositories"
 	"github.com/labstack/echo/v4"
 )
 
-func AuthMiddleware(sessionsRepo *data.SessionsRepository) echo.MiddlewareFunc {
+func AuthMiddleware(sessionsRepo repositories.ISessionsRepository) echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 			token, err := c.Cookie("session_token")

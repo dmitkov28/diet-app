@@ -2,11 +2,11 @@ package templates
 
 import (
 	"fmt"
-	"github.com/dmitkov28/dietapp/internal/data"
 	"github.com/dmitkov28/dietapp/internal/diet"
+	"github.com/dmitkov28/dietapp/internal/repositories"
 )
 
-templ SearchPage(recentlyAdded []data.FoodLogEntry, isHTMX bool) {
+templ SearchPage(recentlyAdded []repositories.FoodLogEntry, isHTMX bool) {
 	if isHTMX {
 		@ContentSearchPage(recentlyAdded)
 	} else {
@@ -16,12 +16,15 @@ templ SearchPage(recentlyAdded []data.FoodLogEntry, isHTMX bool) {
 	}
 }
 
-templ ContentSearchPage(recentlyAdded []data.FoodLogEntry) {
+templ ContentSearchPage(recentlyAdded []repositories.FoodLogEntry) {
 	<div class="flex flex-col gap-4 flex-1 p-2 md:p-4">
 		<div id="modal-container"></div>
 		@SearchComponent()
 		<div id="search-results">
 			<h2 class="text-slate-400 italic my-2 text-center">Recently Added</h2>
+			<div>
+				@SearchResultsLoading()
+			</div>
 			<ul class="space-y-4">
 				for _, item := range recentlyAdded {
 					@SearchResultsItem(diet.FoodSearchResult{
@@ -79,13 +82,13 @@ templ SearchComponent() {
 templ SearchResultsComponent(data []diet.FoodSearchResult) {
 	<div>
 		<div id="modal-container"></div>
+		<div id="loading" class="htmx-indicator">
+			@SearchResultsLoading()
+		</div>
 		<ul class="space-y-4">
 			for _, item := range data {
 				@SearchResultsItem(item)
 			}
-			<div class="my-4">
-				@SearchResultsLoading()
-			</div>
 		</ul>
 	</div>
 }

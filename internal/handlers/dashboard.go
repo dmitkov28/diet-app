@@ -2,15 +2,13 @@ package handlers
 
 import (
 	"fmt"
-	"math"
 	"time"
 
 	"github.com/dmitkov28/dietapp/internal/charts"
-	"github.com/dmitkov28/dietapp/internal/data"
 	"github.com/dmitkov28/dietapp/internal/diet"
+	"github.com/dmitkov28/dietapp/internal/repositories"
 	"github.com/dmitkov28/dietapp/internal/services"
 	"github.com/dmitkov28/dietapp/templates"
-	"github.com/go-echarts/go-echarts/v2/opts"
 	"github.com/labstack/echo/v4"
 )
 
@@ -23,15 +21,8 @@ func DashboardGETHandler(measurementsService services.IMeasurementsService, sett
 			fmt.Println(err)
 		}
 
-		var currentData data.WeeklyStats
-		if len(stats) == 0 {
-			currentData = data.WeeklyStats{}
-		} else {
-			currentData = stats[len(stats)-1]
-		}
-
-		hasCurrentWeek := data.HasCurrentWeek(currentData)
-
+		currentData := diet.GetCurrentData(stats)
+		hasCurrentWeek := repositories.HasCurrentWeek(currentData)
 		settings, err := settingsService.GetSettingsByUserID(userId)
 
 		if err != nil {
@@ -42,22 +33,7 @@ func DashboardGETHandler(measurementsService services.IMeasurementsService, sett
 		calorieGoal := diet.CalculateCalorieGoal(bmr, settings.Activity_level, currentData.AverageWeight, settings.Target_weight_loss_rate)
 		expectedDuration := diet.CalculateExpectedDietDuration(currentData.AverageWeight, settings.Target_weight, settings.Target_weight_loss_rate)
 
-		var xAxis []string
-		var chartValues []opts.LineData
-		var maxWeight float64
-		minWeight := math.MaxFloat64
-
-		for _, val := range stats {
-			xAxis = append(xAxis, val.YearWeek)
-			chartValues = append(chartValues, opts.LineData{Value: val.AverageWeight, Name: val.YearWeek})
-			if maxWeight < val.AverageWeight {
-				maxWeight = val.AverageWeight
-			}
-
-			if minWeight > val.AverageWeight {
-				minWeight = val.AverageWeight
-			}
-		}
+		xAxis, chartValues, maxWeight, minWeight := charts.GenerateChartData(stats)
 
 		chart := charts.GenerateLineChart("Weekly Progress", "", xAxis, chartValues, maxWeight, minWeight)
 		chartHtml := charts.RenderChart(*chart)

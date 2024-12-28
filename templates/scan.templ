@@ -105,6 +105,9 @@ templ NutritionTable(data diet.NutritionData) {
 templ ContentScanPage() {
 	<div id="modal-container"></div>
 	<div class="w-full h-screen max-h-screen relative" id="quagga">
+		<span hx-get="/calories" hx-target="#main-content" hx-replace-url="/weight"r hx-push-url="true" class="absolute top-1 right-1 cursor-pointer z-50">
+			<img class="h-10" alt="close icon" src="/static/img/close.svg" />
+		</span>
 		<video class="w-full h-full object-cover" autoplay="true" preload="auto" src="" muted="true" playsinline="true"></video>
 		<canvas class="drawingBuffer absolute top-0 left-0 w-full h-full" width="1280" height="720"></canvas>
 	</div>
@@ -148,8 +151,7 @@ templ ContentScanPage() {
 				const output = document.getElementById("quagga");
 				if (output) {
 					await htmx.ajax("GET", `/scan/${code}`, {target: "#modal-container", swap: "innerHTML"});
-				}
-				Quagga.stop();
+				};
 			});
 		}
 	</script>

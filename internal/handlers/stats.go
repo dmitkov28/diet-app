@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/dmitkov28/dietapp/internal/data"
+	"github.com/dmitkov28/dietapp/internal/repositories"
 	"github.com/dmitkov28/dietapp/internal/services"
 	"github.com/dmitkov28/dietapp/templates"
 	"github.com/labstack/echo/v4"
@@ -23,14 +23,14 @@ func StatsGETHandler(measurementsService services.IMeasurementsService) echo.Han
 			}
 		}
 
-		offset := (int(page) - 1) * data.ItemsPerPage
+		offset := (int(page) - 1) * repositories.ItemsPerPage
 		noMoreResults := false
 		items, err := measurementsService.GetMeasurementsByUserId(userId, offset)
 
 		if err != nil {
 			fmt.Println(err)
 		}
-		if len(items) < data.ItemsPerPage {
+		if len(items) < repositories.ItemsPerPage {
 			noMoreResults = true
 		}
 		isHTMX := c.Request().Header.Get("HX-Request") != ""

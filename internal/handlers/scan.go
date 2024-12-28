@@ -1,7 +1,9 @@
 package handlers
 
 import (
+	"fmt"
 	"log"
+	"strconv"
 
 	"github.com/dmitkov28/dietapp/internal/diet"
 	"github.com/dmitkov28/dietapp/templates"
@@ -27,6 +29,23 @@ func ScanBarCodeGETHandler() echo.HandlerFunc {
 		if err != nil {
 			log.Println(err)
 		}
-		return render(c, templates.FoodFacts(data))
+
+		servingQty, err := strconv.ParseFloat(data.Product.ServingQuantity, 64)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		return render(c, templates.FoodItemModal(diet.FoodFacts{
+			FoodSearchResult: diet.FoodSearchResult{
+				FoodId:      data.Product.ID,
+				Name:        fmt.Sprintf("%s (%s)", data.Product.ProductName, data.Product.Brands),
+				ServingUnit: data.Product.ServingQuantityUnit,
+				ServingQty:  servingQty,
+				Calories:    int(data.Product.Nutriments.EnergyKcal),
+			},
+			Protein: data.Product.Nutriments.ProteinsServing,
+			Carbs:   data.Product.Nutriments.CarbohydratesServing,
+			Fat:     data.Product.Nutriments.FatServing,
+		}))
 	}
 }

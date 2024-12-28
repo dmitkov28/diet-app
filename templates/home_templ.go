@@ -10,11 +10,11 @@ import templruntime "github.com/a-h/templ/runtime"
 
 import (
 	"fmt"
-	"github.com/dmitkov28/dietapp/internal/data"
+	"github.com/dmitkov28/dietapp/internal/repositories"
 	"math"
 )
 
-func HomePage(date string, currentData data.WeeklyStats, settings data.Settings, calorieGoal, expectedDuration float64, weightChart string, hasCurrentWeek, needsAdjustment, isHTMX bool) templ.Component {
+func HomePage(date string, currentData repositories.WeeklyStats, settings repositories.Settings, calorieGoal, expectedDuration float64, weightChart string, hasCurrentWeek, needsAdjustment, isHTMX bool) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -68,7 +68,7 @@ func HomePage(date string, currentData data.WeeklyStats, settings data.Settings,
 	})
 }
 
-func Content(date string, currentData data.WeeklyStats, settings data.Settings, calorieGoal, expectedDuration float64, weightChart string, hasCurrentWeek, needsAdjustment bool) templ.Component {
+func Content(date string, currentData repositories.WeeklyStats, settings repositories.Settings, calorieGoal, expectedDuration float64, weightChart string, hasCurrentWeek, needsAdjustment bool) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {

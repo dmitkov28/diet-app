@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/dmitkov28/dietapp/internal/data"
+	"github.com/dmitkov28/dietapp/internal/repositories"
 	"github.com/dmitkov28/dietapp/internal/services"
 	"github.com/dmitkov28/dietapp/templates"
 	"github.com/labstack/echo/v4"
@@ -18,14 +18,14 @@ func FoodLogGETHandler(foodLogService services.IFoodLogService) echo.HandlerFunc
 		if dateQueryParam == "" {
 			dateQueryParam = time.Now().Format("2006-01-02")
 		}
-		params := data.GetFoodLogEntriesParams{UserID: userId, Date: dateQueryParam}
+		params := repositories.GetFoodLogEntriesParams{UserID: userId, Date: dateQueryParam}
 		foodLogs, err := foodLogService.GetFoodLogEntriesByUserID(params)
 
 		if err != nil {
 			fmt.Println(err)
 		}
 
-		totals, err := data.GetFoodLogTotals(foodLogs)
+		totals, err := repositories.GetFoodLogTotals(foodLogs)
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -57,14 +57,14 @@ func FoodLogRefreshTotalsGETHandler(foodLogService services.IFoodLogService) ech
 			dateQueryParam = time.Now().Format("2006-01-02")
 		}
 
-		params := data.GetFoodLogEntriesParams{UserID: userId, Date: dateQueryParam}
+		params := repositories.GetFoodLogEntriesParams{UserID: userId, Date: dateQueryParam}
 		foodLogs, err := foodLogService.GetFoodLogEntriesByUserID(params)
 
 		if err != nil {
 			fmt.Println(err)
 		}
 
-		totals, err := data.GetFoodLogTotals(foodLogs)
+		totals, err := repositories.GetFoodLogTotals(foodLogs)
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -115,7 +115,7 @@ func FoodLogPOSTHandler(foodLogService services.IFoodLogService) echo.HandlerFun
 
 		servingUnit := c.FormValue("serving_unit")
 
-		entry := data.FoodLogEntry{
+		entry := repositories.FoodLogEntry{
 			UserID:           userId,
 			FoodName:         foodName,
 			Calories:         calories,

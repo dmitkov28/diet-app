@@ -10,10 +10,10 @@ import templruntime "github.com/a-h/templ/runtime"
 
 import (
 	"fmt"
-	"github.com/dmitkov28/dietapp/internal/data"
+	"github.com/dmitkov28/dietapp/internal/repositories"
 )
 
-func SettingsPage(settings data.Settings, bmr, calorieGoal, expectedDuration float64, isHTMX bool) templ.Component {
+func SettingsPage(settings repositories.Settings, bmr, calorieGoal, expectedDuration float64, isHTMX bool) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -75,7 +75,7 @@ func SettingsPage(settings data.Settings, bmr, calorieGoal, expectedDuration flo
 	})
 }
 
-func SettingsContent(settings data.Settings, bmr, calorieGoal, expectedDuration float64) templ.Component {
+func SettingsContent(settings repositories.Settings, bmr, calorieGoal, expectedDuration float64) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -123,7 +123,7 @@ type SettingsErrors struct {
 	Sex                     string
 }
 
-func SettingsForm(settings data.Settings, errors SettingsErrors) templ.Component {
+func SettingsForm(settings repositories.Settings, errors SettingsErrors) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {

@@ -5,11 +5,11 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/dmitkov28/dietapp/internal/data"
 	"github.com/dmitkov28/dietapp/internal/diet"
 	"github.com/dmitkov28/dietapp/internal/handlers"
 	"github.com/dmitkov28/dietapp/internal/httputils"
 	customMiddleware "github.com/dmitkov28/dietapp/internal/middleware"
+	"github.com/dmitkov28/dietapp/internal/repositories"
 	"github.com/dmitkov28/dietapp/internal/services"
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
@@ -22,17 +22,17 @@ func init() {
 
 func main() {
 
-	db, err := data.NewDB()
+	db, err := repositories.NewDB()
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// repositories
-	usersRepo := data.NewUsersRepository(db)
-	sessionsRepo := data.NewSessionsRepository(db)
-	settingsRepo := data.NewSettingsRepository(db)
-	measurementsRepo := data.NewMeasurementsRepository(db)
-	foodLogRepo := data.NewFoodLogsRepository(db)
+	usersRepo := repositories.NewUsersRepository(db)
+	sessionsRepo := repositories.NewSessionsRepository(db)
+	settingsRepo := repositories.NewSettingsRepository(db)
+	measurementsRepo := repositories.NewMeasurementsRepository(db)
+	foodLogRepo := repositories.NewFoodLogsRepository(db)
 
 	httpClient := http.Client{}
 	apiClient := httputils.NewAPIClient(&httpClient)

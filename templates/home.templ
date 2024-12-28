@@ -2,11 +2,11 @@ package templates
 
 import (
 	"fmt"
-	"github.com/dmitkov28/dietapp/internal/data"
+	"github.com/dmitkov28/dietapp/internal/repositories"
 	"math"
 )
 
-templ HomePage(date string, currentData data.WeeklyStats, settings data.Settings, calorieGoal, expectedDuration float64, weightChart string, hasCurrentWeek, needsAdjustment, isHTMX bool) {
+templ HomePage(date string, currentData repositories.WeeklyStats, settings repositories.Settings, calorieGoal, expectedDuration float64, weightChart string, hasCurrentWeek, needsAdjustment, isHTMX bool) {
 	if isHTMX {
 		@Content(date, currentData, settings, calorieGoal, expectedDuration, weightChart, hasCurrentWeek, needsAdjustment)
 	} else {
@@ -16,7 +16,7 @@ templ HomePage(date string, currentData data.WeeklyStats, settings data.Settings
 	}
 }
 
-templ Content(date string, currentData data.WeeklyStats, settings data.Settings, calorieGoal, expectedDuration float64, weightChart string, hasCurrentWeek, needsAdjustment bool) {
+templ Content(date string, currentData repositories.WeeklyStats, settings repositories.Settings, calorieGoal, expectedDuration float64, weightChart string, hasCurrentWeek, needsAdjustment bool) {
 	<div class="w-full flex flex-col flex-1 justify-center items-center p-8">
 		<div class="w-full grid grid-cols-1 gap-4">
 			<div class="col-span-1 text-center">

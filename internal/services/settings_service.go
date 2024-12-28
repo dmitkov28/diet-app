@@ -1,24 +1,24 @@
 package services
 
-import "github.com/dmitkov28/dietapp/internal/data"
+import "github.com/dmitkov28/dietapp/internal/repositories"
 
 type ISettingsService interface {
-	CreateSettings(settings data.Settings) (data.Settings, error)
-	GetSettingsByUserID(userId int) (data.Settings, error)
+	CreateSettings(settings repositories.Settings) (repositories.Settings, error)
+	GetSettingsByUserID(userId int) (repositories.Settings, error)
 }
 
 type SettingsService struct {
-	repo data.ISettingsRepository
+	repo repositories.ISettingsRepository
 }
 
-func NewSettingsService(repo data.ISettingsRepository) ISettingsService {
+func NewSettingsService(repo repositories.ISettingsRepository) ISettingsService {
 	return &SettingsService{repo: repo}
 }
 
-func (s *SettingsService) CreateSettings(settings data.Settings) (data.Settings, error) {
+func (s *SettingsService) CreateSettings(settings repositories.Settings) (repositories.Settings, error) {
 	return s.repo.CreateSettings(settings)
 }
 
-func (s *SettingsService) GetSettingsByUserID(userId int) (data.Settings, error) {
+func (s *SettingsService) GetSettingsByUserID(userId int) (repositories.Settings, error) {
 	return s.repo.GetSettingsByUserID(userId)
 }

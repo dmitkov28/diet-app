@@ -2,10 +2,10 @@ package templates
 
 import (
 	"fmt"
-	"github.com/dmitkov28/dietapp/internal/data"
+	"github.com/dmitkov28/dietapp/internal/repositories"
 )
 
-templ StatsPage(items []data.WeightCalories, page int, noMoreResults, isHTMX bool) {
+templ StatsPage(items []repositories.WeightCalories, page int, noMoreResults, isHTMX bool) {
 	if isHTMX {
 		@ContentStatsPage(items, page, noMoreResults)
 	} else {
@@ -15,7 +15,7 @@ templ StatsPage(items []data.WeightCalories, page int, noMoreResults, isHTMX boo
 	}
 }
 
-templ ContentStatsPage(items []data.WeightCalories, page int, noMoreResults bool) {
+templ ContentStatsPage(items []repositories.WeightCalories, page int, noMoreResults bool) {
 	<div class="flex flex-col flex-1">
 		<h1 class="font-bold text-2xl py-4 text-center">Stats</h1>
 		<div class="flex flex-col flex-1 overflow-hidden">
@@ -33,7 +33,7 @@ templ ContentStatsPage(items []data.WeightCalories, page int, noMoreResults bool
 	</div>
 }
 
-templ StatsTable(items []data.WeightCalories) {
+templ StatsTable(items []repositories.WeightCalories) {
 	<table class="w-full text-sm">
 		<thead class="sticky top-0 bg-white">
 			<tr class="bg-gray-100 border-b">
@@ -49,16 +49,16 @@ templ StatsTable(items []data.WeightCalories) {
 				if i == len(items) - 1 {
 					@DataTableRow(items[i], true, 0)
 				} else {
-					@DataTableRow(items[i], false, data.CalculatePercentageDifference(items[i+1].Weight, items[i].Weight))
+					@DataTableRow(items[i], false, repositories.CalculatePercentageDifference(items[i+1].Weight, items[i].Weight))
 				}
 			}
 		</tbody>
 	</table>
 }
 
-templ DataTableRow(item data.WeightCalories, isFirst bool, diff float64) {
+templ DataTableRow(item repositories.WeightCalories, isFirst bool, diff float64) {
 	<tr id={ fmt.Sprintf("row-%d", item.WeightID) } class="hover:bg-gray-50">
-		<td class="px-6 py-4">{ data.ParseDateString(item.WeightDate) }</td>
+		<td class="px-6 py-4">{ repositories.ParseDateString(item.WeightDate) }</td>
 		<td class="px-6 py-4">{ fmt.Sprintf("%.1f", item.Weight) }</td>
 		<td class="px-6 py-4">
 			if item.Calories != nil {

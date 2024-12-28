@@ -7,36 +7,36 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/dmitkov28/dietapp/internal/data"
+	"github.com/dmitkov28/dietapp/internal/repositories"
 	"golang.org/x/crypto/bcrypt"
 )
 
 type IAuthService interface {
-	SignInUser(email, password string) (data.Session, error)
+	SignInUser(email, password string) (repositories.Session, error)
 	IsAuthenticated(token *http.Cookie) bool
 }
 
 type AuthService struct {
-	usersRepo    *data.UsersRepository
-	sessionsRepo *data.SessionsRepository
+	usersRepo    repositories.IUsersRepository
+	sessionsRepo repositories.ISessionsRepository
 }
 
-func NewAuthService(usersRepo *data.UsersRepository, sessionsRepo *data.SessionsRepository) *AuthService {
+func NewAuthService(usersRepo repositories.IUsersRepository, sessionsRepo repositories.ISessionsRepository) IAuthService {
 	return &AuthService{usersRepo: usersRepo, sessionsRepo: sessionsRepo}
 }
 
-func (s *AuthService) SignInUser(email string, password string) (data.Session, error) {
+func (s *AuthService) SignInUser(email string, password string) (repositories.Session, error) {
 	user, err := s.usersRepo.GetUserByEmail(email)
 	if err != nil || !checkPasswordHash(password, user.Password) {
-		return data.Session{}, fmt.Errorf("invalid credentials")
+		return repositories.Session{}, fmt.Errorf("invalid credentials")
 	}
 
 	token, err := generateSecureToken()
 	if err != nil {
-		return data.Session{}, fmt.Errorf("error generating secure token")
+		return repositories.Session{}, fmt.Errorf("error generating secure token")
 	}
 
-	session := data.Session{
+	session := repositories.Session{
 		User_id:    user.ID,
 		Expires_At: time.Now().Add(24 * time.Hour),
 		Token:      token,
@@ -45,7 +45,7 @@ func (s *AuthService) SignInUser(email string, password string) (data.Session, e
 	session, err = s.sessionsRepo.CreateSession(session)
 
 	if err != nil {
-		return data.Session{}, fmt.Errorf("error creating session")
+		return repositories.Session{}, fmt.Errorf("error creating session")
 	}
 	return session, nil
 }

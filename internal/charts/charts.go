@@ -2,10 +2,32 @@ package charts
 
 import (
 	"fmt"
+	"math"
 
+	"github.com/dmitkov28/dietapp/internal/repositories"
 	"github.com/go-echarts/go-echarts/v2/charts"
 	"github.com/go-echarts/go-echarts/v2/opts"
 )
+
+func GenerateChartData(stats []repositories.WeeklyStats) ([]string, []opts.LineData, float64, float64) {
+	var xAxis []string
+	var chartValues []opts.LineData
+	var maxWeight float64
+	minWeight := math.MaxFloat64
+
+	for _, val := range stats {
+		xAxis = append(xAxis, val.YearWeek)
+		chartValues = append(chartValues, opts.LineData{Value: val.AverageWeight, Name: val.YearWeek})
+		if maxWeight < val.AverageWeight {
+			maxWeight = val.AverageWeight
+		}
+
+		if minWeight > val.AverageWeight {
+			minWeight = val.AverageWeight
+		}
+	}
+	return xAxis, chartValues, maxWeight, minWeight
+}
 
 func GenerateLineChart(title, subtitle string, xAxis []string, values []opts.LineData, max, min float64) *charts.Line {
 	chart := charts.NewLine()

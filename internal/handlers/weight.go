@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/dmitkov28/dietapp/internal/data"
+	"github.com/dmitkov28/dietapp/internal/repositories"
 	"github.com/dmitkov28/dietapp/internal/services"
 	"github.com/dmitkov28/dietapp/templates"
 	"github.com/labstack/echo/v4"
@@ -28,7 +28,7 @@ func WeightPOSTHandler(measurementsService services.IMeasurementsService) echo.H
 
 		date := c.FormValue("date")
 
-		newWeight := data.Weight{
+		newWeight := repositories.Weight{
 			User_id: userId,
 			Weight:  weight,
 			Date:    date,

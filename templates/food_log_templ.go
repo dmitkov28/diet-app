@@ -10,7 +10,7 @@ import templruntime "github.com/a-h/templ/runtime"
 
 import (
 	"fmt"
-	"github.com/dmitkov28/dietapp/internal/data"
+	"github.com/dmitkov28/dietapp/internal/repositories"
 	"time"
 )
 
@@ -52,7 +52,7 @@ func FoodLogScripts() templ.Component {
 	})
 }
 
-func FoodLogPage(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals, date, prevDate, nextDate string, isHTMX bool) templ.Component {
+func FoodLogPage(foodLogs []repositories.FoodLogEntry, totals repositories.FoodLogTotals, date, prevDate, nextDate string, isHTMX bool) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -106,7 +106,7 @@ func FoodLogPage(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals, date, 
 	})
 }
 
-func ContentFoodLogPage(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals, date, prevDate, nextDate string) templ.Component {
+func ContentFoodLogPage(foodLogs []repositories.FoodLogEntry, totals repositories.FoodLogTotals, date, prevDate, nextDate string) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -335,7 +335,7 @@ func ContentFoodLogPage(foodLogs []data.FoodLogEntry, totals data.FoodLogTotals,
 	})
 }
 
-func FoodLogTotals(totals data.FoodLogTotals, date string) templ.Component {
+func FoodLogTotals(totals repositories.FoodLogTotals, date string) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -429,7 +429,7 @@ func FoodLogTotals(totals data.FoodLogTotals, date string) templ.Component {
 	})
 }
 
-func FoodLogEntry(entry data.FoodLogEntry) templ.Component {
+func FoodLogEntry(entry repositories.FoodLogEntry) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {

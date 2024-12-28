@@ -1,31 +1,31 @@
 package services
 
-import "github.com/dmitkov28/dietapp/internal/data"
+import "github.com/dmitkov28/dietapp/internal/repositories"
 
 type IFoodLogService interface {
-	GetFoodLogEntriesByUserID(params data.GetFoodLogEntriesParams) ([]data.FoodLogEntry, error)
-	GetFoodLogTotals(entries []data.FoodLogEntry) (data.FoodLogTotals, error)
-	CreateFoodLogEntry(entry data.FoodLogEntry) (data.FoodLogEntry, error)
+	GetFoodLogEntriesByUserID(params repositories.GetFoodLogEntriesParams) ([]repositories.FoodLogEntry, error)
+	GetFoodLogTotals(entries []repositories.FoodLogEntry) (repositories.FoodLogTotals, error)
+	CreateFoodLogEntry(entry repositories.FoodLogEntry) (repositories.FoodLogEntry, error)
 	DeleteFoodLogEntry(entryId int) error
-	GetRecentlyAdded(userId, n int) ([]data.FoodLogEntry, error)
+	GetRecentlyAdded(userId, n int) ([]repositories.FoodLogEntry, error)
 }
 
 type FoodLogService struct {
-	repo *data.FoodLogRepository
+	repo repositories.IFoodLogRepository
 }
 
-func NewFoodLogService(repo *data.FoodLogRepository) IFoodLogService {
+func NewFoodLogService(repo repositories.IFoodLogRepository) IFoodLogService {
 	return &FoodLogService{repo: repo}
 }
 
-func (s *FoodLogService) GetFoodLogEntriesByUserID(params data.GetFoodLogEntriesParams) ([]data.FoodLogEntry, error) {
+func (s *FoodLogService) GetFoodLogEntriesByUserID(params repositories.GetFoodLogEntriesParams) ([]repositories.FoodLogEntry, error) {
 	return s.repo.GetFoodLogEntriesByUserID(params)
 }
 
-func (s *FoodLogService) GetFoodLogTotals(entries []data.FoodLogEntry) (data.FoodLogTotals, error) {
+func (s *FoodLogService) GetFoodLogTotals(entries []repositories.FoodLogEntry) (repositories.FoodLogTotals, error) {
 
 	if len(entries) == 0 {
-		return data.FoodLogTotals{
+		return repositories.FoodLogTotals{
 			TotalCalories: 0,
 			TotalProtein:  0,
 			TotalFats:     0,
@@ -41,7 +41,7 @@ func (s *FoodLogService) GetFoodLogTotals(entries []data.FoodLogEntry) (data.Foo
 		totalCarbs += entry.Carbs * entry.NumberOfServings
 	}
 
-	return data.FoodLogTotals{
+	return repositories.FoodLogTotals{
 		TotalCalories: totalCalories,
 		TotalProtein:  totalProtein,
 		TotalFats:     totalFats,
@@ -49,7 +49,7 @@ func (s *FoodLogService) GetFoodLogTotals(entries []data.FoodLogEntry) (data.Foo
 	}, nil
 }
 
-func (s *FoodLogService) CreateFoodLogEntry(entry data.FoodLogEntry) (data.FoodLogEntry, error) {
+func (s *FoodLogService) CreateFoodLogEntry(entry repositories.FoodLogEntry) (repositories.FoodLogEntry, error) {
 	return s.repo.CreateFoodLogEntry(entry)
 }
 
@@ -57,6 +57,6 @@ func (s *FoodLogService) DeleteFoodLogEntry(entryId int) error {
 	return s.repo.DeleteFoodLogEntry(entryId)
 }
 
-func (s *FoodLogService) GetRecentlyAdded(userId, n int) ([]data.FoodLogEntry, error) {
+func (s *FoodLogService) GetRecentlyAdded(userId, n int) ([]repositories.FoodLogEntry, error) {
 	return s.repo.GetRecentlyAdded(userId, n)
 }
