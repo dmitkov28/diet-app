@@ -14,7 +14,7 @@ db:
 	sleep 3
 
 goose: db
-	cd ./internal/data/schema && GOOSE_DRIVER=turso GOOSE_DBSTRING="${LOCAL_DB_URL}" goose up
+	cd ./internal/repositories/schema && GOOSE_DRIVER=turso GOOSE_DBSTRING="${LOCAL_DB_URL}" goose up
 
 bootstrap: goose
 	go run ./cmd/admin/main.go create-user --email "${LOCAL_USER}" --password "${LOCAL_PASSWORD}"
