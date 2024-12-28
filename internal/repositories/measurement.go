@@ -1,4 +1,4 @@
-package data
+package repositories
 
 import (
 	"database/sql"
@@ -24,6 +24,14 @@ type Calories struct {
 	Date     string
 }
 
+type IMeasurementRepository interface {
+	CreateWeight(weight Weight) (Weight, error)
+	CreateCalories(calories Calories) (Calories, error)
+	GetMeasurementsByUserId(userId, offset int) ([]WeightCalories, error)
+	DeleteWeightAndCaloriesByWeightID(weightID string) error
+	GetWeeklyStats(userId, weeks int) ([]WeeklyStats, error)
+}
+
 type MeasurementRepository struct {
 	db *DB
 }
@@ -37,7 +45,7 @@ func CalculatePercentageDifference[T Number](value1, value2 T) T {
 	return ((value2 - value1) * 100) / value1
 }
 
-func NewMeasurementsRepository(db *DB) *MeasurementRepository {
+func NewMeasurementsRepository(db *DB) IMeasurementRepository {
 	return &MeasurementRepository{db: db}
 }
 

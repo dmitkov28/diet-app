@@ -1,4 +1,4 @@
-package data
+package repositories
 
 import (
 	"database/sql"
@@ -13,11 +13,16 @@ type User struct {
 	Password string
 }
 
+type IUsersRepository interface {
+	GetUserByEmail(email string) (User, error)
+	CreateUser(email, password string) (User, error)
+}
+
 type UsersRepository struct {
 	db *DB
 }
 
-func NewUsersRepository(db *DB) *UsersRepository {
+func NewUsersRepository(db *DB) IUsersRepository {
 	return &UsersRepository{db: db}
 }
 

@@ -1,13 +1,11 @@
-package data
+package repositories
 
 import (
 	"database/sql"
 	"fmt"
+	_ "github.com/tursodatabase/libsql-client-go/libsql"
 	"log"
 	"os"
-
-	_ "github.com/mattn/go-sqlite3"
-	_ "github.com/tursodatabase/libsql-client-go/libsql"
 )
 
 type DB struct {

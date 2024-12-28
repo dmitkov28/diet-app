@@ -1,4 +1,4 @@
-package data
+package repositories
 
 import (
 	"database/sql"
@@ -26,7 +26,7 @@ type SettingsRepository struct {
 	db *DB
 }
 
-func NewSettingsRepository(db *DB) *SettingsRepository {
+func NewSettingsRepository(db *DB) ISettingsRepository {
 	return &SettingsRepository{db: db}
 }
 

@@ -1,4 +1,4 @@
-package data
+package repositories
 
 import (
 	"database/sql"
@@ -11,11 +11,16 @@ type Session struct {
 	Token      string
 }
 
+type ISessionsRepository interface {
+	CreateSession(session Session) (Session, error)
+	GetSessionByToken(token string) (Session, error)
+}
+
 type SessionsRepository struct {
 	db *DB
 }
 
-func NewSessionsRepository(db *DB) *SessionsRepository {
+func NewSessionsRepository(db *DB) ISessionsRepository {
 	return &SessionsRepository{db: db}
 }
 

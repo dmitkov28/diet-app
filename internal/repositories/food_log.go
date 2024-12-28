@@ -1,4 +1,4 @@
-package data
+package repositories
 
 import "database/sql"
 
@@ -16,11 +16,18 @@ type FoodLogEntry struct {
 	CreatedAt        string  `json:"created_at"`
 }
 
+type IFoodLogRepository interface {
+	GetFoodLogEntriesByUserID(params GetFoodLogEntriesParams) ([]FoodLogEntry, error)
+	CreateFoodLogEntry(entry FoodLogEntry) (FoodLogEntry, error)
+	DeleteFoodLogEntry(entryId int) error
+	GetRecentlyAdded(userId, n int) ([]FoodLogEntry, error)
+}
+
 type FoodLogRepository struct {
 	db *DB
 }
 
-func NewFoodLogsRepository(db *DB) *FoodLogRepository {
+func NewFoodLogsRepository(db *DB) IFoodLogRepository {
 	return &FoodLogRepository{db: db}
 }
 
