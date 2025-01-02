@@ -28,9 +28,6 @@ func CaloriesPOSTHandler(measurementsService services.IMeasurementsService) echo
 		}
 
 		date := c.FormValue("date")
-
-		
-
 		formData := repositories.Calories{
 			User_id:  userId,
 			Calories: int(calories),
