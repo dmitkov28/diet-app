@@ -47,6 +47,7 @@ func main() {
 	measurementsService := services.NewMeasurementsService(measurementsRepo)
 	foodLogService := services.NewFoodLogService(foodLogRepo)
 	settingsService := services.NewSettingsService(settingsRepo)
+	chartService := services.NewChartService()
 
 	e := echo.New()
 	e.Static("/static", "static")
@@ -60,7 +61,7 @@ func main() {
 		return c.Redirect(http.StatusSeeOther, "/dashboard")
 	}, customMiddleware.AuthMiddleware(sessionsRepo))
 
-	e.GET("/dashboard", handlers.DashboardGETHandler(measurementsService, settingsService), customMiddleware.AuthMiddleware(sessionsRepo))
+	e.GET("/dashboard", handlers.DashboardGETHandler(measurementsService, settingsService, chartService), customMiddleware.AuthMiddleware(sessionsRepo))
 
 	e.GET("/settings", handlers.SettingsGETHandler(settingsService), customMiddleware.AuthMiddleware(sessionsRepo))
 	e.POST("/settings", handlers.SettingsPOSTHandler(settingsService), customMiddleware.AuthMiddleware(sessionsRepo))
