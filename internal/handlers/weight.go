@@ -13,7 +13,7 @@ import (
 func WeightGETHandler() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		isHTMX := c.Request().Header.Get("HX-Request") != ""
-		return render(c, templates.WeightPage(isHTMX))
+		return render(c, templates.WeightPage(isHTMX, false))
 	}
 }
 
@@ -22,8 +22,8 @@ func WeightPOSTHandler(measurementsService services.IMeasurementsService) echo.H
 		userId := c.Get("user_id").(int)
 		weight, err := strconv.ParseFloat(c.FormValue("weight"), 64)
 
-		if err != nil {
-			return err
+		if err != nil || weight <= 0 {
+			return render(c, templates.WeightForm(true))
 		}
 
 		date := c.FormValue("date")

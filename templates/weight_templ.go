@@ -10,13 +10,7 @@ import templruntime "github.com/a-h/templ/runtime"
 
 import "time"
 
-type WeightFormErrors struct {
-	Current_weight string
-	Target_weight  string
-	Goal_deadline  string
-}
-
-func WeightForm() templ.Component {
+func WeightForm(err bool) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -37,14 +31,24 @@ func WeightForm() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"w-full p-8\"><form hx-indicator=\"#spinner\" hx-post=\"/weight\" hx-replace-url=\"/stats\" hx-swap=\"beforeend\" class=\"grid grid-cols-1 md:grid-cols-2 gap-4 my-4\"><div class=\"flex flex-col gap-1 col-span-2 md:col-span-1\"><label>Weight</label> <input name=\"weight\" step=\"0.1\" class=\"w-full border shadow-md px-3 py-1 rounded-md\" type=\"number˝\" placeholder=\"Weight in kg\" required></div><div class=\"flex flex-col gap-1 col-span-2 md:col-span-1\"><label>Date</label> <input name=\"date\" value=\"")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"w-full p-8\"><form hx-indicator=\"#spinner\" hx-post=\"/weight\" hx-swap=\"innerHTML\" class=\"grid grid-cols-1 md:grid-cols-2 gap-4 my-4\"><div class=\"flex flex-col gap-1 col-span-2 md:col-span-1\"><label>Weight</label> <input name=\"weight\" step=\"0.1\" class=\"w-full border shadow-md px-3 py-1 rounded-md\" type=\"number˝\" placeholder=\"Weight in kg\" required> ")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		if err {
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<span class=\"text-red-500\">Invalid weight</span>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div class=\"flex flex-col gap-1 col-span-2 md:col-span-1\"><label>Date</label> <input name=\"date\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(time.Now().Format("2006-01-02"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/weight.templ`, Line: 29, Col: 44}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/weight.templ`, Line: 27, Col: 44}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
@@ -66,7 +70,7 @@ func WeightForm() templ.Component {
 	})
 }
 
-func WeightPage(isHTMX bool) templ.Component {
+func WeightPage(isHTMX, err bool) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -88,7 +92,7 @@ func WeightPage(isHTMX bool) templ.Component {
 		}
 		ctx = templ.ClearChildren(ctx)
 		if isHTMX {
-			templ_7745c5c3_Err = ContentWeightPage().Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = ContentWeightPage(err).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -105,7 +109,7 @@ func WeightPage(isHTMX bool) templ.Component {
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = ContentWeightPage().Render(ctx, templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = ContentWeightPage(err).Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -120,7 +124,7 @@ func WeightPage(isHTMX bool) templ.Component {
 	})
 }
 
-func ContentWeightPage() templ.Component {
+func ContentWeightPage(err bool) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -145,7 +149,7 @@ func ContentWeightPage() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = WeightForm().Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = WeightForm(err).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
