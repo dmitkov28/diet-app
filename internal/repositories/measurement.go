@@ -199,13 +199,16 @@ func (repo *MeasurementRepository) GetWeeklyStats(userId, weeks int) ([]WeeklySt
 		SELECT week, avg_weight
 		FROM (
 			SELECT 
-				strftime('%Y-%W', date) as week,
-				AVG(weight) as avg_weight
+				CASE
+					WHEN strftime('%W', date) = '00' THEN strftime('%Y', date) || '-01'
+					ELSE strftime('%Y-%W', date)
+				END AS week,
+				AVG(weight) AS avg_weight
 			FROM weight
-			WHERE user_id = ?
+			WHERE user_id = 1
 			GROUP BY week
 			ORDER BY week DESC
-			LIMIT ?
+			LIMIT 3
 		) subquery
 		ORDER BY week ASC;`
 
