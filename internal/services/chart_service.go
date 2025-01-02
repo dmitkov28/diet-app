@@ -1,4 +1,4 @@
-package charts
+package services
 
 import (
 	"fmt"
@@ -9,7 +9,19 @@ import (
 	"github.com/go-echarts/go-echarts/v2/opts"
 )
 
-func GenerateChartData(stats []repositories.WeeklyStats) ([]string, []opts.LineData, float64, float64) {
+type IChartService interface {
+	GenerateChartData(stats []repositories.WeeklyStats) ([]string, []opts.LineData, float64, float64)
+	GenerateLineChart(title, subtitle string, xAxis []string, values []opts.LineData, max, min float64) *charts.Line
+	RenderChart(chart charts.Line) string
+}
+
+type ChartService struct{}
+
+func NewChartService() IChartService {
+	return &ChartService{}
+}
+
+func (s *ChartService) GenerateChartData(stats []repositories.WeeklyStats) ([]string, []opts.LineData, float64, float64) {
 	var xAxis []string
 	var chartValues []opts.LineData
 	var maxWeight float64
@@ -29,7 +41,7 @@ func GenerateChartData(stats []repositories.WeeklyStats) ([]string, []opts.LineD
 	return xAxis, chartValues, maxWeight, minWeight
 }
 
-func GenerateLineChart(title, subtitle string, xAxis []string, values []opts.LineData, max, min float64) *charts.Line {
+func (s *ChartService) GenerateLineChart(title, subtitle string, xAxis []string, values []opts.LineData, max, min float64) *charts.Line {
 	chart := charts.NewLine()
 	chart.SetGlobalOptions(
 		charts.WithInitializationOpts(opts.Initialization{
@@ -89,7 +101,7 @@ func GenerateLineChart(title, subtitle string, xAxis []string, values []opts.Lin
 	return chart
 }
 
-func RenderChart(chart charts.Line) string {
+func (s *ChartService) RenderChart(chart charts.Line) string {
 	content := chart.RenderSnippet()
 	chartContent := fmt.Sprintf("%s\n%s", content.Element, content.Script)
 	return chartContent
