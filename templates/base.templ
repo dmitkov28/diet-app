@@ -78,57 +78,7 @@ templ Base(props TemplateProps) {
 			appendStyles("https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css");
 			appendScript("https://www.unpkg.com/quagga@0.12.1/dist/quagga.min.js");
 		};
-
-		window.addEventListener("htmx:afterSwap", (ev) => {
-			const path = ev.detail.pathInfo.finalRequestPath;
-			if (path === "/scan"){
-				console.log("SCAN");
-				initializeQuagga();
-			}
-		});
-
-		function initializeQuagga(){
-			Quagga.init({
-			inputStream: {
-				name: "Live",
-				type: "LiveStream",
-				target: document.querySelector('#quagga'),
-				constraints: {
-					width: 1280, // High resolution for better accuracy
-					height: 720,
-					facingMode: "environment", // Use the back camera
-					focusMode: "continuous" // Ensure continuous focus
-				}
-			},
-			decoder: {
-				readers: ["ean_reader", "ean_8_reader"],
-				multiple: false, // Only decode one barcode at a time
-			},
-			locator: {
-				patchSize: "medium", // Medium size for balance between speed and accuracy
-				halfSample: true // Improves performance on high-res devices
-			},
-			locate: true, // Enable locating feature for better scanning
-			frequency: 1 // Process images every 10 frames for better accuracy
-		}, function (err) {
-			if (err) {
-				console.log(err);
-				return;
-			}
-			console.log("Initialization finished. Ready to start");
-			Quagga.start();
-		});
-
-			Quagga.onDetected(async function (data) {
-				const code = data.codeResult.code;
-				const output = document.getElementById("quagga");
-				if (output) {
-					await htmx.ajax("GET", `/scan/${code}`, {target: "#modal-container", swap: "innerHTML"});
-
-				}
-				Quagga.stop();
-			});
-		}
+		
 		</script>
 	</html>
 }
