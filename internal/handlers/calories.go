@@ -14,7 +14,7 @@ import (
 func CaloriesGETHandler() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		isHTMX := c.Request().Header.Get("HX-Request") != ""
-		return render(c, templates.CaloriesPage(isHTMX))
+		return render(c, templates.CaloriesPage(isHTMX, false))
 	}
 }
 
@@ -23,13 +23,13 @@ func CaloriesPOSTHandler(measurementsService services.IMeasurementsService) echo
 		userId := c.Get("user_id").(int)
 		calories, err := strconv.ParseInt(c.FormValue("calories"), 10, 64)
 
-		if err != nil {
-			fmt.Println(err)
+		if err != nil || calories <= 0 {
+			return render(c, templates.CaloriesForm(true))
 		}
 
 		date := c.FormValue("date")
 
-		// validate inputs
+		
 
 		formData := repositories.Calories{
 			User_id:  userId,

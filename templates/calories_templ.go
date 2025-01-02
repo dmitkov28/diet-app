@@ -10,7 +10,7 @@ import templruntime "github.com/a-h/templ/runtime"
 
 import "time"
 
-func CaloriesForm() templ.Component {
+func CaloriesForm(err bool) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -31,14 +31,24 @@ func CaloriesForm() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"w-full p-8\"><form hx-indicator=\"#spinner\" hx-post=\"/calories\" hx-replace-url=\"/stats\" class=\"grid grid-cols-1 md:grid-cols-2 gap-4 my-4\"><div class=\"flex flex-col gap-1 col-span-2 md:col-span-1\"><label>Calories</label> <input name=\"calories\" class=\"w-full border shadow-md px-3 py-1 rounded-md\" type=\"number\" placeholder=\"Calories\" required></div><div class=\"flex flex-col gap-1 col-span-2 md:col-span-1\"><label>Date</label> <input name=\"date\" value=\"")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<form id=\"calories-form\" hx-target=\"#calories-form\" hx-indicator=\"#spinner\" hx-post=\"/calories\" hx-swap=\"outerHTML\" class=\"grid grid-cols-1 md:grid-cols-2 gap-4 my-4\"><div class=\"flex flex-col gap-1 col-span-2 md:col-span-1\"><label>Calories</label> <input name=\"calories\" class=\"w-full border shadow-md px-3 py-1 rounded-md\" type=\"number\" placeholder=\"Calories\" required> ")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		if err {
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<span class=\"text-red-500\">Invalid calories</span>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div class=\"flex flex-col gap-1 col-span-2 md:col-span-1\"><label>Date</label> <input name=\"date\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(time.Now().Format("2006-01-02"))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/calories.templ`, Line: 22, Col: 44}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/calories.templ`, Line: 31, Col: 44}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
@@ -52,7 +62,7 @@ func CaloriesForm() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("Log Calories</button></form><a hx-replace-url=\"/scan\" hx-get=\"/scan\" hx-target=\"#main-content\" hx-push-url=\"true\" class=\"my-4 cursor-pointer w-full text-white font-semibold bg-blue-500 rounded-md p-3 flex gap-2 justify-center items-center col-span-2\"><img alt=\"barcode icon\" class=\"h-5\" src=\"/static/img/scan.svg\"> Scan Food</a> <a hx-replace-url=\"/search\" hx-get=\"/search\" hx-target=\"#main-content\" hx-push-url=\"true\" class=\"my-4 cursor-pointer w-full text-white font-semibold bg-blue-500 rounded-md p-3 flex gap-2 justify-center items-center col-span-2\">Search Food</a> <a hx-replace-url=\"/food_log\" hx-get=\"/food_log\" hx-target=\"#main-content\" hx-push-url=\"true\" class=\"my-4 cursor-pointer w-full text-white font-semibold bg-yellow-500 rounded-md p-3 flex gap-2 justify-center items-center col-span-2\">Food Log</a></div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("Log Calories</button></form>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -60,7 +70,7 @@ func CaloriesForm() templ.Component {
 	})
 }
 
-func CaloriesPage(isHTMX bool) templ.Component {
+func CaloriesPage(isHTMX, err bool) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -82,7 +92,7 @@ func CaloriesPage(isHTMX bool) templ.Component {
 		}
 		ctx = templ.ClearChildren(ctx)
 		if isHTMX {
-			templ_7745c5c3_Err = ContentCaloriesPage().Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = ContentCaloriesPage(err).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -99,7 +109,7 @@ func CaloriesPage(isHTMX bool) templ.Component {
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = ContentCaloriesPage().Render(ctx, templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = ContentCaloriesPage(err).Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -114,7 +124,7 @@ func CaloriesPage(isHTMX bool) templ.Component {
 	})
 }
 
-func ContentCaloriesPage() templ.Component {
+func ContentCaloriesPage(err bool) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -139,11 +149,11 @@ func ContentCaloriesPage() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = CaloriesForm().Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = CaloriesForm(err).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div></div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<a hx-replace-url=\"/scan\" hx-get=\"/scan\" hx-target=\"#main-content\" hx-push-url=\"true\" class=\"my-4 cursor-pointer w-full text-white font-semibold bg-blue-500 rounded-md p-3 flex gap-2 justify-center items-center col-span-2\"><img alt=\"barcode icon\" class=\"h-5\" src=\"/static/img/scan.svg\"> Scan Food</a> <a hx-replace-url=\"/search\" hx-get=\"/search\" hx-target=\"#main-content\" hx-push-url=\"true\" class=\"my-4 cursor-pointer w-full text-white font-semibold bg-blue-500 rounded-md p-3 flex gap-2 justify-center items-center col-span-2\">Search Food</a> <a hx-replace-url=\"/food_log\" hx-get=\"/food_log\" hx-target=\"#main-content\" hx-push-url=\"true\" class=\"my-4 cursor-pointer w-full text-white font-semibold bg-yellow-500 rounded-md p-3 flex gap-2 justify-center items-center col-span-2\">Food Log</a></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
