@@ -45,7 +45,7 @@ templ SettingsForm(settings repositories.Settings, errors SettingsErrors) {
 					<input
 						name="age"
 						value={ fmt.Sprintf("%d", settings.Age) }
-						class={ "w-full border shadow-md px-3 py-1 rounded-md", templ.KV("border-red-500 text-red-500", errors.Age != ""),
+						class={ "w-full border shadow-md px-3 h-10 rounded-md", templ.KV("border-red-500 text-red-500", errors.Age != ""),
                             templ.KV("border-slate-300", errors.Age == "") }
 						type="number"
 						placeholder="age"
@@ -53,7 +53,7 @@ templ SettingsForm(settings repositories.Settings, errors SettingsErrors) {
 				} else {
 					<input
 						name="age"
-						class={ "w-full border shadow-md px-3 py-1 rounded-md", templ.KV("border-red-500 text-red-500", errors.Age != ""),
+						class={ "w-full border shadow-md px-3 h-10 rounded-md", templ.KV("border-red-500 text-red-500", errors.Age != ""),
                             templ.KV("border-slate-300", errors.Age == "") }
 						type="number"
 						placeholder="age"
@@ -66,7 +66,7 @@ templ SettingsForm(settings repositories.Settings, errors SettingsErrors) {
 					<select
 						name="sex"
 						value={ settings.Sex }
-						class="w-full border shadow-md px-3 py-1 rounded-md bg-white"
+						class="w-full border shadow-md px-3 h-10 rounded-md bg-white"
 						placeholder="Sex"
 					>
 						<option value="M">Male</option>
@@ -75,7 +75,7 @@ templ SettingsForm(settings repositories.Settings, errors SettingsErrors) {
 				} else {
 					<select
 						name="sex"
-						class="w-full border shadow-md px-3 py-1 rounded-md bg-white"
+						class="w-full border shadow-md px-3 h-10 rounded-md bg-white"
 						placeholder="Sex"
 					>
 						<option value="M">Male</option>
@@ -90,7 +90,7 @@ templ SettingsForm(settings repositories.Settings, errors SettingsErrors) {
 						value={ fmt.Sprintf("%.1f", settings.Current_weight) }
 						name="current_weight"
 						step="0.1"
-						class={ "w-full border shadow-md px-3 py-1 rounded-md",
+						class={ "w-full border shadow-md px-3 h-10 rounded-md",
                                 templ.KV("border-red-500 text-red-500", errors.Current_weight != ""),
                                 templ.KV("border-slate-300", errors.Current_weight == "") }
 						type="number"
@@ -100,7 +100,7 @@ templ SettingsForm(settings repositories.Settings, errors SettingsErrors) {
 					<input
 						name="current_weight"
 						step="0.1"
-						class={ "w-full border shadow-md px-3 py-1 rounded-md",
+						class={ "w-full border shadow-md px-3 h-10 rounded-md",
                                 templ.KV("border-red-500 text-red-500", errors.Current_weight != ""),
                                 templ.KV("border-slate-300", errors.Current_weight == "") }
 						type="number"
@@ -117,7 +117,7 @@ templ SettingsForm(settings repositories.Settings, errors SettingsErrors) {
 					<input
 						name="height"
 						value={ fmt.Sprintf("%d", settings.Height) }
-						class={ "w-full border shadow-md px-3 py-1 rounded-md", templ.KV("border-red-500 text-red-500", errors.Height != ""),
+						class={ "w-full border shadow-md px-3 h-10 rounded-md", templ.KV("border-red-500 text-red-500", errors.Height != ""),
                             templ.KV("border-slate-300", errors.Height == "") }
 						type="number"
 						placeholder="Height"
@@ -125,7 +125,7 @@ templ SettingsForm(settings repositories.Settings, errors SettingsErrors) {
 				} else {
 					<input
 						name="height"
-						class={ "w-full border shadow-md px-3 py-1 rounded-md", templ.KV("border-red-500 text-red-500", errors.Height != ""),
+						class={ "w-full border shadow-md px-3 h-10 rounded-md", templ.KV("border-red-500 text-red-500", errors.Height != ""),
                             templ.KV("border-slate-300", errors.Height == "") }
 						type="number"
 						placeholder="Height"
@@ -138,7 +138,7 @@ templ SettingsForm(settings repositories.Settings, errors SettingsErrors) {
 					<input
 						name="activity_level"
 						value={ fmt.Sprintf("%.2f", settings.Activity_level) }
-						class={ "w-full border shadow-md px-3 py-1 rounded-md",
+						class={ "w-full border shadow-md px-3 h-10 rounded-md",
                                 templ.KV("border-red-500 text-red-500", errors.Activity_level != ""),
                                 templ.KV("border-slate-300", errors.Activity_level == "") }
 						type="number"
@@ -148,7 +148,7 @@ templ SettingsForm(settings repositories.Settings, errors SettingsErrors) {
 				} else {
 					<input
 						name="activity_level"
-						class="w-full border shadow-md px-3 py-1 rounded-md"
+						class="w-full border shadow-md px-3 h-10 rounded-md"
 						type="number"
 						step="0.01"
 						placeholder="Activity level"
@@ -162,7 +162,7 @@ templ SettingsForm(settings repositories.Settings, errors SettingsErrors) {
 						value={ fmt.Sprintf("%.1f", settings.Target_weight) }
 						name="target_weight"
 						step="0.1"
-						class={ "w-full border shadow-md px-3 py-1 rounded-md",
+						class={ "w-full border shadow-md px-3 h-10 rounded-md",
                                 templ.KV("border-red-500 text-red-500", errors.Target_weight != ""),
                                 templ.KV("border-slate-300", errors.Target_weight == "") }
 						type="number"
@@ -172,7 +172,7 @@ templ SettingsForm(settings repositories.Settings, errors SettingsErrors) {
 					<input
 						name="target_weight"
 						step="0.1"
-						class={ "w-full border shadow-md px-3 py-1 rounded-md",
+						class={ "w-full border shadow-md px-3 h-10 rounded-md",
                                 templ.KV("border-red-500 text-red-500", errors.Target_weight != ""),
                                 templ.KV("border-slate-300", errors.Target_weight == "") }
 						type="number"
@@ -189,7 +189,7 @@ templ SettingsForm(settings repositories.Settings, errors SettingsErrors) {
 					<input
 						value={ fmt.Sprintf("%.1f", settings.Target_weight_loss_rate*100) }
 						name="target_weight_loss_rate"
-						class="w-full border border-slate-300 shadow-md px-3 py-1 rounded-md"
+						class="w-full border border-slate-300 shadow-md px-3 h-10 rounded-md"
 						type="number"
 						step="0.1"
 						min="0"
@@ -199,7 +199,7 @@ templ SettingsForm(settings repositories.Settings, errors SettingsErrors) {
 				} else {
 					<input
 						name="target_weight_loss_rate"
-						class="w-full border border-slate-300 shadow-md px-3 py-1 rounded-md"
+						class="w-full border border-slate-300 shadow-md px-3 h-10 rounded-md"
 						type="number"
 						step="0.1"
 						min="0"
@@ -208,7 +208,7 @@ templ SettingsForm(settings repositories.Settings, errors SettingsErrors) {
 					/>
 				}
 			</div>
-			<button class="text-white font-semibold bg-blue-500 rounded-md p-3 flex gap-2 items-center justify-center">
+			<button class="md:col-span-2 col-span-1 text-white font-semibold bg-blue-500 rounded-md p-3 flex gap-2 items-center justify-center">
 				@Spinner()
 				Save
 			</button>

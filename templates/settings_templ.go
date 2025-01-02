@@ -149,7 +149,7 @@ func SettingsForm(settings repositories.Settings, errors SettingsErrors) templ.C
 			return templ_7745c5c3_Err
 		}
 		if settings.Age != 0 {
-			var templ_7745c5c3_Var5 = []any{"w-full border shadow-md px-3 py-1 rounded-md", templ.KV("border-red-500 text-red-500", errors.Age != ""),
+			var templ_7745c5c3_Var5 = []any{"w-full border shadow-md px-3 h-10 rounded-md", templ.KV("border-red-500 text-red-500", errors.Age != ""),
 				templ.KV("border-slate-300", errors.Age == "")}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var5...)
 			if templ_7745c5c3_Err != nil {
@@ -186,7 +186,7 @@ func SettingsForm(settings repositories.Settings, errors SettingsErrors) templ.C
 				return templ_7745c5c3_Err
 			}
 		} else {
-			var templ_7745c5c3_Var8 = []any{"w-full border shadow-md px-3 py-1 rounded-md", templ.KV("border-red-500 text-red-500", errors.Age != ""),
+			var templ_7745c5c3_Var8 = []any{"w-full border shadow-md px-3 h-10 rounded-md", templ.KV("border-red-500 text-red-500", errors.Age != ""),
 				templ.KV("border-slate-300", errors.Age == "")}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var8...)
 			if templ_7745c5c3_Err != nil {
@@ -228,12 +228,12 @@ func SettingsForm(settings repositories.Settings, errors SettingsErrors) templ.C
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"w-full border shadow-md px-3 py-1 rounded-md bg-white\" placeholder=\"Sex\"><option value=\"M\">Male</option> <option value=\"F\">Female</option></select>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"w-full border shadow-md px-3 h-10 rounded-md bg-white\" placeholder=\"Sex\"><option value=\"M\">Male</option> <option value=\"F\">Female</option></select>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<select name=\"sex\" class=\"w-full border shadow-md px-3 py-1 rounded-md bg-white\" placeholder=\"Sex\"><option value=\"M\">Male</option> <option value=\"F\">Female</option></select>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<select name=\"sex\" class=\"w-full border shadow-md px-3 h-10 rounded-md bg-white\" placeholder=\"Sex\"><option value=\"M\">Male</option> <option value=\"F\">Female</option></select>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -243,7 +243,7 @@ func SettingsForm(settings repositories.Settings, errors SettingsErrors) templ.C
 			return templ_7745c5c3_Err
 		}
 		if settings.Current_weight != 0 {
-			var templ_7745c5c3_Var11 = []any{"w-full border shadow-md px-3 py-1 rounded-md",
+			var templ_7745c5c3_Var11 = []any{"w-full border shadow-md px-3 h-10 rounded-md",
 				templ.KV("border-red-500 text-red-500", errors.Current_weight != ""),
 				templ.KV("border-slate-300", errors.Current_weight == "")}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var11...)
@@ -281,7 +281,7 @@ func SettingsForm(settings repositories.Settings, errors SettingsErrors) templ.C
 				return templ_7745c5c3_Err
 			}
 		} else {
-			var templ_7745c5c3_Var14 = []any{"w-full border shadow-md px-3 py-1 rounded-md",
+			var templ_7745c5c3_Var14 = []any{"w-full border shadow-md px-3 h-10 rounded-md",
 				templ.KV("border-red-500 text-red-500", errors.Current_weight != ""),
 				templ.KV("border-slate-300", errors.Current_weight == "")}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var14...)
@@ -317,7 +317,7 @@ func SettingsForm(settings repositories.Settings, errors SettingsErrors) templ.C
 			return templ_7745c5c3_Err
 		}
 		if settings.Height != 0 {
-			var templ_7745c5c3_Var16 = []any{"w-full border shadow-md px-3 py-1 rounded-md", templ.KV("border-red-500 text-red-500", errors.Height != ""),
+			var templ_7745c5c3_Var16 = []any{"w-full border shadow-md px-3 h-10 rounded-md", templ.KV("border-red-500 text-red-500", errors.Height != ""),
 				templ.KV("border-slate-300", errors.Height == "")}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var16...)
 			if templ_7745c5c3_Err != nil {
@@ -354,7 +354,7 @@ func SettingsForm(settings repositories.Settings, errors SettingsErrors) templ.C
 				return templ_7745c5c3_Err
 			}
 		} else {
-			var templ_7745c5c3_Var19 = []any{"w-full border shadow-md px-3 py-1 rounded-md", templ.KV("border-red-500 text-red-500", errors.Height != ""),
+			var templ_7745c5c3_Var19 = []any{"w-full border shadow-md px-3 h-10 rounded-md", templ.KV("border-red-500 text-red-500", errors.Height != ""),
 				templ.KV("border-slate-300", errors.Height == "")}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var19...)
 			if templ_7745c5c3_Err != nil {
@@ -383,7 +383,7 @@ func SettingsForm(settings repositories.Settings, errors SettingsErrors) templ.C
 			return templ_7745c5c3_Err
 		}
 		if settings.Activity_level != 0 {
-			var templ_7745c5c3_Var21 = []any{"w-full border shadow-md px-3 py-1 rounded-md",
+			var templ_7745c5c3_Var21 = []any{"w-full border shadow-md px-3 h-10 rounded-md",
 				templ.KV("border-red-500 text-red-500", errors.Activity_level != ""),
 				templ.KV("border-slate-300", errors.Activity_level == "")}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var21...)
@@ -421,7 +421,7 @@ func SettingsForm(settings repositories.Settings, errors SettingsErrors) templ.C
 				return templ_7745c5c3_Err
 			}
 		} else {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<input name=\"activity_level\" class=\"w-full border shadow-md px-3 py-1 rounded-md\" type=\"number\" step=\"0.01\" placeholder=\"Activity level\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<input name=\"activity_level\" class=\"w-full border shadow-md px-3 h-10 rounded-md\" type=\"number\" step=\"0.01\" placeholder=\"Activity level\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -431,7 +431,7 @@ func SettingsForm(settings repositories.Settings, errors SettingsErrors) templ.C
 			return templ_7745c5c3_Err
 		}
 		if settings.Target_weight != 0 {
-			var templ_7745c5c3_Var24 = []any{"w-full border shadow-md px-3 py-1 rounded-md",
+			var templ_7745c5c3_Var24 = []any{"w-full border shadow-md px-3 h-10 rounded-md",
 				templ.KV("border-red-500 text-red-500", errors.Target_weight != ""),
 				templ.KV("border-slate-300", errors.Target_weight == "")}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var24...)
@@ -469,7 +469,7 @@ func SettingsForm(settings repositories.Settings, errors SettingsErrors) templ.C
 				return templ_7745c5c3_Err
 			}
 		} else {
-			var templ_7745c5c3_Var27 = []any{"w-full border shadow-md px-3 py-1 rounded-md",
+			var templ_7745c5c3_Var27 = []any{"w-full border shadow-md px-3 h-10 rounded-md",
 				templ.KV("border-red-500 text-red-500", errors.Target_weight != ""),
 				templ.KV("border-slate-300", errors.Target_weight == "")}
 			templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var27...)
@@ -518,17 +518,17 @@ func SettingsForm(settings repositories.Settings, errors SettingsErrors) templ.C
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" name=\"target_weight_loss_rate\" class=\"w-full border border-slate-300 shadow-md px-3 py-1 rounded-md\" type=\"number\" step=\"0.1\" min=\"0\" placeholder=\"Target weekly weight loss rate (%)\" required>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" name=\"target_weight_loss_rate\" class=\"w-full border border-slate-300 shadow-md px-3 h-10 rounded-md\" type=\"number\" step=\"0.1\" min=\"0\" placeholder=\"Target weekly weight loss rate (%)\" required>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<input name=\"target_weight_loss_rate\" class=\"w-full border border-slate-300 shadow-md px-3 py-1 rounded-md\" type=\"number\" step=\"0.1\" min=\"0\" placeholder=\"Target weekly weight loss rate(%)\" required>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<input name=\"target_weight_loss_rate\" class=\"w-full border border-slate-300 shadow-md px-3 h-10 rounded-md\" type=\"number\" step=\"0.1\" min=\"0\" placeholder=\"Target weekly weight loss rate(%)\" required>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><button class=\"text-white font-semibold bg-blue-500 rounded-md p-3 flex gap-2 items-center justify-center\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><button class=\"md:col-span-2 col-span-1 text-white font-semibold bg-blue-500 rounded-md p-3 flex gap-2 items-center justify-center\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
