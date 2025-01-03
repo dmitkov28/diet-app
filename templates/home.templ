@@ -27,14 +27,16 @@ templ Content(date string, currentData repositories.WeeklyStats, settings reposi
 			</div>
 			@Card(CardProps{iconSrc: "static/img/trophy.svg", positiveChange: currentData.PercentChange <= settings.Target_weight_loss_rate, changeRate: currentData.PercentChange, value: currentData.AverageWeight, unit: "kg"})
 			@Card(CardProps{iconSrc: "/static/img/calories.svg", value: math.Ceil(calorieGoal), unit: "cal", roundValue: true})
-			if needsAdjustment {
-				<span id="warning" class="text-center text-sm text-red-500 animate-pulse">Progress has slowed down. Consider decreasing calories</span>
-			}
-			if expectedDuration != 0 {
-				@Card(CardProps{iconSrc: "/static/img/calendar.svg", value: math.Abs(math.Ceil(expectedDuration)), unit: "weeks to go", roundValue: true})
-			}
-			<div>
-				@templ.Raw(weightChart)
+			<div class="flex flex-col gap-3">
+				if needsAdjustment {
+					<span id="warning" class="text-center text-sm text-red-500 animate-pulse">Progress has slowed down. Consider decreasing calories</span>
+				}
+				if expectedDuration != 0 {
+					@Card(CardProps{iconSrc: "/static/img/calendar.svg", value: math.Abs(math.Ceil(expectedDuration)), unit: "weeks to go", roundValue: true})
+				}
+				<div>
+					@templ.Raw(weightChart)
+				</div>
 			</div>
 		</div>
 	</div>
