@@ -90,7 +90,5 @@ func main() {
 	e.GET("/login", handlers.LoginGETHandler(authService))
 	e.POST("/login", handlers.LoginPOSTHandler(authService))
 
-	e.POST("/test", handlers.TestPOSTHandler())
-
 	e.Logger.Fatal(e.Start(":1323"))
 }
