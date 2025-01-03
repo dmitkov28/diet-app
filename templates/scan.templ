@@ -6,7 +6,7 @@ import (
 )
 
 templ Scripts() {
-	<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+	<script src="https://www.unpkg.com/quagga@0.12.1/dist/quagga.min.js"></script>
 }
 
 templ ScanPage(isHTMX bool) {
@@ -103,56 +103,134 @@ templ NutritionTable(data diet.NutritionData) {
 }
 
 templ ContentScanPage() {
+	<style>
+        #quagga video,
+        #quagga canvas {
+            width: 100vw !important;
+            height: 100vh !important;
+            object-fit: cover;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+    </style>
 	<div id="modal-container"></div>
-	<div class="w-full h-screen max-h-screen relative" id="quagga">
-		<span hx-get="/calories" hx-target="#main-content" hx-replace-url="/weight"r hx-push-url="true" class="absolute top-1 right-1 cursor-pointer z-50">
-			<img class="h-10" alt="close icon" src="/static/img/close.svg" />
-		</span>
-		<video class="w-full h-full object-cover" autoplay="true" preload="auto" src="" muted="true" playsinline="true"></video>
-		<canvas class="drawingBuffer absolute top-0 left-0 w-full h-full" width="1280" height="720"></canvas>
+	<div class="fixed inset-0 w-screen h-screen" id="quagga-container">
+		<div id="quagga" class="w-full h-full"></div>
 	</div>
 	<script>
-		//TODO: deal with duplicate code
-		window.addEventListener("load", initializeQuagga);
-		function initializeQuagga(){
-			Quagga.init({
-			inputStream: {
-				name: "Live",
-				type: "LiveStream",
-				target: document.querySelector('#quagga'),
-				constraints: {
-					width: 1280, // High resolution for better accuracy
-					height: 720,
-					facingMode: "environment", // Use the back camera
-					focusMode: "continuous" // Ensure continuous focus
-				}
-			},
-			decoder: {
-				readers: ["ean_reader", "ean_8_reader"],
-				multiple: false, // Only decode one barcode at a time
-			},
-			locator: {
-				patchSize: "medium", // Medium size for balance between speed and accuracy
-				halfSample: true // Improves performance on high-res devices
-			},
-			locate: true, // Enable locating feature for better scanning
-			frequency: 1 // Process images every 10 frames for better accuracy
-		}, function (err) {
-			if (err) {
-				console.log(err);
-				return;
-			}
-			console.log("Initialization finished. Ready to start");
-			Quagga.start();
-		});
+    window.addEventListener('load', function() {
+        let quaggaIsRunning = false;
 
-			Quagga.onDetected(async function (data) {
-				const code = data.codeResult.code;
-				const output = document.getElementById("quagga");
-				if (output) {
-					await htmx.ajax("GET", `/scan/${code}`, {target: "#modal-container", swap: "innerHTML"});
-				};
-			});
-		}
-	</script>
+        function stopQuagga() {
+            if (quaggaIsRunning) {
+                Quagga.stop();
+                quaggaIsRunning = false;
+            }
+        }
+
+        function startQuagga() {
+            if (quaggaIsRunning) {
+                return;
+            }
+
+            const config = {
+                inputStream: {
+                    name: "Live",
+                    type: "LiveStream",
+                    target: document.querySelector("#quagga"),
+                    constraints: {
+                        facingMode: "environment",
+                        focusMode: "continuous"
+                    },
+                },
+                decoder: {
+                    readers: ["ean_reader", "ean_8_reader"],
+                    multiple: false,
+
+                },
+                locate: true,
+                frequency: 1,
+                locator: {
+                    patchSize: "medium",
+                    halfSample: true
+                },
+            };
+
+            try {
+                Quagga.init(config, function(err) {
+                    if (err) {
+                        console.error("Quagga initialization failed", err);
+                        return;
+                    }
+                    
+                    try {
+                        Quagga.start();
+                        quaggaIsRunning = true;
+                        console.log("Quagga started successfully");
+                    } catch (startErr) {
+                        console.error("Failed to start Quagga", startErr);
+                    }
+                });
+            } catch (initErr) {
+                console.error("Failed to initialize Quagga", initErr);
+            }
+
+            Quagga.onDetected(function(result) {
+                if (!result || !result.codeResult) {
+                    return;
+                }
+
+                const code = result.codeResult.code;
+                console.log("Detected barcode:", code);
+
+                stopQuagga();
+
+                htmx.ajax("GET", `/scan/${code}`, {
+                    target: "#modal-container",
+                    swap: "innerHTML"
+                }).catch(function(error) {
+                    console.error("AJAX request failed:", error);
+                }).finally(function() {
+                    setTimeout(startQuagga, 1000);
+                });
+            });
+
+            Quagga.onProcessed(function(result) {
+                if (!result) {
+                    return;
+                }
+
+                const drawingCtx = Quagga.canvas.ctx.overlay;
+                const drawingCanvas = Quagga.canvas.dom.overlay;
+
+                if (result.boxes) {
+                    drawingCtx.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height);
+                    result.boxes.forEach(function(box) {
+                        if (box !== result.box) {
+                            drawingCtx.strokeStyle = "green";
+                            drawingCtx.strokeRect(box.x, box.y, box.width, box.height);
+                        }
+                    });
+                }
+
+                if (result.box) {
+                    drawingCtx.strokeStyle = "blue";
+                    drawingCtx.strokeRect(
+                        result.box.x, 
+                        result.box.y, 
+                        result.box.width, 
+                        result.box.height
+                    );
+                }
+            });
+        }
+
+        // Start scanning
+        startQuagga();
+
+        // Clean up when leaving the page
+        window.addEventListener('beforeunload', stopQuagga);
+    });
+    </script>
 }
