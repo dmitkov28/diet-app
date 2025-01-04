@@ -1,7 +1,64 @@
 package templates
 
+templ DesktopNav() {
+	<nav class="hidden md:flex w-fit px-4 bg-blue-200/20">
+		<ul class="flex flex-col h-full gap-4 flex-1 justify-around">
+			<li
+				hx-replace-url="/dashboard"
+				hx-get="/dashboard"
+				hx-target="#main-content"
+				hx-trigger="click[isNewPath('/dashboard')]"
+				class="flex gap-2 justify-center items-center cursor-pointer"
+			>
+				<img alt="home icon" class="h-5" src="/static/img/home.svg"/>
+				<span>Home</span>
+			</li>
+			<li
+				hx-replace-url="/stats"
+				hx-get="/stats"
+				hx-target="#main-content"
+				hx-trigger="click[isNewPath('/stats')]"
+				class="flex gap-2 justify-center items-center cursor-pointer"
+			>
+				<img alt="stats icon" class="h-5" src="/static/img/stats.svg"/>
+				<span>Stats</span>
+			</li>
+			<li
+				hx-replace-url="/weight"
+				hx-get="/weight"
+				hx-target="#main-content"
+				hx-trigger="click[isNewPath('/weight')]"
+				class="flex gap-2 justify-center items-center cursor-pointer"
+			>
+				<img alt="weight scale icon" class="h-5" src="/static/img/scale.svg"/>
+				<span>Weight</span>
+			</li>
+			<li
+				hx-replace-url="/calories"
+				hx-get="/calories"
+				hx-target="#main-content"
+				hx-trigger="click[isNewPath('/calories')]"
+				class="flex gap-2 justify-center items-center cursor-pointer"
+			>
+				<img alt="food icon" class="h-5" src="/static/img/food.svg"/>
+				<span>Calories</span>
+			</li>
+			<li
+				hx-replace-url="/settings"
+				hx-get="/settings"
+				hx-target="#main-content"
+				hx-trigger="click[isNewPath('/settings')]"
+				class="flex gap-2 justify-center items-center cursor-pointer"
+			>
+				<img alt="settings icon" class="h-5" src="/static/img/settings.svg"/>
+				<span>Settings</span>
+			</li>
+		</ul>
+	</nav>
+}
+
 templ Nav() {
-	<nav class="p-6 bg-white sticky bottom-0 z-50 shadow-[0_-4px_8px_0_rgba(0,0,0,0.2)]">
+	<nav class="md:hidden p-6 bg-white sticky bottom-0 z-50 shadow-[0_-4px_8px_0_rgba(0,0,0,0.2)]">
 		<ul class="flex gap-4 justify-between">
 			<li
 				hx-replace-url="/dashboard"

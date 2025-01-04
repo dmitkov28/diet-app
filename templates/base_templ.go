@@ -61,7 +61,15 @@ func Base(props TemplateProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</head><body class=\"min-h-screen flex flex-col pt-4 relative select-none\"><main id=\"main-content\" class=\"flex flex-col flex-1\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</head><body class=\"min-h-screen flex flex-col relative select-none\"><div class=\"grid grid-cols-4 flex-1\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = DesktopNav().Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<main id=\"main-content\" class=\"col-span-4 pt-4 md:col-span-3 flex flex-1\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -69,7 +77,7 @@ func Base(props TemplateProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</main>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</main></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

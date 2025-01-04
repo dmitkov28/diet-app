@@ -8,7 +8,7 @@ package templates
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-func Nav() templ.Component {
+func DesktopNav() templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -29,7 +29,36 @@ func Nav() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<nav class=\"p-6 bg-white sticky bottom-0 z-50 shadow-[0_-4px_8px_0_rgba(0,0,0,0.2)]\"><ul class=\"flex gap-4 justify-between\"><li hx-replace-url=\"/dashboard\" hx-get=\"/dashboard\" hx-target=\"#main-content\" hx-trigger=\"click[isNewPath(&#39;/dashboard&#39;)]\" class=\"flex flex-col justify-center items-center cursor-pointer\"><img alt=\"home icon\" class=\"h-5\" src=\"/static/img/home.svg\"> <span>Home</span></li><li hx-replace-url=\"/stats\" hx-get=\"/stats\" hx-target=\"#main-content\" hx-trigger=\"click[isNewPath(&#39;/stats&#39;)]\" class=\"flex flex-col justify-center items-center cursor-pointer\"><img alt=\"stats icon\" class=\"h-5\" src=\"/static/img/stats.svg\"> <span>Stats</span></li><li hx-replace-url=\"/weight\" hx-get=\"/weight\" hx-target=\"#main-content\" hx-trigger=\"click[isNewPath(&#39;/weight&#39;)]\" class=\"flex flex-col justify-center items-center cursor-pointer\"><img alt=\"weight scale icon\" class=\"h-5\" src=\"/static/img/scale.svg\"> <span>Weight</span></li><li hx-replace-url=\"/calories\" hx-get=\"/calories\" hx-target=\"#main-content\" hx-trigger=\"click[isNewPath(&#39;/calories&#39;)]\" class=\"flex flex-col justify-center items-center cursor-pointer\"><img alt=\"food icon\" class=\"h-5\" src=\"/static/img/food.svg\"> <span>Calories</span></li><li hx-replace-url=\"/settings\" hx-get=\"/settings\" hx-target=\"#main-content\" hx-trigger=\"click[isNewPath(&#39;/settings&#39;)]\" class=\"flex flex-col justify-center items-center cursor-pointer\"><img alt=\"settings icon\" class=\"h-5\" src=\"/static/img/settings.svg\"> <span>Settings</span></li></ul></nav><script>\n    function setStyles() {\n        document.querySelectorAll(\"li[hx-get]\").forEach((link) => {\n            link.style.textDecoration = \"none\";\n        });\n        \n        const currentPath = window.location.pathname;\n        const activeLink = document.querySelector(`li[hx-get=\"${currentPath}\"]`);\n        if (activeLink) {\n            activeLink.style.textDecoration = \"underline\";\n            activeLink.style.textDecorationThickness = \"3px\";\n            activeLink.style.textDecorationColor = \"#2596be\";\n            activeLink.style.textUnderlineOffset = \"8px\";\n        }\n    }\n\n    function isNewPath(path) {\n        return window.location.pathname !== path;\n    }\n\n    window.addEventListener(\"DOMContentLoaded\", setStyles);\n    document.body.addEventListener(\"htmx:afterOnLoad\", setStyles);\n    window.addEventListener(\"popstate\", setStyles);\n</script>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<nav class=\"hidden md:flex w-fit px-4 bg-blue-200/20\"><ul class=\"flex flex-col h-full gap-4 flex-1 justify-around\"><li hx-replace-url=\"/dashboard\" hx-get=\"/dashboard\" hx-target=\"#main-content\" hx-trigger=\"click[isNewPath(&#39;/dashboard&#39;)]\" class=\"flex gap-2 justify-center items-center cursor-pointer\"><img alt=\"home icon\" class=\"h-5\" src=\"/static/img/home.svg\"> <span>Home</span></li><li hx-replace-url=\"/stats\" hx-get=\"/stats\" hx-target=\"#main-content\" hx-trigger=\"click[isNewPath(&#39;/stats&#39;)]\" class=\"flex gap-2 justify-center items-center cursor-pointer\"><img alt=\"stats icon\" class=\"h-5\" src=\"/static/img/stats.svg\"> <span>Stats</span></li><li hx-replace-url=\"/weight\" hx-get=\"/weight\" hx-target=\"#main-content\" hx-trigger=\"click[isNewPath(&#39;/weight&#39;)]\" class=\"flex gap-2 justify-center items-center cursor-pointer\"><img alt=\"weight scale icon\" class=\"h-5\" src=\"/static/img/scale.svg\"> <span>Weight</span></li><li hx-replace-url=\"/calories\" hx-get=\"/calories\" hx-target=\"#main-content\" hx-trigger=\"click[isNewPath(&#39;/calories&#39;)]\" class=\"flex gap-2 justify-center items-center cursor-pointer\"><img alt=\"food icon\" class=\"h-5\" src=\"/static/img/food.svg\"> <span>Calories</span></li><li hx-replace-url=\"/settings\" hx-get=\"/settings\" hx-target=\"#main-content\" hx-trigger=\"click[isNewPath(&#39;/settings&#39;)]\" class=\"flex gap-2 justify-center items-center cursor-pointer\"><img alt=\"settings icon\" class=\"h-5\" src=\"/static/img/settings.svg\"> <span>Settings</span></li></ul></nav>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		return templ_7745c5c3_Err
+	})
+}
+
+func Nav() templ.Component {
+	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
+			return templ_7745c5c3_CtxErr
+		}
+		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+		if !templ_7745c5c3_IsBuffer {
+			defer func() {
+				templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err == nil {
+					templ_7745c5c3_Err = templ_7745c5c3_BufErr
+				}
+			}()
+		}
+		ctx = templ.InitializeContext(ctx)
+		templ_7745c5c3_Var2 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var2 == nil {
+			templ_7745c5c3_Var2 = templ.NopComponent
+		}
+		ctx = templ.ClearChildren(ctx)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<nav class=\"md:hidden p-6 bg-white sticky bottom-0 z-50 shadow-[0_-4px_8px_0_rgba(0,0,0,0.2)]\"><ul class=\"flex gap-4 justify-between\"><li hx-replace-url=\"/dashboard\" hx-get=\"/dashboard\" hx-target=\"#main-content\" hx-trigger=\"click[isNewPath(&#39;/dashboard&#39;)]\" class=\"flex flex-col justify-center items-center cursor-pointer\"><img alt=\"home icon\" class=\"h-5\" src=\"/static/img/home.svg\"> <span>Home</span></li><li hx-replace-url=\"/stats\" hx-get=\"/stats\" hx-target=\"#main-content\" hx-trigger=\"click[isNewPath(&#39;/stats&#39;)]\" class=\"flex flex-col justify-center items-center cursor-pointer\"><img alt=\"stats icon\" class=\"h-5\" src=\"/static/img/stats.svg\"> <span>Stats</span></li><li hx-replace-url=\"/weight\" hx-get=\"/weight\" hx-target=\"#main-content\" hx-trigger=\"click[isNewPath(&#39;/weight&#39;)]\" class=\"flex flex-col justify-center items-center cursor-pointer\"><img alt=\"weight scale icon\" class=\"h-5\" src=\"/static/img/scale.svg\"> <span>Weight</span></li><li hx-replace-url=\"/calories\" hx-get=\"/calories\" hx-target=\"#main-content\" hx-trigger=\"click[isNewPath(&#39;/calories&#39;)]\" class=\"flex flex-col justify-center items-center cursor-pointer\"><img alt=\"food icon\" class=\"h-5\" src=\"/static/img/food.svg\"> <span>Calories</span></li><li hx-replace-url=\"/settings\" hx-get=\"/settings\" hx-target=\"#main-content\" hx-trigger=\"click[isNewPath(&#39;/settings&#39;)]\" class=\"flex flex-col justify-center items-center cursor-pointer\"><img alt=\"settings icon\" class=\"h-5\" src=\"/static/img/settings.svg\"> <span>Settings</span></li></ul></nav><script>\n    function setStyles() {\n        document.querySelectorAll(\"li[hx-get]\").forEach((link) => {\n            link.style.textDecoration = \"none\";\n        });\n        \n        const currentPath = window.location.pathname;\n        const activeLink = document.querySelector(`li[hx-get=\"${currentPath}\"]`);\n        if (activeLink) {\n            activeLink.style.textDecoration = \"underline\";\n            activeLink.style.textDecorationThickness = \"3px\";\n            activeLink.style.textDecorationColor = \"#2596be\";\n            activeLink.style.textUnderlineOffset = \"8px\";\n        }\n    }\n\n    function isNewPath(path) {\n        return window.location.pathname !== path;\n    }\n\n    window.addEventListener(\"DOMContentLoaded\", setStyles);\n    document.body.addEventListener(\"htmx:afterOnLoad\", setStyles);\n    window.addEventListener(\"popstate\", setStyles);\n</script>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

@@ -25,16 +25,18 @@ templ Base(props TemplateProps) {
 			<link rel="apple-touch-icon" href="/static/img/favicon/apple-touch-icon.png"/>
 			<script src="https://unpkg.com/htmx.org@1.9.10"></script>
 			<script src="https://go-echarts.github.io/go-echarts-assets/assets/echarts.min.js"></script>
-			
 			if props.Head != nil {
 				@props.Head
 			}
 			@Favicons()
 		</head>
-		<body class="min-h-screen flex flex-col pt-4 relative select-none">
-			<main id="main-content" class="flex flex-col flex-1">
-				{ children... }
-			</main>
+		<body class="min-h-screen flex flex-col relative select-none">
+			<div class="grid grid-cols-4 flex-1">
+				@DesktopNav()
+				<main id="main-content" class="col-span-4 pt-4 md:col-span-3 flex flex-1">
+					{ children... }
+				</main>
+			</div>
 			if props.PageTitle != "Login" {
 				@Nav()
 			}
