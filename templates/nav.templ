@@ -1,61 +1,62 @@
 package templates
 
 templ DesktopNav() {
-	<nav class="hidden md:flex w-fit px-4 bg-blue-200/20">
-		<ul class="flex flex-col h-full gap-4 flex-1 justify-around">
-			<li
-				hx-replace-url="/dashboard"
-				hx-get="/dashboard"
-				hx-target="#main-content"
-				hx-trigger="click[isNewPath('/dashboard')]"
-				class="flex gap-2 justify-center items-center cursor-pointer"
-			>
-				<img alt="home icon" class="h-5" src="/static/img/home.svg"/>
-				<span>Home</span>
-			</li>
-			<li
-				hx-replace-url="/stats"
-				hx-get="/stats"
-				hx-target="#main-content"
-				hx-trigger="click[isNewPath('/stats')]"
-				class="flex gap-2 justify-center items-center cursor-pointer"
-			>
-				<img alt="stats icon" class="h-5" src="/static/img/stats.svg"/>
-				<span>Stats</span>
-			</li>
-			<li
-				hx-replace-url="/weight"
-				hx-get="/weight"
-				hx-target="#main-content"
-				hx-trigger="click[isNewPath('/weight')]"
-				class="flex gap-2 justify-center items-center cursor-pointer"
-			>
-				<img alt="weight scale icon" class="h-5" src="/static/img/scale.svg"/>
-				<span>Weight</span>
-			</li>
-			<li
-				hx-replace-url="/calories"
-				hx-get="/calories"
-				hx-target="#main-content"
-				hx-trigger="click[isNewPath('/calories')]"
-				class="flex gap-2 justify-center items-center cursor-pointer"
-			>
-				<img alt="food icon" class="h-5" src="/static/img/food.svg"/>
-				<span>Calories</span>
-			</li>
-			<li
-				hx-replace-url="/settings"
-				hx-get="/settings"
-				hx-target="#main-content"
-				hx-trigger="click[isNewPath('/settings')]"
-				class="flex gap-2 justify-center items-center cursor-pointer"
-			>
-				<img alt="settings icon" class="h-5" src="/static/img/settings.svg"/>
-				<span>Settings</span>
-			</li>
-		</ul>
-	</nav>
+  <nav class="hidden md:flex w-fit px-4 bg-gradient-to-b from-blue-200/30 to-blue-300/20 shadow-lg rounded-lg">
+    <ul class="flex flex-col h-full gap-4 flex-1 justify-around">
+      <li
+        hx-replace-url="/dashboard"
+        hx-get="/dashboard"
+        hx-target="#main-content"
+        hx-trigger="click[isNewPath('/dashboard')]"
+        class="flex gap-2 justify-center items-center cursor-pointer transition-transform hover:scale-105 hover:bg-blue-100/50 rounded-lg p-2 group"
+      >
+        <img alt="home icon" class="h-5 group-hover:drop-shadow-md" src="/static/img/home.svg"/>
+        <span class="text-blue-800 group-hover:text-blue-900 font-medium">Home</span>
+      </li>
+      <li
+        hx-replace-url="/stats"
+        hx-get="/stats"
+        hx-target="#main-content"
+        hx-trigger="click[isNewPath('/stats')]"
+        class="flex gap-2 justify-center items-center cursor-pointer transition-transform hover:scale-105 hover:bg-blue-100/50 rounded-lg p-2 group"
+      >
+        <img alt="stats icon" class="h-5 group-hover:drop-shadow-md" src="/static/img/stats.svg"/>
+        <span class="text-blue-800 group-hover:text-blue-900 font-medium">Stats</span>
+      </li>
+      <li
+        hx-replace-url="/weight"
+        hx-get="/weight"
+        hx-target="#main-content"
+        hx-trigger="click[isNewPath('/weight')]"
+        class="flex gap-2 justify-center items-center cursor-pointer transition-transform hover:scale-105 hover:bg-blue-100/50 rounded-lg p-2 group"
+      >
+        <img alt="weight scale icon" class="h-5 group-hover:drop-shadow-md" src="/static/img/scale.svg"/>
+        <span class="text-blue-800 group-hover:text-blue-900 font-medium">Weight</span>
+      </li>
+      <li
+        hx-replace-url="/calories"
+        hx-get="/calories"
+        hx-target="#main-content"
+        hx-trigger="click[isNewPath('/calories')]"
+        class="flex gap-2 justify-center items-center cursor-pointer transition-transform hover:scale-105 hover:bg-blue-100/50 rounded-lg p-2 group"
+      >
+        <img alt="food icon" class="h-5 group-hover:drop-shadow-md" src="/static/img/food.svg"/>
+        <span class="text-blue-800 group-hover:text-blue-900 font-medium">Calories</span>
+      </li>
+      <li
+        hx-replace-url="/settings"
+        hx-get="/settings"
+        hx-target="#main-content"
+        hx-trigger="click[isNewPath('/settings')]"
+        class="flex gap-2 justify-center items-center cursor-pointer transition-transform hover:scale-105 hover:bg-blue-100/50 rounded-lg p-2 group"
+      >
+        <img alt="settings icon" class="h-5 group-hover:drop-shadow-md" src="/static/img/settings.svg"/>
+        <span class="text-blue-800 group-hover:text-blue-900 font-medium">Settings</span>
+      </li>
+    </ul>
+  </nav>
 }
+
 
 templ Nav() {
 	<nav class="md:hidden p-6 bg-white sticky bottom-0 z-50 shadow-[0_-4px_8px_0_rgba(0,0,0,0.2)]">
