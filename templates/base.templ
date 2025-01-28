@@ -32,8 +32,12 @@ templ Base(props TemplateProps) {
 		</head>
 		<body class="min-h-screen flex flex-col relative select-none">
 			<div class="grid grid-cols-4 flex-1">
-				@DesktopNav()
-				<main id="main-content" class="col-span-4 pt-4 md:col-span-3 flex flex-1">
+				if props.PageTitle != "Login" {
+					@DesktopNav()
+				}
+				<main id="main-content" class={templ.KV("col-span-4 pt-4 md:col-span-3 flex flex-1", props.PageTitle != "Login"),
+				templ.KV("col-span-4 pt-4 md:col-span-4 flex flex-1", props.PageTitle == "Login")
+				}>
 					{ children... }
 				</main>
 			</div>
