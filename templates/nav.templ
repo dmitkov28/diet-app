@@ -1,67 +1,72 @@
 package templates
 
 templ DesktopNav() {
-  <nav class="hidden md:flex w-fit px-4 bg-gradient-to-b from-blue-200/30 to-blue-300/20 shadow-lg rounded-lg">
-    <ul class="flex flex-col h-full gap-4 flex-1 justify-around">
-      <li
-        hx-replace-url="/dashboard"
-        hx-get="/dashboard"
-        hx-target="#main-content"
-        hx-trigger="click[isNewPath('/dashboard')]"
-        class="flex gap-2 justify-center items-center cursor-pointer transition-transform hover:scale-105 hover:bg-blue-100/50 rounded-lg p-2 group"
-      >
-        <img alt="home icon" class="h-5 group-hover:drop-shadow-md" src="/static/img/home.svg"/>
-        <span class="text-blue-800 group-hover:text-blue-900 font-medium">Home</span>
-      </li>
-      <li
-        hx-replace-url="/stats"
-        hx-get="/stats"
-        hx-target="#main-content"
-        hx-trigger="click[isNewPath('/stats')]"
-        class="flex gap-2 justify-center items-center cursor-pointer transition-transform hover:scale-105 hover:bg-blue-100/50 rounded-lg p-2 group"
-      >
-        <img alt="stats icon" class="h-5 group-hover:drop-shadow-md" src="/static/img/stats.svg"/>
-        <span class="text-blue-800 group-hover:text-blue-900 font-medium">Stats</span>
-      </li>
-      <li
-        hx-replace-url="/weight"
-        hx-get="/weight"
-        hx-target="#main-content"
-        hx-trigger="click[isNewPath('/weight')]"
-        class="flex gap-2 justify-center items-center cursor-pointer transition-transform hover:scale-105 hover:bg-blue-100/50 rounded-lg p-2 group"
-      >
-        <img alt="weight scale icon" class="h-5 group-hover:drop-shadow-md" src="/static/img/scale.svg"/>
-        <span class="text-blue-800 group-hover:text-blue-900 font-medium">Weight</span>
-      </li>
-      <li
-        hx-replace-url="/calories"
-        hx-get="/calories"
-        hx-target="#main-content"
-        hx-trigger="click[isNewPath('/calories')]"
-        class="flex gap-2 justify-center items-center cursor-pointer transition-transform hover:scale-105 hover:bg-blue-100/50 rounded-lg p-2 group"
-      >
-        <img alt="food icon" class="h-5 group-hover:drop-shadow-md" src="/static/img/food.svg"/>
-        <span class="text-blue-800 group-hover:text-blue-900 font-medium">Calories</span>
-      </li>
-      <li
-        hx-replace-url="/settings"
-        hx-get="/settings"
-        hx-target="#main-content"
-        hx-trigger="click[isNewPath('/settings')]"
-        class="flex gap-2 justify-center items-center cursor-pointer transition-transform hover:scale-105 hover:bg-blue-100/50 rounded-lg p-2 group"
-      >
-        <img alt="settings icon" class="h-5 group-hover:drop-shadow-md" src="/static/img/settings.svg"/>
-        <span class="text-blue-800 group-hover:text-blue-900 font-medium">Settings</span>
-      </li>
-    </ul>
-  </nav>
+	<nav class="hidden md:flex w-fit px-4 bg-gradient-to-b from-blue-200/30 to-blue-300/20 shadow-lg rounded-lg">
+		<ul class="flex flex-col h-full gap-4 flex-1 justify-around">
+			<li
+				data-link-desktop
+				hx-replace-url="/dashboard"
+				hx-get="/dashboard"
+				hx-target="#main-content"
+				hx-trigger="click[isNewPath('/dashboard')]"
+				class="flex gap-2 justify-center items-center cursor-pointer transition-transform hover:scale-105 hover:bg-blue-100/50 rounded-lg p-2 group"
+			>
+				<img alt="home icon" class="h-5 group-hover:drop-shadow-md" src="/static/img/home.svg"/>
+				<span class="text-blue-800 group-hover:text-blue-900 font-medium">Home</span>
+			</li>
+			<li
+				data-link-desktop
+				hx-replace-url="/stats"
+				hx-get="/stats"
+				hx-target="#main-content"
+				hx-trigger="click[isNewPath('/stats')]"
+				class="flex gap-2 justify-center items-center cursor-pointer transition-transform hover:scale-105 hover:bg-blue-100/50 rounded-lg p-2 group"
+			>
+				<img alt="stats icon" class="h-5 group-hover:drop-shadow-md" src="/static/img/stats.svg"/>
+				<span class="text-blue-800 group-hover:text-blue-900 font-medium">Stats</span>
+			</li>
+			<li
+				data-link-desktop
+				hx-replace-url="/weight"
+				hx-get="/weight"
+				hx-target="#main-content"
+				hx-trigger="click[isNewPath('/weight')]"
+				class="flex gap-2 justify-center items-center cursor-pointer transition-transform hover:scale-105 hover:bg-blue-100/50 rounded-lg p-2 group"
+			>
+				<img alt="weight scale icon" class="h-5 group-hover:drop-shadow-md" src="/static/img/scale.svg"/>
+				<span class="text-blue-800 group-hover:text-blue-900 font-medium">Weight</span>
+			</li>
+			<li
+				data-link-desktop
+				hx-replace-url="/calories"
+				hx-get="/calories"
+				hx-target="#main-content"
+				hx-trigger="click[isNewPath('/calories')]"
+				class="flex gap-2 justify-center items-center cursor-pointer transition-transform hover:scale-105 hover:bg-blue-100/50 rounded-lg p-2 group"
+			>
+				<img alt="food icon" class="h-5 group-hover:drop-shadow-md" src="/static/img/food.svg"/>
+				<span class="text-blue-800 group-hover:text-blue-900 font-medium">Calories</span>
+			</li>
+			<li
+				data-link-desktop
+				hx-replace-url="/settings"
+				hx-get="/settings"
+				hx-target="#main-content"
+				hx-trigger="click[isNewPath('/settings')]"
+				class="flex gap-2 justify-center items-center cursor-pointer transition-transform hover:scale-105 hover:bg-blue-100/50 rounded-lg p-2 group"
+			>
+				<img alt="settings icon" class="h-5 group-hover:drop-shadow-md" src="/static/img/settings.svg"/>
+				<span class="text-blue-800 group-hover:text-blue-900 font-medium">Settings</span>
+			</li>
+		</ul>
+	</nav>
 }
-
 
 templ Nav() {
 	<nav class="md:hidden p-6 bg-white sticky bottom-0 z-50 shadow-[0_-4px_8px_0_rgba(0,0,0,0.2)]">
 		<ul class="flex gap-4 justify-between">
 			<li
+				data-link-mobile
 				hx-replace-url="/dashboard"
 				hx-get="/dashboard"
 				hx-target="#main-content"
@@ -72,6 +77,7 @@ templ Nav() {
 				<span>Home</span>
 			</li>
 			<li
+				data-link-mobile
 				hx-replace-url="/stats"
 				hx-get="/stats"
 				hx-target="#main-content"
@@ -82,6 +88,7 @@ templ Nav() {
 				<span>Stats</span>
 			</li>
 			<li
+				data-link-mobile
 				hx-replace-url="/weight"
 				hx-get="/weight"
 				hx-target="#main-content"
@@ -92,6 +99,7 @@ templ Nav() {
 				<span>Weight</span>
 			</li>
 			<li
+				data-link-mobile
 				hx-replace-url="/calories"
 				hx-get="/calories"
 				hx-target="#main-content"
@@ -102,6 +110,7 @@ templ Nav() {
 				<span>Calories</span>
 			</li>
 			<li
+				data-link-mobile
 				hx-replace-url="/settings"
 				hx-get="/settings"
 				hx-target="#main-content"
@@ -114,13 +123,28 @@ templ Nav() {
 		</ul>
 	</nav>
 	<script>
+    function setDesktopStyles(){
+      const links = document.querySelectorAll("li[data-link-desktop]");
+      links.forEach(link => {
+        link.classList.remove("bg-blue-100/80");
+        link.classList.remove("shadow-sm");
+      });
+
+      const currentPath = window.location.pathname;
+      const activeLink = document.querySelector(`li[data-link-desktop][hx-get="${currentPath}"]`);
+        if (activeLink) {
+            activeLink.classList.add("bg-blue-100/80");
+            activeLink.classList.add("shadow-sm");
+        }
+    }
+
     function setStyles() {
-        document.querySelectorAll("li[hx-get]").forEach((link) => {
+        document.querySelectorAll("li[data-link-mobile]").forEach((link) => {
             link.style.textDecoration = "none";
         });
         
         const currentPath = window.location.pathname;
-        const activeLink = document.querySelector(`li[hx-get="${currentPath}"]`);
+        const activeLink = document.querySelector(`li[data-link-mobile][hx-get="${currentPath}"]`);
         if (activeLink) {
             activeLink.style.textDecoration = "underline";
             activeLink.style.textDecorationThickness = "3px";
@@ -136,5 +160,9 @@ templ Nav() {
     window.addEventListener("DOMContentLoaded", setStyles);
     document.body.addEventListener("htmx:afterOnLoad", setStyles);
     window.addEventListener("popstate", setStyles);
+
+    window.addEventListener("DOMContentLoaded", setDesktopStyles);
+    document.body.addEventListener("htmx:afterOnLoad", setDesktopStyles);
+    window.addEventListener("popstate", setDesktopStyles);
 </script>
 }
