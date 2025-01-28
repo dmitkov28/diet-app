@@ -44,14 +44,14 @@ templ NutritionTable(data diet.NutritionData) {
 				<tr>
 					<td class="text-left px-4 py-2 border-b border-gray-300">Calories</td>
 					<td class="text-right px-4 py-2 border-b border-gray-300">
-						{ fmt.Sprintf("%d",
+						{ fmt.Sprintf("%.0f",
 					data.Product.Nutriments.EnergyKcal) }
 					</td>
 				</tr>
 				<tr class="bg-gray-50">
 					<td class="text-left px-4 py-2 border-b border-gray-300">Total Fat</td>
 					<td class="text-right px-4 py-2 border-b border-gray-300">
-						{ fmt.Sprintf("%d",
+						{ fmt.Sprintf("%.0f",
 					data.Product.Nutriments.Fat) }g
 					</td>
 				</tr>
@@ -72,7 +72,7 @@ templ NutritionTable(data diet.NutritionData) {
 				<tr class="bg-gray-50">
 					<td class="text-left px-4 py-2 border-b border-gray-300">Total Carbohydrate</td>
 					<td class="text-right px-4 py-2 border-b border-gray-300">
-						{ fmt.Sprintf("%d",
+						{ fmt.Sprintf("%.0f",
 					data.Product.Nutriments.Carbohydrates) }g
 					</td>
 				</tr>
@@ -93,7 +93,7 @@ templ NutritionTable(data diet.NutritionData) {
 				<tr>
 					<td class="text-left px-4 py-2">Protein</td>
 					<td class="text-right px-4 py-2">
-						{ fmt.Sprintf("%d",
+						{ fmt.Sprintf("%.0f",
 					data.Product.Nutriments.Proteins) }g
 					</td>
 				</tr>

@@ -34,7 +34,7 @@ func Scripts() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<script src=\"https://www.unpkg.com/quagga@0.12.1/dist/quagga.min.js\"></script>")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 1)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -117,17 +117,17 @@ func FoodFacts(data diet.NutritionData) templ.Component {
 			templ_7745c5c3_Var4 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"rounded-md border-slate-200 shadow-md p-4\">")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 2)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if data.Status == "failure" {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<h2>Unknown product 😞</h2><a hx-replace-url=\"/scan\" hx-get=\"/scan\" hx-target=\"#main-content\" hx-push-url=\"true\">Try again</a>")
+			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 3)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<h2 class=\"font-bold text-xl mb-2 text-center\">")
+			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 4)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -140,7 +140,7 @@ func FoodFacts(data diet.NutritionData) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" (")
+			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 5)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -153,7 +153,7 @@ func FoodFacts(data diet.NutritionData) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(")</h2>")
+			templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 6)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -162,7 +162,7 @@ func FoodFacts(data diet.NutritionData) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div>")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 7)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -191,12 +191,12 @@ func NutritionTable(data diet.NutritionData) templ.Component {
 			templ_7745c5c3_Var7 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden\"><table class=\"w-full border-collapse border border-gray-300\"><thead class=\"bg-gray-100\"><tr><th class=\"text-left px-4 py-2 border-b border-gray-300 font-semibold\">Nutrient</th><th class=\"text-right px-4 py-2 border-b border-gray-300 font-semibold\">Amount</th></tr></thead> <tbody><tr><td class=\"text-left px-4 py-2 border-b border-gray-300\">Calories</td><td class=\"text-right px-4 py-2 border-b border-gray-300\">")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 8)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var8 string
-		templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d",
+		templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.0f",
 			data.Product.Nutriments.EnergyKcal))
 		if templ_7745c5c3_Err != nil {
 			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/scan.templ`, Line: 48, Col: 40}
@@ -205,12 +205,12 @@ func NutritionTable(data diet.NutritionData) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</td></tr><tr class=\"bg-gray-50\"><td class=\"text-left px-4 py-2 border-b border-gray-300\">Total Fat</td><td class=\"text-right px-4 py-2 border-b border-gray-300\">")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 9)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var9 string
-		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d",
+		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.0f",
 			data.Product.Nutriments.Fat))
 		if templ_7745c5c3_Err != nil {
 			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/scan.templ`, Line: 55, Col: 33}
@@ -219,7 +219,7 @@ func NutritionTable(data diet.NutritionData) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("g</td></tr><tr><td class=\"text-left px-4 py-2 border-b border-gray-300\">Saturated Fat</td><td class=\"text-right px-4 py-2 border-b border-gray-300\">")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 10)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -233,7 +233,7 @@ func NutritionTable(data diet.NutritionData) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("g</td></tr><tr><td class=\"text-left px-4 py-2 border-b border-gray-300\">Sodium</td><td class=\"text-right px-4 py-2 border-b border-gray-300\">")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 11)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -247,12 +247,12 @@ func NutritionTable(data diet.NutritionData) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("mg</td></tr><tr class=\"bg-gray-50\"><td class=\"text-left px-4 py-2 border-b border-gray-300\">Total Carbohydrate</td><td class=\"text-right px-4 py-2 border-b border-gray-300\">")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 12)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var12 string
-		templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d",
+		templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.0f",
 			data.Product.Nutriments.Carbohydrates))
 		if templ_7745c5c3_Err != nil {
 			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/scan.templ`, Line: 76, Col: 43}
@@ -261,7 +261,7 @@ func NutritionTable(data diet.NutritionData) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("g</td></tr><tr><td class=\"text-left px-4 py-2 border-b border-gray-300\">Dietary Fiber</td><td class=\"text-right px-4 py-2 border-b border-gray-300\">")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 13)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -275,7 +275,7 @@ func NutritionTable(data diet.NutritionData) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("g</td></tr><tr class=\"bg-gray-50\"><td class=\"text-left px-4 py-2 border-b border-gray-300\">Sugars</td><td class=\"text-right px-4 py-2 border-b border-gray-300\">")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 14)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -289,12 +289,12 @@ func NutritionTable(data diet.NutritionData) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("g</td></tr><tr><td class=\"text-left px-4 py-2\">Protein</td><td class=\"text-right px-4 py-2\">")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 15)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var15 string
-		templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d",
+		templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.0f",
 			data.Product.Nutriments.Proteins))
 		if templ_7745c5c3_Err != nil {
 			return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/scan.templ`, Line: 97, Col: 38}
@@ -303,7 +303,7 @@ func NutritionTable(data diet.NutritionData) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("g</td></tr></tbody></table></div>")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 16)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -332,7 +332,7 @@ func ContentScanPage() templ.Component {
 			templ_7745c5c3_Var16 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<style>\n        #quagga video,\n        #quagga canvas {\n            width: 100vw !important;\n            height: 100vh !important;\n            object-fit: cover;\n            position: fixed;\n            top: 0;\n            left: 0;\n        }\n    </style><div id=\"modal-container\"></div><div class=\"fixed inset-0 w-screen h-screen\" id=\"quagga-container\"><div id=\"quagga\" class=\"w-full h-full\"></div></div><script>\n    window.addEventListener('load', function() {\n        let quaggaIsRunning = false;\n\n        function stopQuagga() {\n            if (quaggaIsRunning) {\n                Quagga.stop();\n                quaggaIsRunning = false;\n            }\n        }\n\n        function startQuagga() {\n            if (quaggaIsRunning) {\n                return;\n            }\n\n            const config = {\n                inputStream: {\n                    name: \"Live\",\n                    type: \"LiveStream\",\n                    target: document.querySelector(\"#quagga\"),\n                    constraints: {\n                        facingMode: \"environment\",\n                        focusMode: \"continuous\"\n                    },\n                },\n                decoder: {\n                    readers: [\"ean_reader\", \"ean_8_reader\"],\n                    multiple: false,\n\n                },\n                locate: true,\n                frequency: 1,\n                locator: {\n                    patchSize: \"medium\",\n                    halfSample: true\n                },\n            };\n\n            try {\n                Quagga.init(config, function(err) {\n                    if (err) {\n                        console.error(\"Quagga initialization failed\", err);\n                        return;\n                    }\n                    \n                    try {\n                        Quagga.start();\n                        quaggaIsRunning = true;\n                        console.log(\"Quagga started successfully\");\n                    } catch (startErr) {\n                        console.error(\"Failed to start Quagga\", startErr);\n                    }\n                });\n            } catch (initErr) {\n                console.error(\"Failed to initialize Quagga\", initErr);\n            }\n\n            Quagga.onDetected(function(result) {\n                if (!result || !result.codeResult) {\n                    return;\n                }\n\n                const code = result.codeResult.code;\n                console.log(\"Detected barcode:\", code);\n\n                stopQuagga();\n\n                htmx.ajax(\"GET\", `/scan/${code}`, {\n                    target: \"#modal-container\",\n                    swap: \"innerHTML\"\n                }).catch(function(error) {\n                    console.error(\"AJAX request failed:\", error);\n                }).finally(function() {\n                    setTimeout(startQuagga, 1000);\n                });\n            });\n\n            Quagga.onProcessed(function(result) {\n                if (!result) {\n                    return;\n                }\n\n                const drawingCtx = Quagga.canvas.ctx.overlay;\n                const drawingCanvas = Quagga.canvas.dom.overlay;\n\n                if (result.boxes) {\n                    drawingCtx.clearRect(0, 0, drawingCanvas.width, drawingCanvas.height);\n                    result.boxes.forEach(function(box) {\n                        if (box !== result.box) {\n                            drawingCtx.strokeStyle = \"green\";\n                            drawingCtx.strokeRect(box.x, box.y, box.width, box.height);\n                        }\n                    });\n                }\n\n                if (result.box) {\n                    drawingCtx.strokeStyle = \"blue\";\n                    drawingCtx.strokeRect(\n                        result.box.x, \n                        result.box.y, \n                        result.box.width, \n                        result.box.height\n                    );\n                }\n            });\n        }\n\n        // Start scanning\n        startQuagga();\n\n        // Clean up when leaving the page\n        window.addEventListener('beforeunload', stopQuagga);\n    });\n    </script>")
+		templ_7745c5c3_Err = templ.WriteWatchModeString(templ_7745c5c3_Buffer, 17)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
