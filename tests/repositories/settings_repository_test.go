@@ -1,8 +1,8 @@
 package repositories_test
 
 import (
-	"testing"
 	"github.com/dmitkov28/dietapp/internal/repositories"
+	"testing"
 )
 
 type MockSettingsRepo struct {
