@@ -120,7 +120,7 @@ func LoginForm(err bool) templ.Component {
 			templ_7745c5c3_Var4 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<form hx-swap=\"innerHTML\" hx-post=\"/login\" hx-indicator=\"#spinner\" class=\"grid grid-cols-1 gap-6 w-full px-4\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<form hx-swap=\"innerHTML\" hx-post=\"/login\" hx-indicator=\"#spinner\" class=\"grid grid-cols-1 gap-6 w-full md:w-fit px-4\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

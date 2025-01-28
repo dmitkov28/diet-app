@@ -19,7 +19,7 @@ templ ContentLoginPage(err bool) {
 }
 
 templ LoginForm(err bool) {
-	<form hx-swap="innerHTML" hx-post="/login" hx-indicator="#spinner" class="grid grid-cols-1 gap-6 w-full px-4">
+	<form hx-swap="innerHTML" hx-post="/login" hx-indicator="#spinner" class="grid grid-cols-1 gap-6 w-full md:w-fit px-4">
 		<input name="email" class={ "col-span-1 border border-slate-300 p-2 rounded-md", templ.KV("border border-red-500	placeholder-red-500", err) } type="text" placeholder="email"/>
 		<input name="password" class={ "col-span-1 border border-slate-300 p-2 rounded-md", templ.KV("border border-red-500 placeholder-red-500", err) } type="password" placeholder="password"/>
 		if err {
