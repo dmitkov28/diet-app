@@ -63,8 +63,8 @@ templ DesktopNav() {
 }
 
 templ Nav() {
-	<nav class="md:hidden p-6 bg-white sticky bottom-0 z-50 shadow-[0_-4px_8px_0_rgba(0,0,0,0.2)]">
-		<ul class="flex gap-4 justify-between">
+	<nav class="md:hidden p-6 bg-white sticky bottom-0 z-50 shadow-[0_-4px_8px_0_rgba(0,0,0,0.2)] overflow-hidden">
+		<ul class="flex gap-4 pb-2 justify-between overflow-x-scroll scrollbar-hide">
 			<li
 				data-link-mobile
 				hx-replace-url="/dashboard"
