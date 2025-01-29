@@ -31,12 +31,12 @@ templ Base(props TemplateProps) {
 			@Favicons()
 		</head>
 		<body class="min-h-screen flex flex-col relative select-none">
-			<div class="grid grid-cols-4 flex-1">
+			<div class="flex flex-1">
 				if props.PageTitle != "Login" {
 					@DesktopNav()
 				}
-				<main id="main-content" class={templ.KV("col-span-4 pt-4 md:col-span-3 flex flex-1", props.PageTitle != "Login"),
-				templ.KV("col-span-4 pt-4 md:col-span-4 flex flex-1", props.PageTitle == "Login")
+				<main id="main-content" class={templ.KV("flex flex-1 md:ml-64", props.PageTitle != "Login"),
+				templ.KV("pt-4 flex flex-1", props.PageTitle == "Login")
 				}>
 					{ children... }
 				</main>

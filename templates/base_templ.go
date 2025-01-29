@@ -61,7 +61,7 @@ func Base(props TemplateProps) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</head><body class=\"min-h-screen flex flex-col relative select-none\"><div class=\"grid grid-cols-4 flex-1\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</head><body class=\"min-h-screen flex flex-col relative select-none\"><div class=\"flex flex-1\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -71,8 +71,8 @@ func Base(props TemplateProps) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		var templ_7745c5c3_Var3 = []any{templ.KV("col-span-4 pt-4 md:col-span-3 flex flex-1", props.PageTitle != "Login"),
-			templ.KV("col-span-4 pt-4 md:col-span-4 flex flex-1", props.PageTitle == "Login")}
+		var templ_7745c5c3_Var3 = []any{templ.KV("flex flex-1 md:ml-64", props.PageTitle != "Login"),
+			templ.KV("pt-4 flex flex-1", props.PageTitle == "Login")}
 		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var3...)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
