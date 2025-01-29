@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/dmitkov28/dietapp/internal/diet"
+	"github.com/dmitkov28/dietapp/internal/domain"
 	"github.com/dmitkov28/dietapp/internal/repositories"
 	"github.com/dmitkov28/dietapp/internal/services"
 	"github.com/dmitkov28/dietapp/templates"
@@ -19,9 +19,9 @@ func SettingsGETHandler(settingsService services.ISettingsService) echo.HandlerF
 			return render(c, templates.SettingsForm(repositories.Settings{}, templates.SettingsErrors{}))
 		}
 
-		bmr := diet.CalculateBMR(settings.Current_weight, settings.Height, settings.Age, settings.Sex)
-		calorieGoal := diet.CalculateCalorieGoal(bmr, settings.Activity_level, settings.Current_weight, settings.Target_weight_loss_rate)
-		expectedDuration := diet.CalculateExpectedDietDuration(settings.Current_weight, settings.Target_weight, settings.Target_weight_loss_rate)
+		bmr := domain.CalculateBMR(settings.Current_weight, settings.Height, settings.Age, settings.Sex)
+		calorieGoal := domain.CalculateCalorieGoal(bmr, settings.Activity_level, settings.Current_weight, settings.Target_weight_loss_rate)
+		expectedDuration := domain.CalculateExpectedDietDuration(settings.Current_weight, settings.Target_weight, settings.Target_weight_loss_rate)
 		isHTMX := c.Request().Header.Get("HX-Request") != ""
 		return render(c, templates.SettingsPage(settings, bmr, calorieGoal, expectedDuration, isHTMX))
 	}
@@ -100,9 +100,9 @@ func SettingsPOSTHandler(settingsService services.ISettingsService) echo.Handler
 			fmt.Println(err)
 		}
 
-		bmr := diet.CalculateBMR(settings.Current_weight, settings.Height, settings.Age, settings.Sex)
-		calorieGoal := diet.CalculateCalorieGoal(bmr, settings.Activity_level, settings.Current_weight, settings.Target_weight_loss_rate)
-		expectedDuration := diet.CalculateExpectedDietDuration(settings.Current_weight, settings.Target_weight, settings.Target_weight_loss_rate)
+		bmr := domain.CalculateBMR(settings.Current_weight, settings.Height, settings.Age, settings.Sex)
+		calorieGoal := domain.CalculateCalorieGoal(bmr, settings.Activity_level, settings.Current_weight, settings.Target_weight_loss_rate)
+		expectedDuration := domain.CalculateExpectedDietDuration(settings.Current_weight, settings.Target_weight, settings.Target_weight_loss_rate)
 
 		isHTMX := c.Request().Header.Get("HX-Request") != ""
 		return render(c, templates.SettingsPage(settings, bmr, calorieGoal, expectedDuration, isHTMX))
