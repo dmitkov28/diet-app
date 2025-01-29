@@ -1,4 +1,4 @@
-package model
+package domain
 
 type FoodLogEntry struct {
 	ID               int     `json:"id"`
