@@ -34,110 +34,112 @@ templ FoodLogPage(foodLogs []repositories.FoodLogEntry, totals repositories.Food
 }
 
 templ ContentFoodLogPage(foodLogs []repositories.FoodLogEntry, totals repositories.FoodLogTotals, date, prevDate, nextDate string) {
-	<div class="w-full md:max-w-4xl max-w-lg mx-auto p-4 sm:px-6 lg:px-8">
-		<div
-			class="swiper w-full"
-			data-prev-date={ prevDate }
-			data-next-date={ nextDate }
-			data-current-date={ date }
-		>
-			<div class="swiper-wrapper">
-				<div class="swiper-slide">
-					@FoodLogLoadingSkeleton()
-				</div>
-				<div class="swiper-slide">
-					<div class="mx-auto w-fit flex items-center justify-between gap-4">
-						<span class="flex w-full h-full">
-							<img alt="chevron left icon" onclick="swiper.slidePrev()" class="h-5 cursor-pointer" src="/static/img/chevron-left.svg"/>
-						</span>
-						<form
-							hx-get="/food_log"
-							hx-trigger="change delay:1s"
-							hx-target="#main-content"
-							hx-indicator="#loading"
-							class="w-full flex justify-center"
-						>
-							<input
-								type="date"
-								name="date"
-								if date != "" {
-									value={ date }
-								} else {
-									value={ time.Now().Format("2006-01-02") }
-								}
-							/>
-						</form>
-						<span class="flex w-full h-full">
-							<img alt="chevron right icon" onclick="swiper.slideNext()" class="h-5 cursor-pointer" src="/static/img/chevron-right.svg"/>
-						</span>
-					</div>
-					if len(foodLogs) != 0 {
+	<div class="grid grid-cols-1">
+		<div class="w-full md:max-w-4xl max-w-lg mx-auto p-4 sm:px-6 lg:px-8">
+			<div
+				class="swiper w-full"
+				data-prev-date={ prevDate }
+				data-next-date={ nextDate }
+				data-current-date={ date }
+			>
+				<div class="swiper-wrapper">
+					<div class="swiper-slide">
 						@FoodLogLoadingSkeleton()
-						<div class="w-full flex flex-col flex-1 justify-center items-center p-8">
-							<div class="w-full grid grid-cols-1 md:grid-cols-2 md:gap-4 p-6 mx-auto bg-white rounded-lg shadow-md border  max-h-[600px]">
-								<div class="col-span-1 md:col-span-2 flex justify-between items-center mb-4">
-									<h2 class="text-xl font-bold text-gray-800">Food Log</h2>
-									<span class="text-sm text-gray-500">{ formatDate(date) }</span>
-								</div>
-								<div class="col-span-1">
-									<div>
-										@FoodLogTotals(totals, date)
-										<h3 class="text-lg font-semibold text-gray-700 mb-2">Macros</h3>
-										<div class="mb-4">
-											<div class="flex justify-between text-sm text-gray-700">
-												<span>Protein</span>
-												<span>{ fmt.Sprintf("%.1f", totals.TotalProtein) }g of 150g</span>
-											</div>
-											<div class="w-full bg-gray-200 rounded-full h-2.5 mt-1">
-												<div class="bg-blue-500 h-2.5 rounded-full" style="width: 80%;"></div>
-											</div>
-										</div>
-										<div class="mb-4">
-											<div class="flex justify-between text-sm text-gray-700">
-												<span>Carbs</span>
-												<span>{ fmt.Sprintf("%.1f", totals.TotalCarbs) }g of 250g</span>
-											</div>
-											<div class="w-full bg-gray-200 rounded-full h-2.5 mt-1">
-												<div class="bg-yellow-500 h-2.5 rounded-full" style="width: 80%;"></div>
-											</div>
-										</div>
+					</div>
+					<div class="swiper-slide">
+						<div class="mx-auto w-fit flex items-center justify-between gap-4">
+							<span class="flex w-full h-full">
+								<img alt="chevron left icon" onclick="swiper.slidePrev()" class="h-5 cursor-pointer" src="/static/img/chevron-left.svg"/>
+							</span>
+							<form
+								hx-get="/food_log"
+								hx-trigger="change delay:1s"
+								hx-target="#main-content"
+								hx-indicator="#loading"
+								class="w-full flex justify-center"
+							>
+								<input
+									type="date"
+									name="date"
+									if date != "" {
+										value={ date }
+									} else {
+										value={ time.Now().Format("2006-01-02") }
+									}
+								/>
+							</form>
+							<span class="flex w-full h-full">
+								<img alt="chevron right icon" onclick="swiper.slideNext()" class="h-5 cursor-pointer" src="/static/img/chevron-right.svg"/>
+							</span>
+						</div>
+						if len(foodLogs) != 0 {
+							@FoodLogLoadingSkeleton()
+							<div class="w-full flex flex-col flex-1 justify-center items-center p-8">
+								<div class="w-full grid grid-cols-1 md:grid-cols-2 md:gap-4 p-6 mx-auto bg-white rounded-lg shadow-md border  max-h-[600px]">
+									<div class="col-span-1 md:col-span-2 flex justify-between items-center mb-4">
+										<h2 class="text-xl font-bold text-gray-800">Food Log</h2>
+										<span class="text-sm text-gray-500">{ formatDate(date) }</span>
+									</div>
+									<div class="col-span-1">
 										<div>
-											<div class="flex justify-between text-sm text-gray-700">
-												<span>Fat</span>
-												<span>{ fmt.Sprintf("%.1f", totals.TotalCarbs) }g of 70g</span>
+											@FoodLogTotals(totals, date)
+											<h3 class="text-lg font-semibold text-gray-700 mb-2">Macros</h3>
+											<div class="mb-4">
+												<div class="flex justify-between text-sm text-gray-700">
+													<span>Protein</span>
+													<span>{ fmt.Sprintf("%.1f", totals.TotalProtein) }g of 150g</span>
+												</div>
+												<div class="w-full bg-gray-200 rounded-full h-2.5 mt-1">
+													<div class="bg-blue-500 h-2.5 rounded-full" style="width: 80%;"></div>
+												</div>
 											</div>
-											<div class="w-full bg-gray-200 rounded-full h-2.5 mt-1">
-												<div class="bg-red-500 h-2.5 rounded-full" style="width: 71%;"></div>
+											<div class="mb-4">
+												<div class="flex justify-between text-sm text-gray-700">
+													<span>Carbs</span>
+													<span>{ fmt.Sprintf("%.1f", totals.TotalCarbs) }g of 250g</span>
+												</div>
+												<div class="w-full bg-gray-200 rounded-full h-2.5 mt-1">
+													<div class="bg-yellow-500 h-2.5 rounded-full" style="width: 80%;"></div>
+												</div>
+											</div>
+											<div>
+												<div class="flex justify-between text-sm text-gray-700">
+													<span>Fat</span>
+													<span>{ fmt.Sprintf("%.1f", totals.TotalCarbs) }g of 70g</span>
+												</div>
+												<div class="w-full bg-gray-200 rounded-full h-2.5 mt-1">
+													<div class="bg-red-500 h-2.5 rounded-full" style="width: 71%;"></div>
+												</div>
 											</div>
 										</div>
 									</div>
-								</div>
-								<div class="mt-6 col-span-1 overflow-y-scroll relative scrollbar-hide">
-									<h3 class="sticky z-50 pb-2 top-0 bg-white rounded-b-md text-lg font-semibold text-gray-700 mb-2">
-										Logged Food
-										if len(foodLogs) != 0 {
-											{ fmt.Sprintf("(%d items)", len(foodLogs)) }
-										}
-									</h3>
-									<ul class="space-y-4">
-										for _, entry := range foodLogs {
-											@FoodLogEntry(entry)
-										}
-									</ul>
+									<div class="mt-6 col-span-1 overflow-y-scroll relative scrollbar-hide">
+										<h3 class="sticky z-50 pb-2 top-0 bg-white rounded-b-md text-lg font-semibold text-gray-700 mb-2">
+											Logged Food
+											if len(foodLogs) != 0 {
+												{ fmt.Sprintf("(%d items)", len(foodLogs)) }
+											}
+										</h3>
+										<ul class="space-y-4">
+											for _, entry := range foodLogs {
+												@FoodLogEntry(entry)
+											}
+										</ul>
+									</div>
 								</div>
 							</div>
+						} else {
+							<div class="w-full h-full flex flex-col flex-1 justify-center items-center p-8  min-h-[500px]">
+								<div class="flex flex-1 w-full items-center justify-center bg-white rounded-lg shadow-md border">No entries.</div>
+							</div>
+						}
+						<div class="flex justify-center items-center">
+							<img alt="plus icon" hx-get="/scan" hx-target="#main-content" class="h-10 cursor-pointer" src="/static/img/plus.svg"/>
 						</div>
-					} else {
-						<div class="w-full h-full flex flex-col flex-1 justify-center items-center p-8  min-h-[500px]">
-							<div class="flex flex-1 w-full items-center justify-center bg-white rounded-lg shadow-md border">No entries.</div>
-						</div>
-					}
-					<div class="flex justify-center items-center">
-						<img alt="plus icon" hx-get="/scan" hx-target="#main-content" class="h-10 cursor-pointer" src="/static/img/plus.svg"/>
 					</div>
-				</div>
-				<div class="swiper-slide">
-					@FoodLogLoadingSkeleton()
+					<div class="swiper-slide">
+						@FoodLogLoadingSkeleton()
+					</div>
 				</div>
 			</div>
 		</div>
