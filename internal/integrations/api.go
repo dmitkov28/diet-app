@@ -1,4 +1,4 @@
-package diet
+package integrations
 
 type FoodSearchResult struct {
 	FoodId             string  `json:"food_id"`

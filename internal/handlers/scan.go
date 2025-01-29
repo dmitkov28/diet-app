@@ -5,7 +5,7 @@ import (
 	"log"
 	"strconv"
 
-	"github.com/dmitkov28/dietapp/internal/diet"
+	"github.com/dmitkov28/dietapp/internal/integrations"
 	"github.com/dmitkov28/dietapp/templates"
 	"github.com/labstack/echo/v4"
 )
@@ -21,10 +21,10 @@ func ScanBarCodeGETHandler() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		ean := c.Param("ean")
 		if ean == "" {
-			return render(c, templates.FoodFacts(diet.NutritionData{}))
+			return render(c, templates.FoodFacts(integrations.NutritionData{}))
 		}
 
-		data, err := diet.FetchNutritionData(ean)
+		data, err := integrations.FetchNutritionData(ean)
 
 		if err != nil {
 			log.Println(err)
@@ -35,8 +35,8 @@ func ScanBarCodeGETHandler() echo.HandlerFunc {
 			fmt.Println(err)
 		}
 
-		return render(c, templates.FoodItemModal(diet.FoodFacts{
-			FoodSearchResult: diet.FoodSearchResult{
+		return render(c, templates.FoodItemModal(integrations.FoodFacts{
+			FoodSearchResult: integrations.FoodSearchResult{
 				FoodId:      data.Product.ID,
 				Name:        fmt.Sprintf("%s (%s)", data.Product.ProductName, data.Product.Brands),
 				ServingUnit: data.Product.ServingQuantityUnit,

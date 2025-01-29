@@ -10,7 +10,7 @@ import templruntime "github.com/a-h/templ/runtime"
 
 import (
 	"fmt"
-	"github.com/dmitkov28/dietapp/internal/diet"
+	"github.com/dmitkov28/dietapp/internal/integrations"
 	"github.com/dmitkov28/dietapp/internal/repositories"
 )
 
@@ -110,7 +110,7 @@ func ContentSearchPage(recentlyAdded []repositories.FoodLogEntry) templ.Componen
 			return templ_7745c5c3_Err
 		}
 		for _, item := range recentlyAdded {
-			templ_7745c5c3_Err = SearchResultsItem(diet.FoodSearchResult{
+			templ_7745c5c3_Err = SearchResultsItem(integrations.FoodSearchResult{
 				Name:        item.FoodName,
 				Calories:    int(item.Calories),
 				ServingUnit: item.ServingUnit,
@@ -157,7 +157,7 @@ func SearchComponent() templ.Component {
 	})
 }
 
-func SearchResultsComponent(data []diet.FoodSearchResult) templ.Component {
+func SearchResultsComponent(data []integrations.FoodSearchResult) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -204,7 +204,7 @@ func SearchResultsComponent(data []diet.FoodSearchResult) templ.Component {
 	})
 }
 
-func SearchResultsItem(item diet.FoodSearchResult) templ.Component {
+func SearchResultsItem(item integrations.FoodSearchResult) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -419,7 +419,7 @@ func SearchResultsLoading() templ.Component {
 	})
 }
 
-func AddButton(product diet.FoodSearchResult) templ.Component {
+func AddButton(product integrations.FoodSearchResult) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -490,7 +490,7 @@ func FoodLogSuccess() templ.Component {
 	})
 }
 
-func FoodItemModal(food diet.FoodFacts) templ.Component {
+func FoodItemModal(food integrations.FoodFacts) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {

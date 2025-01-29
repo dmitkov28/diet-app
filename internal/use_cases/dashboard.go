@@ -3,7 +3,8 @@ package use_cases
 import (
 	"time"
 
-	"github.com/dmitkov28/dietapp/internal/diet"
+	"github.com/dmitkov28/dietapp/internal/integrations"
+	"github.com/dmitkov28/dietapp/internal/domain"
 	"github.com/dmitkov28/dietapp/internal/repositories"
 	"github.com/dmitkov28/dietapp/internal/services"
 )
@@ -30,7 +31,7 @@ func GetUserDashboardData(measurementsService services.IMeasurementsService,
 		return UserDashboardData{}, err
 	}
 
-	currentData := diet.GetCurrentData(stats)
+	currentData := integrations.GetCurrentData(stats)
 	hasCurrentWeek := repositories.HasCurrentWeek(currentData)
 
 	settings, err := settingsService.GetSettingsByUserID(userId)
@@ -39,11 +40,11 @@ func GetUserDashboardData(measurementsService services.IMeasurementsService,
 		return UserDashboardData{}, err
 	}
 
-	bmr := diet.CalculateBMR(currentData.AverageWeight, settings.Height, settings.Age, settings.Sex)
-	calorieGoal := diet.CalculateCalorieGoal(bmr, settings.Activity_level, currentData.AverageWeight, settings.Target_weight_loss_rate)
-	expectedDuration := diet.CalculateExpectedDietDuration(currentData.AverageWeight, settings.Target_weight, settings.Target_weight_loss_rate)
+	bmr := domain.CalculateBMR(currentData.AverageWeight, settings.Height, settings.Age, settings.Sex)
+	calorieGoal := domain.CalculateCalorieGoal(bmr, settings.Activity_level, currentData.AverageWeight, settings.Target_weight_loss_rate)
+	expectedDuration := domain.CalculateExpectedDietDuration(currentData.AverageWeight, settings.Target_weight, settings.Target_weight_loss_rate)
 
-	needsAdjustment := diet.CheckNeedsAdjustment(stats)
+	needsAdjustment := domain.CheckNeedsAdjustment(stats)
 
 	xAxis, chartValues, maxWeight, minWeight := chartService.GenerateChartData(stats)
 

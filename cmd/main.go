@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/dmitkov28/dietapp/internal/diet"
+	"github.com/dmitkov28/dietapp/internal/integrations"
 	"github.com/dmitkov28/dietapp/internal/handlers"
 	"github.com/dmitkov28/dietapp/internal/httputils"
 	customMiddleware "github.com/dmitkov28/dietapp/internal/middleware"
@@ -36,7 +36,7 @@ func main() {
 
 	httpClient := http.Client{}
 	apiClient := httputils.NewAPIClient(&httpClient)
-	nutritionixAPIClient, err := diet.NewNutritionixAPIClient(apiClient)
+	nutritionixAPIClient, err := integrations.NewNutritionixAPIClient(apiClient)
 
 	if err != nil {
 		fmt.Println(err)

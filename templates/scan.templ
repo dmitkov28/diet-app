@@ -2,7 +2,7 @@ package templates
 
 import (
 	"fmt"
-	"github.com/dmitkov28/dietapp/internal/diet"
+	"github.com/dmitkov28/dietapp/internal/integrations"
 )
 
 templ Scripts() {
@@ -19,7 +19,7 @@ templ ScanPage(isHTMX bool) {
 	}
 }
 
-templ FoodFacts(data diet.NutritionData) {
+templ FoodFacts(data integrations.NutritionData) {
 	<div class="rounded-md border-slate-200 shadow-md p-4">
 		if data.Status == "failure" {
 			<h2>Unknown product 😞</h2>
@@ -31,7 +31,7 @@ templ FoodFacts(data diet.NutritionData) {
 	</div>
 }
 
-templ NutritionTable(data diet.NutritionData) {
+templ NutritionTable(data integrations.NutritionData) {
 	<div class="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden">
 		<table class="w-full border-collapse border border-gray-300">
 			<thead class="bg-gray-100">

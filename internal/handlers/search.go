@@ -6,7 +6,7 @@ import (
 	"net/url"
 	"strconv"
 
-	"github.com/dmitkov28/dietapp/internal/diet"
+	"github.com/dmitkov28/dietapp/internal/integrations"
 	"github.com/dmitkov28/dietapp/internal/services"
 	"github.com/dmitkov28/dietapp/templates"
 	"github.com/labstack/echo/v4"
@@ -25,7 +25,7 @@ func SearchFoodGETHandler(foodLogService services.IFoodLogService) echo.HandlerF
 	}
 }
 
-func SearchFoodGetHandlerWithParams(apiClient diet.APIClient) echo.HandlerFunc {
+func SearchFoodGetHandlerWithParams(apiClient integrations.APIClient) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		food := url.QueryEscape(c.QueryParam("query"))
 		page, err := strconv.ParseInt(c.QueryParam("page"), 10, 64)
@@ -45,13 +45,13 @@ func SearchFoodGetHandlerWithParams(apiClient diet.APIClient) echo.HandlerFunc {
 	}
 }
 
-func SearchFoodModalGETHandler(apiClient diet.APIClient) echo.HandlerFunc {
+func SearchFoodModalGETHandler(apiClient integrations.APIClient) echo.HandlerFunc {
 	return func(c echo.Context) error {
 
 		foodId := c.QueryParam("food_id")
 		branded := c.QueryParam("branded") == "true"
 
-		food, err := apiClient.GetFoodFacts(diet.FoodFactsRequestParams{FoodId: foodId, IsBranded: branded})
+		food, err := apiClient.GetFoodFacts(integrations.FoodFactsRequestParams{FoodId: foodId, IsBranded: branded})
 
 		if err != nil {
 			fmt.Println(err)

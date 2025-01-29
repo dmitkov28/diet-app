@@ -1,4 +1,4 @@
-package diet
+package integrations
 
 import (
 	"fmt"

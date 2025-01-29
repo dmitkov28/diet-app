@@ -2,7 +2,7 @@ package templates
 
 import (
 	"fmt"
-	"github.com/dmitkov28/dietapp/internal/diet"
+	"github.com/dmitkov28/dietapp/internal/integrations"
 	"github.com/dmitkov28/dietapp/internal/repositories"
 )
 
@@ -27,7 +27,7 @@ templ ContentSearchPage(recentlyAdded []repositories.FoodLogEntry) {
 			</div>
 			<ul class="space-y-4">
 				for _, item := range recentlyAdded {
-					@SearchResultsItem(diet.FoodSearchResult{
+					@SearchResultsItem(integrations.FoodSearchResult{
 						Name:        item.FoodName,
 						Calories:    int(item.Calories),
 						ServingUnit: item.ServingUnit,
@@ -78,7 +78,7 @@ templ SearchComponent() {
 	</div>
 }
 
-templ SearchResultsComponent(data []diet.FoodSearchResult) {
+templ SearchResultsComponent(data []integrations.FoodSearchResult) {
 	<div>
 		<div id="modal-container"></div>
 		<div id="loading" class="htmx-indicator">
@@ -92,7 +92,7 @@ templ SearchResultsComponent(data []diet.FoodSearchResult) {
 	</div>
 }
 
-templ SearchResultsItem(item diet.FoodSearchResult) {
+templ SearchResultsItem(item integrations.FoodSearchResult) {
 	<li class="flex p-4 bg-gray-50 rounded-lg shadow-sm relative">
 		<div class="w-full flex justify-between items-center">
 			<a
@@ -142,7 +142,7 @@ templ SearchResultsLoading() {
 	</ul>
 }
 
-templ AddButton(product diet.FoodSearchResult) {
+templ AddButton(product integrations.FoodSearchResult) {
 	<div
 		id="addbtn"
 		hx-post="/food_log"
@@ -161,7 +161,7 @@ templ FoodLogSuccess() {
 	</div>
 }
 
-templ FoodItemModal(food diet.FoodFacts) {
+templ FoodItemModal(food integrations.FoodFacts) {
 	<div
 		class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50"
 		id="modal"
