@@ -1,5 +1,11 @@
 package domain
 
+import (
+	"math"
+
+	"github.com/dmitkov28/dietapp/internal/repositories"
+)
+
 type WeeklyStats struct {
 	YearWeek      string
 	AverageWeight float64
@@ -46,4 +52,17 @@ func GetCurrentData(stats []WeeklyStats) WeeklyStats {
 	} else {
 		return stats[len(stats)-1]
 	}
+}
+
+func CheckNeedsAdjustment(stats []repositories.WeeklyStats) bool {
+	const minLoss = 0.5
+	var weeksMissedTarget int
+	for _, stat := range stats {
+		roundedStatsChange := math.Round(stat.PercentChange*100) / 100
+		if roundedStatsChange > minLoss {
+			weeksMissedTarget++
+		}
+	}
+
+	return weeksMissedTarget >= 2
 }
