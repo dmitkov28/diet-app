@@ -5,7 +5,7 @@ import "github.com/dmitkov28/dietapp/internal/repositories"
 type IMeasurementsService interface {
 	CreateWeight(weight repositories.Weight) (repositories.Weight, error)
 	CreateCalories(calories repositories.Calories) (repositories.Calories, error)
-	GetMeasurementsByUserId(userId, offset int) ([]repositories.WeightCalories, error)
+	GetMeasurementsByUserId(userId, offset int, options repositories.GetMeasurementsFilterOptions) ([]repositories.WeightCalories, error)
 	DeleteWeightAndCaloriesByWeightID(weightID string) error
 	GetWeeklyStats(userId, weeks int) ([]repositories.WeeklyStats, error)
 }
@@ -26,8 +26,8 @@ func (s *MeasurementsService) CreateCalories(calories repositories.Calories) (re
 	return s.measurementsRepo.CreateCalories(calories)
 }
 
-func (s *MeasurementsService) GetMeasurementsByUserId(userId, offset int) ([]repositories.WeightCalories, error) {
-	return s.measurementsRepo.GetMeasurementsByUserId(userId, offset)
+func (s *MeasurementsService) GetMeasurementsByUserId(userId, offset int, options repositories.GetMeasurementsFilterOptions) ([]repositories.WeightCalories, error) {
+	return s.measurementsRepo.GetMeasurementsByUserId(userId, offset, options)
 }
 
 func (s *MeasurementsService) GetWeeklyStats(userId int, weeks int) ([]repositories.WeeklyStats, error) {

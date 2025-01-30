@@ -2,6 +2,8 @@ package repositories
 
 import (
 	"database/sql"
+	"fmt"
+	"strings"
 
 	"golang.org/x/exp/constraints"
 )
@@ -27,7 +29,7 @@ type Calories struct {
 type IMeasurementRepository interface {
 	CreateWeight(weight Weight) (Weight, error)
 	CreateCalories(calories Calories) (Calories, error)
-	GetMeasurementsByUserId(userId, offset int) ([]WeightCalories, error)
+	GetMeasurementsByUserId(userId, offset int, options GetMeasurementsFilterOptions) ([]WeightCalories, error)
 	DeleteWeightAndCaloriesByWeightID(weightID string) error
 	GetWeeklyStats(userId, weeks int) ([]WeeklyStats, error)
 }
@@ -101,7 +103,12 @@ type WeightCalories struct {
 	UserID       int     `json:"user_id"`
 }
 
-func (repo *MeasurementRepository) GetMeasurementsByUserId(userId, offset int) ([]WeightCalories, error) {
+type GetMeasurementsFilterOptions struct {
+	OrderColumn    *string
+	OrderDirection *string
+}
+
+func (repo *MeasurementRepository) GetMeasurementsByUserId(userId, offset int, options GetMeasurementsFilterOptions) ([]WeightCalories, error) {
 	query := `
         SELECT 
             w.id, 
@@ -114,10 +121,31 @@ func (repo *MeasurementRepository) GetMeasurementsByUserId(userId, offset int) (
         FROM weight w
         LEFT JOIN calories c ON w.date = c.date AND w.user_id = c.user_id
         WHERE w.user_id = ?
-        ORDER BY w.date DESC
-		LIMIT 10
-		OFFSET ?
 		`
+
+	orderCol := "w.date"
+	orderDir := "DESC"
+
+	if options.OrderColumn != nil && options.OrderDirection != nil {
+		switch *options.OrderColumn {
+		case "weight":
+			orderCol = "w.weight"
+		case "calories":
+			orderCol = "c.calories"
+		case "date":
+			orderCol = "w.date"
+		}
+	}
+
+	if options.OrderDirection != nil && (strings.ToUpper(*options.OrderDirection) == "ASC" || strings.ToUpper(*options.OrderDirection) == "DESC") {
+		orderDir = *options.OrderDirection
+	}
+
+	ordering := fmt.Sprintf("ORDER BY %s %s", orderCol, orderDir)
+
+	query += ordering
+
+	query += ` LIMIT 10 OFFSET ?`
 
 	rows, err := repo.db.db.Query(query, userId, offset)
 	if err != nil {

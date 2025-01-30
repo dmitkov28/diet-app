@@ -23,9 +23,19 @@ func StatsGETHandler(measurementsService services.IMeasurementsService) echo.Han
 			}
 		}
 
+		options := repositories.GetMeasurementsFilterOptions{}
+
+		if orderByParam := c.QueryParam("orderBy"); orderByParam != "" {
+			options.OrderColumn = &orderByParam
+		}
+
+		if order := c.QueryParam("order"); order != "" {
+			options.OrderDirection = &order
+		}
+
 		offset := (int(page) - 1) * repositories.ItemsPerPage
 		noMoreResults := false
-		items, err := measurementsService.GetMeasurementsByUserId(userId, offset)
+		items, err := measurementsService.GetMeasurementsByUserId(userId, offset, options)
 
 		if err != nil {
 			fmt.Println(err)
