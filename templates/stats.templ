@@ -5,25 +5,25 @@ import (
 	"github.com/dmitkov28/dietapp/internal/repositories"
 )
 
-templ StatsPage(items []repositories.WeightCalories, page int, noMoreResults, isHTMX bool) {
+templ StatsPage(items []repositories.WeightCalories, page int, noMoreResults, isHTMX bool, options repositories.GetMeasurementsFilterOptions) {
 	if isHTMX {
-		@ContentStatsPage(items, page, noMoreResults)
+		@ContentStatsPage(items, page, noMoreResults, options)
 	} else {
 		@Base(TemplateProps{PageTitle: "Stats"}) {
-			@ContentStatsPage(items, page, noMoreResults)
+			@ContentStatsPage(items, page, noMoreResults, options)
 		}
 	}
 }
 
-templ ContentStatsPage(items []repositories.WeightCalories, page int, noMoreResults bool) {
+templ ContentStatsPage(items []repositories.WeightCalories, page int, noMoreResults bool, options repositories.GetMeasurementsFilterOptions) {
 	<div class="flex flex-col flex-1">
 		<h1 class="font-bold text-2xl py-4 text-center">Stats</h1>
 		<div class="flex flex-col flex-1 overflow-hidden">
 			if len(items) != 0 {
 				<div class="flex-1 h-full overflow-auto px-4">
-					@StatsTable(items)
+					@StatsTable(items, page, options)
 				</div>
-				@DataTableControls(page, noMoreResults)
+				@DataTableControls(page, noMoreResults, options)
 			} else {
 				<div class="h-full flex flex-1 items-center justify-center">
 					No data.
@@ -33,13 +33,61 @@ templ ContentStatsPage(items []repositories.WeightCalories, page int, noMoreResu
 	</div>
 }
 
-templ StatsTable(items []repositories.WeightCalories) {
-	<table class="w-full text-sm">
+templ StatsTable(items []repositories.WeightCalories, page int, options repositories.GetMeasurementsFilterOptions) {
+	<table id="data-table" class="w-full text-sm">
 		<thead class="sticky top-0 bg-white">
 			<tr class="bg-gray-100 border-b">
-				<th class="cursor-pointer px-6 py-4 text-left font-semibold text-gray-600">Date</th>
-				<th class="px-6 py-4 text-left font-semibold text-gray-600">Weight (kg)</th>
-				<th class="px-6 py-4 text-left font-semibold text-gray-600">Calories</th>
+				<th
+					hx-get={ fmt.Sprintf("/stats?page=%d", page) + generateSortQueryString("date", options) }
+					hx-target="#main-content"
+					hx-push-url="true"
+					class="cursor-pointer px-6 py-4 text-left font-semibold text-gray-600"
+				>
+					<div class="flex items-center">
+						Date
+						if options.OrderColumn == "date" {
+							if options.OrderDirection == "asc" {
+								<span class="ml-1">↑</span>
+							} else {
+								<span class="ml-1">↓</span>
+							}
+						}
+					</div>
+				</th>
+				<th
+					hx-get={ fmt.Sprintf("/stats?page=%d", page) + generateSortQueryString("weight", options) }
+					hx-target="#main-content"
+					hx-push-url="true"
+					class="cursor-pointer px-6 py-4 text-left font-semibold text-gray-600"
+				>
+					<div class="flex items-center">
+						Weight (kg)
+						if options.OrderColumn == "weight" {
+							if options.OrderDirection == "asc" {
+								<span class="ml-1">↑</span>
+							} else {
+								<span class="ml-1">↓</span>
+							}
+						}
+					</div>
+				</th>
+				<th
+					hx-get={ fmt.Sprintf("/stats?page=%d", page) + generateSortQueryString("calories", options) }
+					hx-target="#main-content"
+					hx-push-url="true"
+					class="cursor-pointer px-6 py-4 text-left font-semibold text-gray-600"
+				>
+					<div class="flex items-center">
+						Calories
+						if options.OrderColumn == "calories" {
+							if options.OrderDirection == "asc" {
+								<span class="ml-1">↑</span>
+							} else {
+								<span class="ml-1">↓</span>
+							}
+						}
+					</div>
+				</th>
 				<th class="px-6 py-4 text-left font-semibold text-gray-600">Weight Loss (%)</th>
 				<th class="px-6 py-4 text-left font-semibold text-gray-600"></th>
 			</tr>
@@ -101,12 +149,12 @@ templ DataTableRow(item repositories.WeightCalories, isFirst bool, diff float64)
 	</tr>
 }
 
-templ DataTableControls(page int, noMoreResults bool) {
+templ DataTableControls(page int, noMoreResults bool, options repositories.GetMeasurementsFilterOptions) {
 	<div class="flex justify-between mt-4 mb-12 px-8">
 		<button
-			hx-get={ fmt.Sprintf("/stats?page=%d", page-1) }
-			hx-replace-url={ fmt.Sprintf("/stats?page=%d", page-1) }
+			hx-get={ fmt.Sprintf("/stats?page=%d", page-1) + generatePaginationQueryString(options) }
 			hx-target="#main-content"
+			hx-push-url="true"
 			class={
 				"px-2 py-1 rounded-md cursor-pointer",
 				templ.KV("bg-[#2596be] text-white", page > 1),
@@ -114,19 +162,49 @@ templ DataTableControls(page int, noMoreResults bool) {
 			}
 			disabled?={ page <= 1 }
 		>
-			Prev
+			<div class="flex items-center">
+				<svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+				</svg>
+				Prev
+			</div>
 		</button>
+		<span class="text-sm text-gray-600">
+			Page { fmt.Sprint(page) }
+		</span>
 		<button
-			hx-get={ fmt.Sprintf("/stats?page=%d", page+1) }
-			hx-replace-url={ fmt.Sprintf("/stats?page=%d", page+1) }
+			hx-get={ fmt.Sprintf("/stats?page=%d", page+1) + generatePaginationQueryString(options) }
 			hx-target="#main-content"
+			hx-push-url="true"
 			class={
-				"bg-[#2596be] text-white px-2 py-1 rounded-md cursor-pointer",
+				"px-2 py-1 rounded-md cursor-pointer",
+				templ.KV("bg-[#2596be] text-white", !noMoreResults),
 				templ.KV("bg-gray-300 text-gray-500 cursor-not-allowed", noMoreResults),
 			}
 			disabled?={ noMoreResults }
 		>
-			Next
+			<div class="flex items-center">
+				Next
+				<svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+				</svg>
+			</div>
 		</button>
 	</div>
+}
+
+func generatePaginationQueryString(options repositories.GetMeasurementsFilterOptions) string {
+	queryString := ""
+	if options.OrderColumn != "" && options.OrderDirection != "" {
+		queryString = fmt.Sprintf("&orderBy=%s&order=%s", options.OrderColumn, options.OrderDirection)
+	}
+	return queryString
+}
+
+func generateSortQueryString(column string, options repositories.GetMeasurementsFilterOptions) string {
+	direction := "asc"
+	if options.OrderColumn == column && options.OrderDirection == "asc" {
+		direction = "desc"
+	}
+	return fmt.Sprintf("&orderBy=%s&order=%s", column, direction)
 }
