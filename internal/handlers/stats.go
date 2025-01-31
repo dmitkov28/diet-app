@@ -26,11 +26,11 @@ func StatsGETHandler(measurementsService services.IMeasurementsService) echo.Han
 		options := repositories.GetMeasurementsFilterOptions{}
 
 		if orderByParam := c.QueryParam("orderBy"); orderByParam != "" {
-			options.OrderColumn = &orderByParam
+			options.OrderColumn = orderByParam
 		}
 
 		if order := c.QueryParam("order"); order != "" {
-			options.OrderDirection = &order
+			options.OrderDirection = order
 		}
 
 		offset := (int(page) - 1) * repositories.ItemsPerPage
@@ -45,7 +45,7 @@ func StatsGETHandler(measurementsService services.IMeasurementsService) echo.Han
 		}
 		isHTMX := c.Request().Header.Get("HX-Request") != ""
 
-		return render(c, templates.StatsPage(items, int(page), noMoreResults, isHTMX))
+		return render(c, templates.StatsPage(items, int(page), noMoreResults, isHTMX, options))
 	}
 }
 

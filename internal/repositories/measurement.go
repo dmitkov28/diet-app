@@ -104,8 +104,8 @@ type WeightCalories struct {
 }
 
 type GetMeasurementsFilterOptions struct {
-	OrderColumn    *string
-	OrderDirection *string
+	OrderColumn    string
+	OrderDirection string
 }
 
 func (repo *MeasurementRepository) GetMeasurementsByUserId(userId, offset int, options GetMeasurementsFilterOptions) ([]WeightCalories, error) {
@@ -126,8 +126,8 @@ func (repo *MeasurementRepository) GetMeasurementsByUserId(userId, offset int, o
 	orderCol := "w.date"
 	orderDir := "DESC"
 
-	if options.OrderColumn != nil && options.OrderDirection != nil {
-		switch *options.OrderColumn {
+	if options.OrderColumn != "" && options.OrderDirection != "" {
+		switch options.OrderColumn {
 		case "weight":
 			orderCol = "w.weight"
 		case "calories":
@@ -137,8 +137,8 @@ func (repo *MeasurementRepository) GetMeasurementsByUserId(userId, offset int, o
 		}
 	}
 
-	if options.OrderDirection != nil && (strings.ToUpper(*options.OrderDirection) == "ASC" || strings.ToUpper(*options.OrderDirection) == "DESC") {
-		orderDir = *options.OrderDirection
+	if options.OrderDirection != "" && (strings.ToUpper(options.OrderDirection) == "ASC" || strings.ToUpper(options.OrderDirection) == "DESC") {
+		orderDir = options.OrderDirection
 	}
 
 	ordering := fmt.Sprintf("ORDER BY %s %s", orderCol, orderDir)
