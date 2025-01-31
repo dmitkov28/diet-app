@@ -5,7 +5,7 @@ import (
 	"net/url"
 	"strconv"
 
-	"github.com/dmitkov28/dietapp/internal/httputils"
+	"github.com/dmitkov28/dietapp/internal/utils"
 )
 
 type openFoodFactsSearchResponse struct {
@@ -103,10 +103,10 @@ type nutriments struct {
 }
 
 type OpenFoodFactsAPIClient struct {
-	*httputils.APIClient
+	*utils.APIClient
 }
 
-func NewOpenFoodFactsAPIClient(httpClient *httputils.APIClient) (*OpenFoodFactsAPIClient, error) {
+func NewOpenFoodFactsAPIClient(httpClient *utils.APIClient) (*OpenFoodFactsAPIClient, error) {
 	return &OpenFoodFactsAPIClient{APIClient: httpClient}, nil
 }
 

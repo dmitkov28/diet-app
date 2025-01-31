@@ -6,11 +6,11 @@ import (
 	"net/http"
 
 	"github.com/dmitkov28/dietapp/internal/handlers"
-	"github.com/dmitkov28/dietapp/internal/httputils"
 	"github.com/dmitkov28/dietapp/internal/integrations"
 	customMiddleware "github.com/dmitkov28/dietapp/internal/middleware"
 	"github.com/dmitkov28/dietapp/internal/repositories"
 	"github.com/dmitkov28/dietapp/internal/services"
+	"github.com/dmitkov28/dietapp/internal/utils"
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -35,7 +35,7 @@ func main() {
 	foodLogRepo := repositories.NewFoodLogsRepository(db)
 
 	httpClient := http.Client{}
-	apiClient := httputils.NewAPIClient(&httpClient)
+	apiClient := utils.NewAPIClient(&httpClient)
 	nutritionixAPIClient, err := integrations.NewNutritionixAPIClient(apiClient)
 
 	if err != nil {

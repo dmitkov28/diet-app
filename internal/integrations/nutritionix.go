@@ -6,7 +6,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/dmitkov28/dietapp/internal/httputils"
+	"github.com/dmitkov28/dietapp/internal/utils"
 )
 
 type nutritionixSearchResponse struct {
@@ -75,12 +75,12 @@ type nutritionixBrandedFoodResponse struct {
 }
 
 type NutritionixAPIClient struct {
-	*httputils.APIClient
+	*utils.APIClient
 	appKey string
 	appId  string
 }
 
-func NewNutritionixAPIClient(httpClient *httputils.APIClient) (*NutritionixAPIClient, error) {
+func NewNutritionixAPIClient(httpClient *utils.APIClient) (*NutritionixAPIClient, error) {
 	nutritionixAppId := os.Getenv("NUTRITIONIX_APP_ID")
 	nutritionixAppKey := os.Getenv("NUTRITIONIX_APP_KEY")
 

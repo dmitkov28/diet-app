@@ -7,12 +7,12 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/dmitkov28/dietapp/internal/httputils"
+	"github.com/dmitkov28/dietapp/internal/utils"
 )
 
 func TestNewRequest(t *testing.T) {
 	httpClient := http.Client{}
-	apiClient := httputils.NewAPIClient(&httpClient)
+	apiClient := utils.NewAPIClient(&httpClient)
 
 	testUrl := "https://example.com"
 
