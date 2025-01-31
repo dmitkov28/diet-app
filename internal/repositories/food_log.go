@@ -24,10 +24,10 @@ type IFoodLogRepository interface {
 }
 
 type FoodLogRepository struct {
-	db *DB
+	db *SqlDB
 }
 
-func NewFoodLogsRepository(db *DB) IFoodLogRepository {
+func NewFoodLogsRepository(db *SqlDB) IFoodLogRepository {
 	return &FoodLogRepository{db: db}
 }
 

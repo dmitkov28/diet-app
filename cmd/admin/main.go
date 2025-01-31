@@ -12,7 +12,7 @@ import (
 
 func main() {
 
-	db, err := repositories.NewDB()
+	db, err := repositories.NewSqlDB()
 
 	if err != nil {
 		fmt.Println("couldn't connect to db")

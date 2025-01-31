@@ -17,10 +17,10 @@ type ISessionsRepository interface {
 }
 
 type SessionsRepository struct {
-	db *DB
+	db *SqlDB
 }
 
-func NewSessionsRepository(db *DB) ISessionsRepository {
+func NewSessionsRepository(db *SqlDB) ISessionsRepository {
 	return &SessionsRepository{db: db}
 }
 

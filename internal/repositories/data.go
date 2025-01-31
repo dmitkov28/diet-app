@@ -3,16 +3,17 @@ package repositories
 import (
 	"database/sql"
 	"fmt"
-	_ "github.com/tursodatabase/libsql-client-go/libsql"
 	"log"
 	"os"
+
+	_ "github.com/tursodatabase/libsql-client-go/libsql"
 )
 
-type DB struct {
+type SqlDB struct {
 	db *sql.DB
 }
 
-func NewDB() (*DB, error) {
+func NewSqlDB() (*SqlDB, error) {
 	env := os.Getenv("ENV")
 	var dbConnectionString string
 
@@ -36,5 +37,5 @@ func NewDB() (*DB, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &DB{db: db}, nil
+	return &SqlDB{db: db}, nil
 }

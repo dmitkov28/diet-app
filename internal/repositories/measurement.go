@@ -35,7 +35,7 @@ type IMeasurementRepository interface {
 }
 
 type MeasurementRepository struct {
-	db *DB
+	db *SqlDB
 }
 
 type Number interface {
@@ -47,7 +47,7 @@ func CalculatePercentageDifference[T Number](value1, value2 T) T {
 	return ((value2 - value1) * 100) / value1
 }
 
-func NewMeasurementsRepository(db *DB) IMeasurementRepository {
+func NewMeasurementsRepository(db *SqlDB) IMeasurementRepository {
 	return &MeasurementRepository{db: db}
 }
 

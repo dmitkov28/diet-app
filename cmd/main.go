@@ -5,9 +5,9 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/dmitkov28/dietapp/internal/integrations"
 	"github.com/dmitkov28/dietapp/internal/handlers"
 	"github.com/dmitkov28/dietapp/internal/httputils"
+	"github.com/dmitkov28/dietapp/internal/integrations"
 	customMiddleware "github.com/dmitkov28/dietapp/internal/middleware"
 	"github.com/dmitkov28/dietapp/internal/repositories"
 	"github.com/dmitkov28/dietapp/internal/services"
@@ -22,7 +22,7 @@ func init() {
 
 func main() {
 
-	db, err := repositories.NewDB()
+	db, err := repositories.NewSqlDB()
 	if err != nil {
 		log.Fatal(err)
 	}

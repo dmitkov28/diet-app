@@ -19,10 +19,10 @@ type IUsersRepository interface {
 }
 
 type UsersRepository struct {
-	db *DB
+	db *SqlDB
 }
 
-func NewUsersRepository(db *DB) IUsersRepository {
+func NewUsersRepository(db *SqlDB) IUsersRepository {
 	return &UsersRepository{db: db}
 }
 

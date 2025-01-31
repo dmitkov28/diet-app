@@ -23,10 +23,10 @@ type ISettingsRepository interface {
 }
 
 type SettingsRepository struct {
-	db *DB
+	db *SqlDB
 }
 
-func NewSettingsRepository(db *DB) ISettingsRepository {
+func NewSettingsRepository(db *SqlDB) ISettingsRepository {
 	return &SettingsRepository{db: db}
 }
 
