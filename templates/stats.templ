@@ -3,6 +3,7 @@ package templates
 import (
 	"fmt"
 	"github.com/dmitkov28/dietapp/internal/repositories"
+	"github.com/dmitkov28/dietapp/internal/utils"
 )
 
 templ StatsPage(items []repositories.WeightCalories, page int, noMoreResults, isHTMX bool, options repositories.GetMeasurementsFilterOptions) {
@@ -106,7 +107,7 @@ templ StatsTable(items []repositories.WeightCalories, page int, options reposito
 
 templ DataTableRow(item repositories.WeightCalories, isFirst bool, diff float64) {
 	<tr id={ fmt.Sprintf("row-%d", item.WeightID) } class="hover:bg-gray-50">
-		<td class="px-6 py-4">{ repositories.ParseDateString(item.WeightDate) }</td>
+		<td class="px-6 py-4">{ utils.ParseDateString(item.WeightDate) }</td>
 		<td class="px-6 py-4">{ fmt.Sprintf("%.1f", item.Weight) }</td>
 		<td class="px-6 py-4">
 			if item.Calories != nil {
