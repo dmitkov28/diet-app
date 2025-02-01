@@ -1,8 +1,8 @@
 package repositories
 
 import (
-	"time"
 	"github.com/dmitkov28/dietapp/internal/utils"
+	"time"
 )
 
 func HasCurrentWeek(v WeeklyStats) bool {

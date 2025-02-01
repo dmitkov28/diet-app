@@ -3,8 +3,8 @@ package use_cases
 import (
 	"time"
 
-	"github.com/dmitkov28/dietapp/internal/integrations"
 	"github.com/dmitkov28/dietapp/internal/domain"
+	"github.com/dmitkov28/dietapp/internal/integrations"
 	"github.com/dmitkov28/dietapp/internal/repositories"
 	"github.com/dmitkov28/dietapp/internal/services"
 )
