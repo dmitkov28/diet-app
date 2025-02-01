@@ -17,11 +17,11 @@ templ StatsPage(items []repositories.WeightCalories, page int, noMoreResults, is
 }
 
 templ ContentStatsPage(items []repositories.WeightCalories, page int, noMoreResults bool, options repositories.GetMeasurementsFilterOptions) {
-	<div class="flex flex-col flex-1">
-		<h1 class="font-bold text-2xl py-4 text-center">Stats</h1>
+	<div class="flex flex-col flex-1 p-4">
+		<h1 class="font-bold text-xl md:text-2xl py-4 text-center">Stats</h1>
 		<div class="flex flex-col flex-1 overflow-hidden">
 			if len(items) != 0 {
-				<div class="flex-1 h-full overflow-auto px-4">
+				<div class="flex-1 h-full overflow-auto">
 					@StatsTable(items, page, options)
 				</div>
 				@DataTableControls(page, noMoreResults, options)
@@ -35,134 +35,97 @@ templ ContentStatsPage(items []repositories.WeightCalories, page int, noMoreResu
 }
 
 templ StatsTable(items []repositories.WeightCalories, page int, options repositories.GetMeasurementsFilterOptions) {
-	<table id="data-table" class="w-full text-sm">
-		<thead class="sticky top-0 bg-white">
-			<tr class="bg-gray-100 border-b">
-				<th
-					hx-get={ fmt.Sprintf("/stats?page=%d", page) + generateSortQueryString("date", options) }
-					hx-target="#main-content"
-					hx-push-url="true"
-					class="cursor-pointer px-6 py-4 text-left font-semibold text-gray-600"
-				>
-					<div class="flex items-center">
-						Date
-						if options.OrderColumn == "date" {
-							if options.OrderDirection == "asc" {
-								<span class="ml-1">↑</span>
-							} else {
-								<span class="ml-1">↓</span>
+	<div class="overflow-x-auto">
+		<table id="data-table" class="w-full text-sm">
+			<thead class="sticky top-0 bg-white">
+				<tr class="bg-gray-100 border-b">
+					<th hx-get={ fmt.Sprintf("/stats?page=%d", page) + generateSortQueryString("date", options) } hx-target="#main-content" hx-push-url="true" class="cursor-pointer px-4 py-2 text-left font-semibold text-gray-600">
+						<div class="flex items-center">
+							Date
+							if options.OrderColumn == "date" {
+								if options.OrderDirection == "asc" {
+									<span class="ml-1">↑</span>
+								} else {
+									<span class="ml-1">↓</span>
+								}
 							}
-						}
-					</div>
-				</th>
-				<th
-					hx-get={ fmt.Sprintf("/stats?page=%d", page) + generateSortQueryString("weight", options) }
-					hx-target="#main-content"
-					hx-push-url="true"
-					class="cursor-pointer px-6 py-4 text-left font-semibold text-gray-600"
-				>
-					<div class="flex items-center">
-						Weight (kg)
-						if options.OrderColumn == "weight" {
-							if options.OrderDirection == "asc" {
-								<span class="ml-1">↑</span>
-							} else {
-								<span class="ml-1">↓</span>
+						</div>
+					</th>
+					<th hx-get={ fmt.Sprintf("/stats?page=%d", page) + generateSortQueryString("weight", options) } hx-target="#main-content" hx-push-url="true" class="cursor-pointer px-4 py-2 text-left font-semibold text-gray-600">
+						<div class="flex items-center">
+							Weight (kg)
+							if options.OrderColumn == "weight" {
+								if options.OrderDirection == "asc" {
+									<span class="ml-1">↑</span>
+								} else {
+									<span class="ml-1">↓</span>
+								}
 							}
-						}
-					</div>
-				</th>
-				<th
-					hx-get={ fmt.Sprintf("/stats?page=%d", page) + generateSortQueryString("calories", options) }
-					hx-target="#main-content"
-					hx-push-url="true"
-					class="cursor-pointer px-6 py-4 text-left font-semibold text-gray-600"
-				>
-					<div class="flex items-center">
-						Calories
-						if options.OrderColumn == "calories" {
-							if options.OrderDirection == "asc" {
-								<span class="ml-1">↑</span>
-							} else {
-								<span class="ml-1">↓</span>
+						</div>
+					</th>
+					<th hx-get={ fmt.Sprintf("/stats?page=%d", page) + generateSortQueryString("calories", options) } hx-target="#main-content" hx-push-url="true" class="cursor-pointer px-4 py-2 text-left font-semibold text-gray-600">
+						<div class="flex items-center">
+							Calories
+							if options.OrderColumn == "calories" {
+								if options.OrderDirection == "asc" {
+									<span class="ml-1">↑</span>
+								} else {
+									<span class="ml-1">↓</span>
+								}
 							}
-						}
-					</div>
-				</th>
-				<th class="px-6 py-4 text-left font-semibold text-gray-600">Weight Loss (%)</th>
-				<th class="px-6 py-4 text-left font-semibold text-gray-600"></th>
-			</tr>
-		</thead>
-		<tbody class="divide-y divide-gray-200">
-			for i := 0; i <= len(items) - 1; i++ {
-				if i == len(items) - 1 {
-					@DataTableRow(items[i], true, 0)
-				} else {
-					@DataTableRow(items[i], false, repositories.CalculatePercentageDifference(items[i+1].Weight, items[i].Weight))
+						</div>
+					</th>
+					<th class="px-4 py-2 text-left font-semibold text-gray-600">Weight Loss (%)</th>
+					<th class="px-4 py-2 text-left font-semibold text-gray-600"></th>
+				</tr>
+			</thead>
+			<tbody class="divide-y divide-gray-200">
+				for i := 0; i <= len(items) - 1; i++ {
+					if i == len(items) - 1 {
+						@DataTableRow(items[i], true, 0)
+					} else {
+						@DataTableRow(items[i], false, repositories.CalculatePercentageDifference(items[i+1].Weight, items[i].Weight))
+					}
 				}
-			}
-		</tbody>
-	</table>
+			</tbody>
+		</table>
+	</div>
 }
 
 templ DataTableRow(item repositories.WeightCalories, isFirst bool, diff float64) {
 	<tr id={ fmt.Sprintf("row-%d", item.WeightID) } class="hover:bg-gray-50">
-		<td class="px-6 py-4">{ utils.ParseDateString(item.WeightDate) }</td>
-		<td class="px-6 py-4">{ fmt.Sprintf("%.1f", item.Weight) }</td>
-		<td class="px-6 py-4">
+		<td class="px-4 py-2 text-sm">{ utils.ParseDateString(item.WeightDate) }</td>
+		<td class="px-4 py-2 text-sm">{ fmt.Sprintf("%.1f", item.Weight) }</td>
+		<td class="px-4 py-2 text-sm">
 			if item.Calories != nil {
 				{ fmt.Sprintf("%d", *item.Calories) }
 			} else {
 				N/A
 			}
 		</td>
-		<td
-			class={
-				"px-6 py-4",
-				templ.KV("text-green-500", diff < 0),
-				templ.KV("text-red-500", diff > 0),
-			}
-		>
+		<td class={ "px-4 py-2 text-sm", templ.KV("text-green-500", diff < 0), templ.KV("text-red-500", diff > 0) }>
 			if !isFirst {
 				<span class="flex items-center w-full">
 					{ fmt.Sprintf("%.1f", diff) }%
 					if diff < 0 {
-						<img alt="arrow down icon" class="h-5 ml-2" src="/static/img/arrow-down.svg"/>
+						<img alt="arrow down icon" class="h-4 ml-1" src="/static/img/arrow-down.svg"/>
 					} else {
-						<img alt="arrow up icon" class="h-5 ml-2" src="/static/img/arrow-up.svg"/>
+						<img alt="arrow up icon" class="h-4 ml-1" src="/static/img/arrow-up.svg"/>
 					}
 				</span>
 			} else {
 				N/A				
 			}
 		</td>
-		<td>
-			<img
-				alt="bin icon"
-				class="h-5 cursor-pointer"
-				src="/static/img/bin.svg"
-				hx-delete={ fmt.Sprintf("/stats/%d", item.WeightID) }
-				hx-target={ fmt.Sprintf("#row-%d", item.WeightID) }
-				hx-swap="outerHTML"
-				hx-confirm="Are you sure you want to delete this entry?"
-			/>
+		<td class="px-4 py-2">
+			<img alt="bin icon" class="h-4 cursor-pointer" src="/static/img/bin.svg" hx-delete={ fmt.Sprintf("/stats/%d", item.WeightID) } hx-target={ fmt.Sprintf("#row-%d", item.WeightID) } hx-swap="outerHTML" hx-confirm="Are you sure you want to delete this entry?"/>
 		</td>
 	</tr>
 }
 
 templ DataTableControls(page int, noMoreResults bool, options repositories.GetMeasurementsFilterOptions) {
-	<div class="flex justify-between mt-4 mb-12 px-8">
-		<button
-			hx-get={ fmt.Sprintf("/stats?page=%d", page-1) + generatePaginationQueryString(options) }
-			hx-target="#main-content"
-			hx-push-url="true"
-			class={
-				"px-2 py-1 rounded-md cursor-pointer",
-				templ.KV("bg-[#2596be] text-white", page > 1),
-				templ.KV("bg-gray-300 text-gray-500 cursor-not-allowed", page <= 1),
-			}
-			disabled?={ page <= 1 }
-		>
+	<div class="flex justify-between mt-4 mb-12 px-4">
+		<button hx-get={ fmt.Sprintf("/stats?page=%d", page-1) + generatePaginationQueryString(options) } hx-target="#main-content" hx-push-url="true" class={ "px-3 py-1 rounded-md text-sm", templ.KV("bg-[#2596be] text-white", page > 1), templ.KV("bg-gray-300 text-gray-500 cursor-not-allowed", page <= 1) } disabled?={ page <= 1 }>
 			<div class="flex items-center">
 				<svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
@@ -173,17 +136,7 @@ templ DataTableControls(page int, noMoreResults bool, options repositories.GetMe
 		<span class="text-sm text-gray-600">
 			Page { fmt.Sprint(page) }
 		</span>
-		<button
-			hx-get={ fmt.Sprintf("/stats?page=%d", page+1) + generatePaginationQueryString(options) }
-			hx-target="#main-content"
-			hx-push-url="true"
-			class={
-				"px-2 py-1 rounded-md cursor-pointer",
-				templ.KV("bg-[#2596be] text-white", !noMoreResults),
-				templ.KV("bg-gray-300 text-gray-500 cursor-not-allowed", noMoreResults),
-			}
-			disabled?={ noMoreResults }
-		>
+		<button hx-get={ fmt.Sprintf("/stats?page=%d", page+1) + generatePaginationQueryString(options) } hx-target="#main-content" hx-push-url="true" class={ "px-3 py-1 rounded-md text-sm", templ.KV("bg-[#2596be] text-white", !noMoreResults), templ.KV("bg-gray-300 text-gray-500 cursor-not-allowed", noMoreResults) } disabled?={ noMoreResults }>
 			<div class="flex items-center">
 				Next
 				<svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
