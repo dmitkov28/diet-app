@@ -11,9 +11,10 @@ import templruntime "github.com/a-h/templ/runtime"
 import (
 	"fmt"
 	"github.com/dmitkov28/dietapp/internal/repositories"
+	"github.com/dmitkov28/dietapp/internal/use_cases"
 )
 
-func SettingsPage(settings repositories.Settings, bmr, calorieGoal, expectedDuration float64, isHTMX bool) templ.Component {
+func SettingsPage(settings repositories.Settings, isHTMX bool) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -35,7 +36,7 @@ func SettingsPage(settings repositories.Settings, bmr, calorieGoal, expectedDura
 		}
 		ctx = templ.ClearChildren(ctx)
 		if isHTMX {
-			templ_7745c5c3_Err = SettingsContent(settings, bmr, calorieGoal, expectedDuration).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = SettingsContent(settings).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -56,7 +57,7 @@ func SettingsPage(settings repositories.Settings, bmr, calorieGoal, expectedDura
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = SettingsForm(settings, SettingsErrors{}).Render(ctx, templ_7745c5c3_Buffer)
+				templ_7745c5c3_Err = SettingsForm(settings, use_cases.SettingsErrors{}).Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -75,7 +76,7 @@ func SettingsPage(settings repositories.Settings, bmr, calorieGoal, expectedDura
 	})
 }
 
-func SettingsContent(settings repositories.Settings, bmr, calorieGoal, expectedDuration float64) templ.Component {
+func SettingsContent(settings repositories.Settings) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -100,7 +101,7 @@ func SettingsContent(settings repositories.Settings, bmr, calorieGoal, expectedD
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = SettingsForm(settings, SettingsErrors{}).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = SettingsForm(settings, use_cases.SettingsErrors{}).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -112,18 +113,7 @@ func SettingsContent(settings repositories.Settings, bmr, calorieGoal, expectedD
 	})
 }
 
-type SettingsErrors struct {
-	Current_weight          string
-	Target_weight           string
-	Target_weight_loss_rate string
-	Goal_deadline           string
-	Age                     string
-	Height                  string
-	Activity_level          string
-	Sex                     string
-}
-
-func SettingsForm(settings repositories.Settings, errors SettingsErrors) templ.Component {
+func SettingsForm(settings repositories.Settings, errors use_cases.SettingsErrors) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -144,7 +134,7 @@ func SettingsForm(settings repositories.Settings, errors SettingsErrors) templ.C
 			templ_7745c5c3_Var4 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"w-full p-8\"><form hx-boost=\"true\" method=\"POST\" action=\"/settings\" hx-indicator=\"#spinner\" class=\"grid grid-cols-1 md:grid-cols-2 gap-4 my-4\"><div><label>Age</label> ")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"w-full p-8\"><form hx-target=\"#main-content\" hx-swap=\"outerHTML\" method=\"POST\" action=\"/settings\" hx-indicator=\"#spinner\" class=\"grid grid-cols-1 md:grid-cols-2 gap-4 my-4\"><div><label>Age</label> ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -162,7 +152,7 @@ func SettingsForm(settings repositories.Settings, errors SettingsErrors) templ.C
 			var templ_7745c5c3_Var6 string
 			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", settings.Age))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/settings.templ`, Line: 47, Col: 45}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/settings.templ`, Line: 37, Col: 45}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 			if templ_7745c5c3_Err != nil {
@@ -222,7 +212,7 @@ func SettingsForm(settings repositories.Settings, errors SettingsErrors) templ.C
 			var templ_7745c5c3_Var10 string
 			templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(settings.Sex)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/settings.templ`, Line: 68, Col: 26}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/settings.templ`, Line: 58, Col: 26}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 			if templ_7745c5c3_Err != nil {
@@ -257,7 +247,7 @@ func SettingsForm(settings repositories.Settings, errors SettingsErrors) templ.C
 			var templ_7745c5c3_Var12 string
 			templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.1f", settings.Current_weight))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/settings.templ`, Line: 90, Col: 58}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/settings.templ`, Line: 80, Col: 58}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 			if templ_7745c5c3_Err != nil {
@@ -330,7 +320,7 @@ func SettingsForm(settings repositories.Settings, errors SettingsErrors) templ.C
 			var templ_7745c5c3_Var17 string
 			templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%d", settings.Height))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/settings.templ`, Line: 119, Col: 48}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/settings.templ`, Line: 109, Col: 48}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
 			if templ_7745c5c3_Err != nil {
@@ -397,7 +387,7 @@ func SettingsForm(settings repositories.Settings, errors SettingsErrors) templ.C
 			var templ_7745c5c3_Var22 string
 			templ_7745c5c3_Var22, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.2f", settings.Activity_level))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/settings.templ`, Line: 140, Col: 58}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/settings.templ`, Line: 130, Col: 58}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var22))
 			if templ_7745c5c3_Err != nil {
@@ -445,7 +435,7 @@ func SettingsForm(settings repositories.Settings, errors SettingsErrors) templ.C
 			var templ_7745c5c3_Var25 string
 			templ_7745c5c3_Var25, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.1f", settings.Target_weight))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/settings.templ`, Line: 162, Col: 57}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/settings.templ`, Line: 152, Col: 57}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var25))
 			if templ_7745c5c3_Err != nil {
@@ -512,7 +502,7 @@ func SettingsForm(settings repositories.Settings, errors SettingsErrors) templ.C
 			var templ_7745c5c3_Var29 string
 			templ_7745c5c3_Var29, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("%.1f", settings.Target_weight_loss_rate*100))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/settings.templ`, Line: 190, Col: 71}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `templates/settings.templ`, Line: 180, Col: 71}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var29))
 			if templ_7745c5c3_Err != nil {
