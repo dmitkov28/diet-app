@@ -2,10 +2,9 @@ package handlers
 
 import (
 	"fmt"
-	"strconv"
 
-	"github.com/dmitkov28/dietapp/internal/repositories"
 	"github.com/dmitkov28/dietapp/internal/services"
+	"github.com/dmitkov28/dietapp/internal/use_cases"
 	"github.com/dmitkov28/dietapp/templates"
 	"github.com/labstack/echo/v4"
 )
@@ -13,39 +12,19 @@ import (
 func StatsGETHandler(measurementsService services.IMeasurementsService) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		userId := c.Get("user_id").(int)
-		page := int64(1)
-		if pageParam := c.QueryParam("page"); pageParam != "" {
-			parsedPage, err := strconv.ParseInt(pageParam, 10, 64)
-			if err != nil {
-				fmt.Println(err)
-			} else {
-				page = parsedPage
-			}
-		}
+		pageParam := c.QueryParam("page")
+		orderByParam := c.QueryParam("orderBy")
+		orderParam := c.QueryParam("order")
 
-		options := repositories.GetMeasurementsFilterOptions{}
-
-		if orderByParam := c.QueryParam("orderBy"); orderByParam != "" {
-			options.OrderColumn = orderByParam
-		}
-
-		if order := c.QueryParam("order"); order != "" {
-			options.OrderDirection = order
-		}
-
-		offset := (int(page) - 1) * repositories.ItemsPerPage
-		noMoreResults := false
-		items, err := measurementsService.GetMeasurementsByUserId(userId, offset, options)
+		data, err := use_cases.GetUserStatsUseCase(measurementsService, userId, pageParam, orderByParam, orderParam)
 
 		if err != nil {
 			fmt.Println(err)
 		}
-		if len(items) < repositories.ItemsPerPage {
-			noMoreResults = true
-		}
+
 		isHTMX := c.Request().Header.Get("HX-Request") != ""
 
-		return render(c, templates.StatsPage(items, int(page), noMoreResults, isHTMX, options))
+		return render(c, templates.StatsPage(data.Items, data.Page, data.NoMoreResults, isHTMX, data.SortOptions))
 	}
 }
 
