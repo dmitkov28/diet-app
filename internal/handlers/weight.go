@@ -2,10 +2,9 @@ package handlers
 
 import (
 	"net/http"
-	"strconv"
 
-	"github.com/dmitkov28/dietapp/internal/repositories"
 	"github.com/dmitkov28/dietapp/internal/services"
+	"github.com/dmitkov28/dietapp/internal/use_cases"
 	"github.com/dmitkov28/dietapp/templates"
 	"github.com/labstack/echo/v4"
 )
@@ -20,23 +19,13 @@ func WeightGETHandler() echo.HandlerFunc {
 func WeightPOSTHandler(measurementsService services.IMeasurementsService) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		userId := c.Get("user_id").(int)
-		weight, err := strconv.ParseFloat(c.FormValue("weight"), 64)
-
-		if err != nil || weight <= 0 {
-			return render(c, templates.WeightForm(true))
-		}
-
+		weight := c.FormValue("weight")
 		date := c.FormValue("date")
 
-		newWeight := repositories.Weight{
-			User_id: userId,
-			Weight:  weight,
-			Date:    date,
-		}
+		err := use_cases.AddWeightUseCase(measurementsService, userId, weight, date)
 
-		_, err = measurementsService.CreateWeight(newWeight)
 		if err != nil {
-			return err
+			return render(c, templates.WeightForm(true))
 		}
 
 		c.Response().Header().Set("HX-Redirect", "/stats")
