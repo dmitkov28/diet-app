@@ -7,6 +7,7 @@ import (
 	"github.com/dmitkov28/dietapp/internal/domain"
 	"github.com/dmitkov28/dietapp/internal/repositories"
 	"github.com/dmitkov28/dietapp/internal/services"
+	"github.com/dmitkov28/dietapp/internal/use_cases"
 	"github.com/dmitkov28/dietapp/templates"
 	"github.com/labstack/echo/v4"
 )
@@ -14,16 +15,14 @@ import (
 func SettingsGETHandler(settingsService services.ISettingsService) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		userId := c.Get("user_id").(int)
-		settings, err := settingsService.GetSettingsByUserID(userId)
+		data, err := use_cases.GetUserSettings(settingsService, userId)
+
 		if err != nil {
 			return render(c, templates.SettingsForm(repositories.Settings{}, templates.SettingsErrors{}))
 		}
 
-		bmr := domain.CalculateBMR(settings.Current_weight, settings.Height, settings.Age, settings.Sex)
-		calorieGoal := domain.CalculateCalorieGoal(bmr, settings.Activity_level, settings.Current_weight, settings.Target_weight_loss_rate)
-		expectedDuration := domain.CalculateExpectedDietDuration(settings.Current_weight, settings.Target_weight, settings.Target_weight_loss_rate)
 		isHTMX := c.Request().Header.Get("HX-Request") != ""
-		return render(c, templates.SettingsPage(settings, bmr, calorieGoal, expectedDuration, isHTMX))
+		return render(c, templates.SettingsPage(data.Settings, data.BMR, data.CalorieGoal, data.ExpectedDietDuration, isHTMX))
 	}
 }
 
