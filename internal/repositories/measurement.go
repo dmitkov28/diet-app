@@ -3,6 +3,7 @@ package repositories
 import (
 	"database/sql"
 	"fmt"
+	"strconv"
 	"strings"
 
 	"golang.org/x/exp/constraints"
@@ -263,8 +264,13 @@ func (repo *MeasurementRepository) GetWeeklyStats(userId, weeks int) ([]WeeklySt
 			percentChange = ((avgWeight - prevWeight) / prevWeight) * 100
 		}
 
+		yearWeekArr := strings.Split(yearWeek, "-")
+		weekInt, _ := strconv.Atoi(yearWeekArr[1])
+		weekInt ++
+		weekStrIncr := fmt.Sprintf("%s-%d", yearWeekArr[0], weekInt)
+
 		stats = append(stats, WeeklyStats{
-			YearWeek:      yearWeek,
+			YearWeek:      weekStrIncr,
 			AverageWeight: avgWeight,
 			PercentChange: percentChange,
 		})
