@@ -9,12 +9,12 @@ resource "aws_lambda_function" "lambda_func" {
 
   environment {
     variables = {
-      AWS_LWA_PORT = var.AWS_LWA_PORT
-      TURSO_TOKEN  = var.TURSO_TOKEN
-      TURSO_URL    = var.TURSO_URL
-      NUTRITIONIX_APP_ID = var.NUTRITIONIX_APP_ID
+      AWS_LWA_PORT        = var.AWS_LWA_PORT
+      TURSO_TOKEN         = var.TURSO_TOKEN
+      TURSO_URL           = var.TURSO_URL
+      NUTRITIONIX_APP_ID  = var.NUTRITIONIX_APP_ID
       NUTRITIONIX_APP_KEY = var.NUTRITIONIX_APP_KEY
-      ENV          = var.ENV
+      ENV                 = var.ENV
     }
   }
 

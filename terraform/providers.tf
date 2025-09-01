@@ -12,7 +12,7 @@ terraform {
 }
 
 provider "aws" {
-  alias = "eu-central-1"
+  alias  = "eu-central-1"
   region = "eu-central-1"
 }
 

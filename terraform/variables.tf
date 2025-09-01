@@ -48,18 +48,18 @@ variable "TURSO_TOKEN" {
 
 variable "NUTRITIONIX_APP_ID" {
   description = "Nutritionix App Id"
-  type = string
-  sensitive = true
+  type        = string
+  sensitive   = true
 }
 
 variable "NUTRITIONIX_APP_KEY" {
   description = "Nutritionix App Key"
-  type = string
-  sensitive = true
+  type        = string
+  sensitive   = true
 }
 
 variable "S3_ALLOWED_ORIGIN" {
   description = "S3 CORS Allowed Origin"
-  type = string
-  sensitive = true
+  type        = string
+  sensitive   = true
 }
