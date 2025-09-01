@@ -31,6 +31,9 @@ css:
 deploy:
 	cd terraform && terraform apply -var-file="secret.tfvars" --auto-approve && cd .. && make sync
 
+destroy:
+	cd terraform && terraform destroy -var-file="secret.tfvars" --auto-approve
+
 sync:
 	@echo "Syncing S3 bucket..."
 	aws s3 sync static/ "${S3_URI}" --delete
