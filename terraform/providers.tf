@@ -8,6 +8,10 @@ terraform {
       source  = "kreuzwerker/docker"
       version = "~> 3.0.2"
     }
+    cloudflare = {
+      source  = "cloudflare/cloudflare"
+      version = "5.9.0"
+    }
   }
 }
 
@@ -19,6 +23,10 @@ provider "aws" {
 provider "aws" {
   alias  = "us-east-1"
   region = "us-east-1"
+}
+
+provider "cloudflare" {
+  api_token = var.CLOUDFLARE_API_TOKEN
 }
 
 

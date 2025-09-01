@@ -63,3 +63,15 @@ variable "S3_ALLOWED_ORIGIN" {
   type        = string
   sensitive   = true
 }
+
+variable "CLOUDFLARE_API_TOKEN" {
+  description = "Cloudflare API Token"
+  type        = string
+  sensitive   = true
+}
+
+variable "CLOUDFLARE_ZONE_ID" {
+  description = "Cloudflare DNS Zone ID"
+  type        = string
+  sensitive   = true
+}
