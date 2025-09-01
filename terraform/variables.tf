@@ -1,25 +1,25 @@
 variable "function_name" {
   description = "Name of the Lambda function"
   type        = string
-  default     = "tf_debug"
+  default     = "diet_app"
 }
 
 variable "function_role" {
   description = "Name of the Lambda function role"
   type        = string
-  default     = "tf_debug_role"
+  default     = "diet_app_role"
 }
 
 variable "ecr_repo_name" {
   description = "Name of the ECR repository"
   type        = string
-  default     = "tf_debug_ecr"
+  default     = "diet_app_ecr"
 }
 
 variable "api_gateway_name" {
   description = "Name of the API Gateway"
   type        = string
-  default     = "tf_debug_gw"
+  default     = "diet_app_gw"
 }
 
 variable "ENV" {
